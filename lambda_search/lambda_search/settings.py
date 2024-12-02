@@ -1,15 +1,28 @@
+import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+from django.utils.translation import gettext_lazy as _
+from dotenv import load_dotenv
+
+__all__ = ()
+
+load_dotenv()
 
 
-SECRET_KEY = (
-    "django-insecure-g^_9#0r_apxp3u27(sbh$-67hmm6mu1u5x0%eto309@091)!b-"
+def env_validator(env: str):
+    return env.lower() in ["true", "yes", "1", "y", "t"]
+
+
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-g^_9#0r_apxp3u27(sbh$-67hmm6mu1u5x0%eto309@091)!b-",
 )
 
-DEBUG = True
+DEBUG = env_validator(os.getenv("DJANGO_DEBUG", "true"))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 INSTALLED_APPS = [
@@ -33,10 +46,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "lambda_search.urls"
 
+template_dirs = [BASE_DIR / "templates"]
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": template_dirs,
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -80,10 +95,33 @@ LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
 
-USE_I18N = True
-
 USE_TZ = True
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+STATIC_ROOT = BASE_DIR / "static_dev/static_root"
+
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static_dev",
+]
+LANGUAGE_CODE = "ru"
+
+LANGUAGES = [
+    ("en-us", _("English")),
+    ("ru-ru", _("Russian")),
+]
+
+USE_I18N = True
+USE_L10N = True
+
+LOCALE_PATHS = (BASE_DIR / "locale",)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+if DEBUG:
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+    INSTALLED_APPS.insert(0, "debug_toolbar")
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]

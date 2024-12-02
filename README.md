@@ -1,4 +1,4 @@
-# Lyceum project
+# Lambda-search project
 
 ## Как запустить проект
 
@@ -77,7 +77,7 @@
     пропишите в командную строку:
 
     ```bash
-    cd lyceum
+    cd lambda_search
     python manage.py runserver
     ```
 
@@ -95,7 +95,7 @@
 
 1. Локализация проекта
 
-    1. Добавьте поддержку языков в settings.py перечислив желаемые языки в параметре LANGUAGE. Этот файл находится в каталоге lyceum/lyceum/settings.py. Пример:
+    1. Добавьте поддержку языков в settings.py перечислив желаемые языки в параметре LANGUAGE. Этот файл находится в каталоге lambda_search/lambda_search/settings.py. Пример:
 
         ```python
             LANGUAGES = [
@@ -115,7 +115,7 @@
     1. Заполните переводы в файлах locale/ru/ LC_MESSAGES/django.pо и locale/en/LC_MESSAGES/_ django.po (файлы могут различаться, смотрите на язык в каталогах), сделать это можно примерно так:
 
          ```bash
-            #: .\lyceum\settings.py:268
+            #: .\lambda_search\settings.py:268
             msgid "Russian"
             msgstr "Russian"
 
