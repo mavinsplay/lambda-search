@@ -1,0 +1,10 @@
+argparse==1.4.0
+asgiref==3.8.1
+Django==4.2.16
+django-cleanup==9.0.0
+parametrize==0.1.1
+pillow==11.0.0
+pytz==2024.2
+python-dotenv==1.0.1
+sorl-thumbnail==12.11.0
+sqlparse==0.5.1

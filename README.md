@@ -1,93 +1,188 @@
-# team-3
+# Lyceum project
 
+## Как запустить проект
 
+### Требования
 
-## Getting started
+Наличие [python](https://www.python.org/) >= 3.9
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+1. Скопируйте проект в нужную папку при помощи команды:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+    ```bash
+    git clone https://gitlab.crja72.ru/django/2024/autumn/course/students/182732-mavinsplay2007-course-1187
+    ```
 
-## Add your files
+    (на вашем пк должен быть установлен git, [подробнее](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+1. Создайте виртуальное окружение
+ | Для windows / linux / macos
 
-```
-cd existing_repo
-git remote add origin https://gitlab.crja72.ru/django/2024/autumn/course/projects/team-3.git
-git branch -M main
-git push -uf origin main
-```
+    откройте папку со скаченным репозиторием
 
-## Integrate with your tools
+    создайте виртуальное окружение,
+    пропишите в командную строку:
 
-- [ ] [Set up project integrations](https://gitlab.crja72.ru/django/2024/autumn/course/projects/team-3/-/settings/integrations)
+    ```bash
+    python3 -m venv venv
+    ```
 
-## Collaborate with your team
+    активируйте виртуальное окружение,
+    пропишите в командную строку:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+    Для windows
 
-## Test and Deploy
+    ```bash
+    venv\Scripts\activate
+    ```
 
-Use the built-in continuous integration in GitLab.
+    Для linux и macos
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+    ```bash
+    source venv/bin/activate
+    ```
 
-***
+1. Добавьте переменные окружения,
+пропишите в командную строку:
+для linux:
 
-# Editing this README
+    ```bash
+    cp .env.example .env
+    ```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+    для windows:
 
-## Suggestions for a good README
+    ```bash
+    copy .env.example .env
+    ```
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+    измените нужные вам параметры в файле .env
+    согласно комментариям-подсказкам
 
-## Name
-Choose a self-explaining name for your project.
+1. Скачайте нужные зависимости
+    пропишите в командную строку:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+    ```bash
+    pip3 install -r requirements/prod.txt
+    ```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+    (Для запуска в проде) или
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+    ```bash
+    pip3 install -r requirements/dev.txt
+    ```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+    (для запуска в dev режиме)
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+1. Запустите проект.
+    пропишите в командную строку:
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+    ```bash
+    cd lyceum
+    python manage.py runserver
+    ```
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+1. Создать фикстуру можно командой
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+    ```bash
+    python -Xutf8 manage.py dumpdata catalog > fixtures/data.json --indent 4
+    ```
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+    применить фикстуру можно командой:
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+    ```bash
+    python manage.py loaddata fixtures/data.json
+    ```
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+1. Локализация проекта
 
-## License
-For open source projects, say how it is licensed.
+    1. Добавьте поддержку языков в settings.py перечислив желаемые языки в параметре LANGUAGE. Этот файл находится в каталоге lyceum/lyceum/settings.py. Пример:
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+        ```python
+            LANGUAGES = [
+            ("en", _("English")),
+            ("ru", _("Russian")),
+            ]
+        ```
+
+    1. Сгенерируйте файлы сообщений переводов, сделать это можно командой:
+
+        ```bash
+            django-admin makemessages -l ru -l en
+        ```
+
+        (через [-l "язык"] указываются нужные вам языки, которые вы указали ранее в settings.py)
+
+    1. Заполните переводы в файлах locale/ru/ LC_MESSAGES/django.pо и locale/en/LC_MESSAGES/_ django.po (файлы могут различаться, смотрите на язык в каталогах), сделать это можно примерно так:
+
+         ```bash
+            #: .\lyceum\settings.py:268
+            msgid "Russian"
+            msgstr "Russian"
+
+            #: .\templates\includes\header.html:15 .\templates\includes\header.html:17
+            msgid "На главную"
+            msgstr "Homepage"
+
+            #: .\templates\includes\header.html:22 .\templates\includes\header.html:24
+            msgid "О проекте"
+            msgstr "About"
+
+            #: .\templates\includes\header.html:29 .\templates\includes\header.html:31
+            msgid "Список товаров"
+            msgstr "Item list"
+        ```
+
+    1. Скомпилируйте сообщения при помощи команды:
+
+        ```bash
+            django-admin compilemessages
+        ```
+
+1. Проведение миграций, после изменения моделей
+
+    Если вы изменили модель в каком-то из файлов, то необходимо провести миграции командами:
+
+    ```bash
+        python manage.py makemigrations
+        python manage.py migrate
+    ```
+
+1. Тестирование приложения
+
+    Если после изменения кода вы хотите протестировать приложение, то измените нужные вам тесты в файлах с именем test*.py и воспользуйтесь командой:
+
+    ```bash
+        python manage.py test
+    ```
+
+1. Сбор статики
+
+    Чтобы собрать статику необходимо воспользоваться командой:
+
+    ```bash
+        python manage.py collectstatic
+    ```
+
+1. Создание суперпользователя
+
+    Чтобы создать пользователя с правами администратора необходимо воспользоваться командой:
+
+    ```bash
+        python3 manage.py createsuperuser
+    ```
+
+    следуйте указанным инструкциям в подсказках, указанных в терминале
+1. Уменьшение количества миграций
+
+    Чтобы уменьшить количество миграций нужно прописать в командной строке следующие:
+
+    ```bash
+        python manage.py squashmigrations <appname> <squashfrom> <squashto>
+    ```
+
+    appname - Имя приложения
+    squashfrom - Первая миграция
+    squashto - Последняяя миграция
+
+ER диаграмма базы данных:
+![image](ER.jpg)
