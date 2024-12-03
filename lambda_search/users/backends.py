@@ -15,14 +15,10 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             if "@" in username:
-                user = users.models.User.objects.by_mail(
-                    username
-                )
+                user = users.models.User.objects.by_mail(username)
 
             else:
-                user = users.models.User.objects.get(
-                    username=username
-                )
+                user = users.models.User.objects.get(username=username)
 
         except django.contrib.auth.models.User.DoesNotExist:
             return None
