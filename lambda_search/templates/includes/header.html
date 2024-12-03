@@ -9,12 +9,16 @@
   </ul>
   
   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-    {% comment %} <li class="nav-item my-auto mx-2">
-      <a class="nav-link {% if view_name == 'about:about' %} active {% endif %}"
-         {% if view_name != 'about:about' %}href="{% url 'about:about' %}"{% endif %}>
-        {% trans "Go about" %}
-      </a>
-    </li>
+    <li class="nav-item">
+      {% with request.resolver_match.view_name as view_name %}
+          {% if view_name == "search:search" %}
+              <span class="nav-link active text-black">{% trans "Search" %}</span>
+          {% else %}
+              <a class="nav-link" href="{% url 'search:search' %}">{% trans "Search" %}</a>
+          {% endif %}
+      {% endwith %}
+  </li>
+    {% comment %}
     <li class="nav-item my-auto mx-2">
       <a class="nav-link {% if view_name == 'utils:api' %} active {% endif %}"
          {% if view_name != 'utils:api' %}href="{% url 'utils:api' %}"{% endif %}>
