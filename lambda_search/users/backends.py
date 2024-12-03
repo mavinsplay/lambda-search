@@ -6,7 +6,7 @@ import django.shortcuts
 import django.urls
 import django.utils.timezone
 
-from lambda_search import users
+import users
 
 __all__ = ()
 
@@ -15,12 +15,12 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             if "@" in username:
-                user = lambda_search.users.models.User.objects.by_mail(
+                user = users.models.User.objects.by_mail(
                     username
                 )
 
             else:
-                user = lambda_search.users.models.User.objects.get(
+                user = users.models.User.objects.get(
                     username=username
                 )
 

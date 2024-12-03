@@ -97,9 +97,7 @@ class ActivateUserTest(django.test.TestCase):
             is_active=cls.not_active_data["is_active"],
         )
 
-        users.models.Profile.objects.create(
-            user=cls.user_not_active
-        )
+        users.models.Profile.objects.create(user=cls.user_not_active)
 
         cls.data_active = {
             "username": "TestActiveUserName",
@@ -174,9 +172,7 @@ class TestAuthinicateUser(django.test.TestCase):
             email="testemail@mail.com",
             password="Testpassword123",
         )
-        cls.profile = users.models.Profile.objects.create(
-            user=cls.user
-        )
+        cls.profile = users.models.Profile.objects.create(user=cls.user)
 
     @classmethod
     def tearDownClass(cls):
@@ -252,9 +248,7 @@ class NormalEmailTests(django.test.TestCase):
             password=data["password"],
             is_active=False,
         )
-        user = users.models.User.objects.get(
-            username=user.username
-        )
+        user = users.models.User.objects.get(username=user.username)
         users.models.Profile.objects.create(
             user=user,
             date_last_active=django.utils.timezone.now()
@@ -287,9 +281,7 @@ class NormalEmailTests(django.test.TestCase):
             password=data["password"],
             is_active=False,
         )
-        user = users.models.User.objects.get(
-            username=user.username
-        )
+        user = users.models.User.objects.get(username=user.username)
         users.models.Profile.objects.create(
             user=user,
             date_last_active=django.utils.timezone.now()
