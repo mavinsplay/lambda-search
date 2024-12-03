@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block content %}
-<div class="text-white">
-  <h2>{% trans "Вы вышли из аккаунта" %}</h2>
-  <p><a href="{% url 'users:login' %}">{% trans "Войти снова" %}</a></p>
-</div>
-{% endblock %}

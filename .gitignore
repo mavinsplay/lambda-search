@@ -8,7 +8,7 @@ django.mo
 **/static_root
 **/send_mail
 # media #
-
+ 
 # Backup files # 
 *.bak 
 
