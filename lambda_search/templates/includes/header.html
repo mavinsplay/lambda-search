@@ -1,0 +1,86 @@
+{% load i18n %}
+{% load static %}
+{% with request.resolver_match.view_name as view_name %}
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+  <ul class="nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">
+    <a href="{% url 'homepage:homepage' %}">
+      <img class="img-fluid" src="{% static 'images/logo.png' %}" width="100" alt="search">
+    </a>
+  </ul>
+  
+  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    {% comment %} <li class="nav-item my-auto mx-2">
+      <a class="nav-link {% if view_name == 'about:about' %} active {% endif %}"
+         {% if view_name != 'about:about' %}href="{% url 'about:about' %}"{% endif %}>
+        {% trans "Go about" %}
+      </a>
+    </li>
+    <li class="nav-item my-auto mx-2">
+      <a class="nav-link {% if view_name == 'utils:api' %} active {% endif %}"
+         {% if view_name != 'utils:api' %}href="{% url 'utils:api' %}"{% endif %}>
+        {% trans "Go api" %}
+      </a>
+    </li>
+    <li class="nav-item my-auto mx-2">
+      <a class="nav-link {% if view_name == 'feedback:feedback' %} active {% endif %}"
+         {% if view_name != 'feedback:feedback' %}href="{% url 'feedback:feedback' %}"{% endif %}>
+        {% trans "Go feedback" %}
+      </a>
+    </li>
+    {% endcomment %}
+  </ul>
+
+  <ul class="nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">
+  {% comment %}
+    {% if request.user.is_authenticated == False %}
+    <li class="nav-item my-auto mx-2">
+      <a class="nav-link {% if view_name == 'users:login' %} active {% endif %}"
+         {% if view_name != 'users:login' %}href="{% url 'users:login' %}"{% endif %}>
+         {% trans "Войти" %}
+      </a>
+    </li>
+    <li class="nav-item my-auto mx-2">
+      <a class="nav-link {% if view_name == 'users:signup' %} active {% endif %}"
+      {% if view_name != 'users:signup' %}href="{% url 'users:signup' %}"{% endif %}>
+        {% trans "Регистрация" %}
+        </a>
+    </li>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+    <li class="nav-item my-auto mx-2">
+      <a class="nav-link {% if view_name == 'users:profile' %} active {% endif %}"
+      {% if view_name != 'users:profile' %}href="{% url 'users:profile' %}"{% endif %}>
+        {% trans "Профиль" %}
+        </a>
+    </li>
+    <li class="nav-item my-auto mx-2">
+      <a class="nav-link {% if view_name == 'users:logout' %} active {% endif %}"
+         {% if view_name != 'users:logout' %}href="{% url 'users:logout' %}"{% endif %}>
+         {% trans "Выйти" %}
+      </a>
+    </li>
+    {% endif %} {% endcomment %}
+      {% if request.user.is_authenticated and request.user.is_staff %}
+      <li class="nav-item my-auto mx-2">
+          <a class="nav-link" href="{% url 'admin:index' %}">
+            {% trans "Admin-panel" %}
+          </a>
+      </li>
+      {% endif %}
+      <form id="language-form" action="{% url 'set_language' %}" method="post" class="d-flex align-items-center gap-2">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}">
+        <select name="language" class="form-select" onchange="document.getElementById('language-form').submit();">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+                <option value="{{ language.code }}"{% if language.code in LANGUAGE_CODE %} selected {% endif %}>
+                    {{ language.name_local }}
+                </option>
+            {% endfor %}
+        </select>
+      </form>
+    </ul>
+</div>
+{% endwith %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    {% block title %}
+      <title>Lambda Search</title>
+    {% endblock %}
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="icon" type="image/png" href={% static "files/favicon-96x96.png" %} sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href={% static "files/favicon.svg" %}/>
+    <link rel="shortcut icon" href={% static "files/favicon.ico" %} />
+    <link rel="apple-touch-icon" sizes="180x180" href={% static "files/apple-touch-icon.png" %}/>
+    <meta name="apple-mobile-web-app-title" content="λ-search" />
+    <link rel="manifest" href={% static "files/site.webmanifest" %} />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="container-md">
+        {% include "includes/header.html" %}
+      </header>
+
+      <main>
+        {% block content %}
+        <img src="{% static "images/where.jpg" %}" class="img-fluid" height=300 width=300>
+        {% endblock %}
+      </main>
+
+      <footer class="mt-5">
+        {% include "includes/footer.html" %}
+      </footer>
+    </div>
+  </body>
+</html>

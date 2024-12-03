@@ -101,15 +101,15 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "static_dev/static_root"
 
-
 STATICFILES_DIRS = [
     BASE_DIR / "static_dev",
 ]
+
 LANGUAGE_CODE = "ru"
 
 LANGUAGES = [
-    ("en-us", _("English")),
-    ("ru-ru", _("Russian")),
+    ("en-US", _("English")),
+    ("ru-RU", _("Russian")),
 ]
 
 USE_I18N = True
