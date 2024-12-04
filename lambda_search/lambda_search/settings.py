@@ -30,6 +30,7 @@ MAIL = os.getenv("DJANGO_MAIL", "django_mail@example.com")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SITE_URL = os.getenv("DJANGO_SITE_URL", "http://127.0.0.1:8000")
 
 INSTALLED_APPS = [
     # Django apps
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     "homepage.apps.HomepageConfig",
     "search.apps.SearchConfig",
     "django_cleanup.apps.CleanupConfig",
+    "users.apps.UsersConfig",
+    "sorl.thumbnail",
 ]
 
 MIDDLEWARE = [

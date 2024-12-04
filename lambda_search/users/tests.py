@@ -11,8 +11,8 @@ import django.utils
 import django.utils.timezone
 import parametrize
 
-import users.models
 import users
+import users.models
 
 user_model = django.contrib.auth.models.User
 

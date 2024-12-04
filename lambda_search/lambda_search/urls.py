@@ -7,6 +7,9 @@ urlpatterns = [
     path("", include("homepage.urls")),
     path("admin/", admin.site.urls),
     path("i18n/", include("django.conf.urls.i18n")),
+    path("auth/", include("users.urls")),
+    path("auth/", include("django.contrib.auth.urls")),
+    path("search/", include("search.urls")),
 ]
 
 urlpatterns += static(

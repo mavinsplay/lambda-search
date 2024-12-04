@@ -76,15 +76,6 @@
       </li>
       {% endif %}
 
-      <script>
-        function changeLanguage(langCode) {
-            const languageInput = document.getElementById('language-input');
-            const languageForm = document.getElementById('language-form');
-            languageInput.value = langCode;
-            languageForm.submit();
-        }
-      </script>
-
       <div class="dropdown">
         <button id="language-text" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             {% get_current_language as LANGUAGE_CODE %}
