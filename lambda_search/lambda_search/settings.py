@@ -103,6 +103,10 @@ LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
 
+LOGIN_URL = "/auth/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = LOGIN_URL
+
 USE_TZ = True
 
 STATIC_URL = "/static/"
