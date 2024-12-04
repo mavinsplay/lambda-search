@@ -26,12 +26,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 INSTALLED_APPS = [
+    # Django apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Local apps
+    "homepage.apps.HomepageConfig",
 ]
 
 MIDDLEWARE = [
@@ -39,6 +42,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -91,19 +95,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
 
 USE_TZ = True
 
-STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "static"
 
-STATIC_ROOT = BASE_DIR / "static_dev/static_root"
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static_dev",
 ]
+
+MEDIA_ROOT = BASE_DIR / "media"
+
+MEDIA_URL = "/media/"
 
 LANGUAGE_CODE = "ru"
 
