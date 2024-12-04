@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-03 18:03+0300\n"
+"POT-Creation-Date: 2024-12-04 12:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,22 @@ msgstr "Русский"
 msgid "All rights reserved"
 msgstr "Все права защищены"
 
-#: .\templates\includes\header.html:61
+#: .\templates\includes\header.html:67
 msgid "Admin-panel"
 msgstr "Админка"
+
+#: .\templates\includes\header.html:87
+msgid "theme_button"
+msgstr "Тема"
+
+#: .\templates\includes\header.html:90
+msgid "light_theme"
+msgstr "Светлая"
+
+#: .\templates\includes\header.html:91
+msgid "dark_theme"
+msgstr "Тёмная"
+
+#: .\templates\includes\header.html:92
+msgid "auto_theme"
+msgstr "Авто"

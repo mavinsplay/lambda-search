@@ -3,12 +3,11 @@
 {% with request.resolver_match.view_name as view_name %}
 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
   <ul class="nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">
-    <a href="{% url 'homepage:homepage' %}">
-      <img class="img-fluid" src="{% static 'images/logo.png' %}" width="100" alt="search">
-    </a>
-  </ul>
-  
-  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <li class="nav-item my-auto mx-2">
+      <a href="{% url 'homepage:homepage' %}">
+        <img class="img-fluid" src="{% static 'images/wh_logo.png' %}" width="100" alt="search">
+      </a>
+    </li>
     <li class="nav-item">
       {% with request.resolver_match.view_name as view_name %}
           {% if view_name == "search:search" %}
@@ -17,8 +16,13 @@
               <a class="nav-link" href="{% url 'search:search' %}">{% trans "Search" %}</a>
           {% endif %}
       {% endwith %}
-  </li>
-    {% comment %}
+    </li>
+    {% comment %} <li class="nav-item my-auto mx-2">
+      <a class="nav-link {% if view_name == 'about:about' %} active {% endif %}"
+         {% if view_name != 'about:about' %}href="{% url 'about:about' %}"{% endif %}>
+        {% trans "Go about" %}
+      </a>
+    </li>
     <li class="nav-item my-auto mx-2">
       <a class="nav-link {% if view_name == 'utils:api' %} active {% endif %}"
          {% if view_name != 'utils:api' %}href="{% url 'utils:api' %}"{% endif %}>
@@ -66,25 +70,57 @@
     {% endif %} {% endcomment %}
       {% if request.user.is_authenticated and request.user.is_staff %}
       <li class="nav-item my-auto mx-2">
-          <a class="nav-link" href="{% url 'admin:index' %}">
+          <a class="btn btn-primary" href="{% url 'admin:index' %}">
             {% trans "Admin-panel" %}
           </a>
       </li>
       {% endif %}
-      <form id="language-form" action="{% url 'set_language' %}" method="post" class="d-flex align-items-center gap-2">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ redirect_to }}">
-        <select name="language" class="form-select" onchange="document.getElementById('language-form').submit();">
+
+      <script>
+        function changeLanguage(langCode) {
+            const languageInput = document.getElementById('language-input');
+            const languageForm = document.getElementById('language-form');
+            languageInput.value = langCode;
+            languageForm.submit();
+        }
+      </script>
+
+      <div class="dropdown">
+        <button id="language-text" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             {% get_current_language as LANGUAGE_CODE %}
+            {% get_language_info for LANGUAGE_CODE as current_language %}
+            {{ current_language.name_local }}
+        </button>
+        <ul class="dropdown-menu">
             {% get_available_languages as LANGUAGES %}
             {% get_language_info_list for LANGUAGES as languages %}
-            {% for language in languages %}
-                <option value="{{ language.code }}"{% if language.code in LANGUAGE_CODE %} selected {% endif %}>
-                    {{ language.name_local }}
-                </option>
+            {% for language in languages%}
+                <li>
+                    <form action="{% url 'set_language' %}" method="post" id="{{language.code}}_form">
+                        {% csrf_token %}
+                        <input type="hidden" name="language" value="{{ language.code }}">
+                        <button type="button" class="dropdown-item {% if language.code == current_language.code %}active{% endif %}"
+                        aria-pressed="{% if language.code == current_language.code %}true{% else %}false{% endif %}"
+                        onclick="document.getElementById('{{ language.code }}_form').submit();">
+                        {{ language.name_local }}
+                        </button>
+                    </form>
+                </li>
             {% endfor %}
-        </select>
-      </form>
+        </ul>
+      </div>
+    
+
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {% trans "theme_button" %}
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" data-bs-theme-value="light" href="">{% trans "light_theme" %}</a></li>
+          <li><a class="dropdown-item" data-bs-theme-value="dark" href="">{% trans "dark_theme" %}</a></li>
+          <li><a class="dropdown-item" data-bs-theme-value="auto" href="">{% trans "auto_theme" %}</a></li>
+        </ul>
+      </div>
     </ul>
 </div>
 {% endwith %}

@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-bs-theme="auto">
   <head>
     <meta charset="utf-8">
     {% block title %}
       <title>Lambda Search</title>
     {% endblock %}
 
+    
+
     {% load static %}
+
+    <script src="{% static 'js/themeToggler.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="icon" type="image/png" href={% static "files/favicon-96x96.png" %} sizes="96x96" />
