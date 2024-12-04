@@ -22,6 +22,12 @@ DEBUG = env_validator(os.getenv("DJANGO_DEBUG", "true"))
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
+DEFAULT_USER_IS_ACTIVE = env_validator(
+    os.getenv("DJANGO_DEFAULT_USER_IS_ACTIVE", "true" if DEBUG else "false"),
+)
+
+MAIL = os.getenv("DJANGO_MAIL", "django_mail@example.com")
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -47,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "users.middleware.ProxyUserMiddleware",
 ]
 
 ROOT_URLCONF = "lambda_search.urls"
@@ -110,6 +117,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 TIME_ZONE = "UTC"
 
+LOGIN_URL = "/auth/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = LOGIN_URL
+
 USE_TZ = True
 
 STATIC_ROOT = BASE_DIR / "static"
@@ -135,6 +146,12 @@ USE_I18N = True
 USE_L10N = True
 
 LOCALE_PATHS = (BASE_DIR / "locale",)
+
+ITEMS_PER_PAGE = 5
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+
+EMAIL_FILE_PATH = BASE_DIR / "send_mail"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

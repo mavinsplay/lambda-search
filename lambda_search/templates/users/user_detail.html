@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="text-white">
+  <h2>{% trans "Информация о пользователе" %}</h2>
+  <p><strong>{% trans "Почта:" %}</strong> {{ user.email }}</p>
+  <p><strong>{% trans "Имя:" %}</strong> {{ user.first_name|default:"<span style='font-style: italic;'>не указано</span>"|safe }}</p>
+  <p><strong>{% trans "Фамилия:" %}</strong> {{ user.last_name|default:"<span style='font-style: italic;'>не указано</span>"|safe }}</p>
+  {% if user.profile.image %}
+    <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" width="700">
+  {% endif %}
+</div>
+{% endblock %}
