@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "homepage.apps.HomepageConfig",
+    "search.apps.SearchConfig",
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [
@@ -74,6 +77,18 @@ DATABASES = {
     },
 }
 
+LAMBDA_DBS_DIR = BASE_DIR / "lambda-dbs"
+
+if LAMBDA_DBS_DIR.exists():
+    for db_file in LAMBDA_DBS_DIR.glob("*.sqlite3"):
+        db_name = db_file.stem
+        DATABASES[db_name] = {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": db_file,
+        }
+
+ATABASE_ROUTERS = ["path.to.database_router.DatabaseRouter"]
+
 AUTH_PWD_MODULE = "django.contrib.auth.password_validation."
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -101,15 +116,15 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "static_dev/static_root"
 
-
 STATICFILES_DIRS = [
     BASE_DIR / "static_dev",
 ]
+
 LANGUAGE_CODE = "ru"
 
 LANGUAGES = [
-    ("en-us", _("English")),
-    ("ru-ru", _("Russian")),
+    ("en-US", _("English")),
+    ("ru-RU", _("Russian")),
 ]
 
 USE_I18N = True
