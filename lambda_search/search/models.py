@@ -75,8 +75,109 @@ class ManagedDatabase(models.Model):
             }
 
     class Meta:
-        verbose_name = "База данных"
-        verbose_name_plural = "Базы данных"
+        verbose_name = _("База данных")
+        verbose_name_plural = _("Базы данных")
 
     def __str__(self):
         return self.name
+
+
+class UnifiedDatabaseManager:
+    """Менеджер для работы с объединёнными базами данных."""
+
+    def __init__(self):
+        self.databases = self._get_active_databases()
+
+    def _get_active_databases(self):
+        """Возвращает список путей активных баз данных."""
+        return ManagedDatabase.objects.filter(active=True)
+
+    def search(self, query):
+        """
+        Ищет информацию во всех активных базах данных.
+
+        :param query: Поисковый запрос (например, имя "Миша").
+        :return: Список с результатами поиска по каждой базе данных.
+        """
+        results = []
+        for db in self.databases:
+            db_path = db.path
+            result = self._search_in_database(db.name, db_path, query)
+            results.append(result)
+
+        return results
+
+    def _search_in_database(self, db_name, db_path, query):
+        """
+        Выполняет поиск в одной базе данных.
+
+        :param db_name: Название базы данных.
+        :param db_path: Путь к базе данных.
+        :param query: Поисковый запрос.
+        :return: Словарь с результатами.
+        """
+        data = {
+            "database": db_name,
+            "results": [],
+        }
+        try:
+            with sqlite3.connect(db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table';",
+                )
+                tables = cursor.fetchall()
+
+                for (table_name,) in tables:
+                    cursor.execute(f"PRAGMA table_info({table_name});")
+                    columns = [col[1] for col in cursor.fetchall()]
+
+                    # Выполняем поиск в таблице
+                    for column in columns:
+                        cursor.execute(
+                            (
+                                f"SELECT * FROM "
+                                f"{table_name} WHERE {column} LIKE ? LIMIT 10;"
+                            ),
+                            (f"%{query}%",),
+                        )
+                        rows = cursor.fetchall()
+                        if rows:
+                            data["results"].append(
+                                {
+                                    "table": table_name,
+                                    "column": column,
+                                    "rows": rows,
+                                },
+                            )
+        except sqlite3.DatabaseError as e:
+            data["error"] = str(e)
+
+        return data
+
+    def format_results(self, results):
+        """
+        Форматирует результаты поиска в виде таблицы с булевыми значениями.
+
+        :param results: Сырые данные из `_search_in_database`.
+        :return: Отформатированные данные.
+        """
+        formatted = []
+        for result in results:
+            for entry in result["results"]:
+                formatted.append(
+                    {
+                        "database": result["database"],
+                        "table": entry["table"],
+                        "column": entry["column"],
+                        "found": bool(entry["rows"]),
+                    },
+                )
+
+        return formatted
+
+
+class UnifiedDatabase:
+    """Класс для работы с объединённой моделью."""
+
+    objects = UnifiedDatabaseManager()
