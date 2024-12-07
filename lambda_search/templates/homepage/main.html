@@ -2,17 +2,15 @@
 {% load i18n %}
 {% load static %}
 {% block title %}
-  <title>{{title}}</title>
+  {{title}}
 {% endblock title %}
 {% block content %}
-<div class="container-md">
-  <div class="container-md text-center my-3">
-      <h1>{{title}}</h1>
-  </div>
-  <div class="row justify-content-center">
-    {% for item in items%}
-      {% include "includes/item_card.html" with item=item show_category_badge=True%}
-    {% endfor %}
-  </div>
+<div class="container text-center my-3">
+    <h1>{{title}}</h1>
+</div>
+<div class="row justify-content-center">
+  {% for item in items%}
+    {% include "includes/item_card.html" with item=item show_category_badge=True%}
+  {% endfor %}
 </div>
 {% endblock %}

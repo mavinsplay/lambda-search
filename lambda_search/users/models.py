@@ -4,6 +4,7 @@ import re
 import django.conf
 import django.contrib.auth.models
 import django.db
+import sorl.thumbnail
 
 __all__ = ()
 
@@ -71,10 +72,21 @@ class Profile(django.db.models.Model):
         null=True,
         blank=True,
     )
+
     attempts_count = django.db.models.PositiveIntegerField(
         default=0,
     )
     date_last_active = django.db.models.DateTimeField(null=True, blank=True)
+
+    def get_small_avatar(self):
+        if self.image:
+            return sorl.thumbnail.get_thumbnail(
+                self.image,
+                "100x100",
+                crop="center",
+            ).url
+
+        return None
 
     class Meta:
         verbose_name = "профиль"

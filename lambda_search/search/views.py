@@ -1,4 +1,6 @@
+from django.utils.translation import gettext as _
 from django.views.generic.edit import FormView
+
 from search.forms import SearchForm
 
 __all__ = ()
@@ -19,3 +21,8 @@ class SearchView(FormView):  # TODO
                 errors=form.errors,
             ),
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = _("Search")
+        return context

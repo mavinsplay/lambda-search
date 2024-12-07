@@ -1,5 +1,5 @@
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
