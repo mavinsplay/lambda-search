@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 from search.models import ManagedDatabase
 
 __all__ = ()
@@ -17,7 +18,8 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
     list_editable = ("active",)
     search_fields = ("name",)
     list_filter = ("active",)
-    fields = ("name", "file", "active")
+    readonly_fields = ("created_at", "updated_at")
+    fields = ("name", "file", "active", "history", "created_at", "updated_at")
 
     def get_urls(self):
         """Добавляем кастомный URL для просмотра содержимого базы."""
@@ -34,11 +36,13 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
     def view_content_button(self, obj):
         """Добавляет кнопку для просмотра содержимого базы."""
         return format_html(
-            '<a class="button" href="{}">Просмотреть содержимое</a>',
-            f"{obj.id}/view-content/",
+            (
+                f"<a class='button' href='{obj.id}/view-content/'>"
+                f"{_('Просмотреть содержимое')}</a>"
+            ),
         )
 
-    view_content_button.short_description = "Содержимое"
+    view_content_button.short_description = _("Содержимое")
     view_content_button.allow_tags = True
 
     def view_database_content(self, request, db_id):
@@ -70,5 +74,5 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
             return render(
                 request,
                 "admin/error.html",
-                {"error_message": f"Ошибка при открытии базы: {str(e)}"},
+                {"error_message": _(f"Ошибка при открытии базы: {str(e)}")},
             )

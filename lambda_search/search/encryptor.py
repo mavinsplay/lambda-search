@@ -1,87 +1,100 @@
 from pathlib import Path
 import sqlite3
 
-from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.ciphers import algorithms, Cipher, modes
 
 __all__ = ()
 
 
-class DatabaseEncryptor:
-    """Класс для шифрования и дешифрования баз данных."""
+def filter_system_tables(all_tables: list) -> list:
+    system_tables = {
+        "sqlite_sequence",
+        "sqlite_stat1",
+        "sqlite_stat4",
+        "sqlite_stat3",
+    }
+
+    return [table[0] for table in all_tables if table[0] not in system_tables]
+
+
+class CellEncryptor:
+    """Класс для шифрования и дешифрования ячеек базы данных."""
 
     def __init__(self, key: bytes):
-        """
-        :param key: Ключ шифрования (должен быть безопасно сохранён).
-        """
-        self.cipher = Fernet(key)
+        self.key = key
+        self.iv = key[:16]
 
-    def encrypt_file(self, file_path: str):
-        """Шифрует файл."""
-        path = Path(file_path)
-        encrypted_path = path.with_suffix(".encrypted")
-        with Path.open(file_path, "rb") as f:
-            data = f.read()
+    def encrypt(self, data: str) -> str:
+        """Шифрует строку с фиксированным IV."""
+        cipher = Cipher(
+            algorithms.AES(self.key),
+            modes.CBC(self.iv),
+            backend=default_backend(),
+        )
+        encryptor = cipher.encryptor()
+        padded_data = self._pad(data.encode())
+        encrypted = encryptor.update(padded_data) + encryptor.finalize()
+        return encrypted.hex()
 
-        encrypted_data = self.cipher.encrypt(data)
-        with Path.open(encrypted_path, "wb") as f:
-            f.write(encrypted_data)
+    def decrypt(self, encrypted_data: str) -> str:
+        """Дешифрует строку с фиксированным IV."""
+        cipher = Cipher(
+            algorithms.AES(self.key),
+            modes.CBC(self.iv),
+            backend=default_backend(),
+        )
+        decryptor = cipher.decryptor()
+        decrypted = (
+            decryptor.update(bytes.fromhex(encrypted_data))
+            + decryptor.finalize()
+        )
 
-        path.unlink()
-        return encrypted_path
+        return self._unpad(decrypted).decode()
 
-    def decrypt_file(self, file_path: str):
-        """Дешифрует файл."""
-        path = Path(file_path)
-        decrypted_path = path.with_suffix(".sqlite")
-        with Path.open(file_path, "rb") as f:
-            encrypted_data = f.read()
+    def _pad(self, data: bytes, block_size=16):
+        padding_len = block_size - len(data) % block_size
+        return data + bytes([padding_len] * padding_len)
 
-        decrypted_data = self.cipher.decrypt(encrypted_data)
-        with Path.open(decrypted_path, "wb") as f:
-            f.write(decrypted_data)
+    def _unpad(self, data: bytes):
+        padding_len = data[-1]
+        return data[:-padding_len]
 
-        return decrypted_path
+    def encrypt_database_cells(self, db_path: Path):
+        """Шифрует ячейки базы данных, избегая системных таблиц."""
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
 
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables_to_encrypt = filter_system_tables(cursor.fetchall())
 
-class EncryptedDatabaseManager:
-    """Менеджер для работы с зашифрованными базами данных."""
+        for table_name in tables_to_encrypt:
 
-    def __init__(self, encryption_key: bytes):
-        self.cipher = Fernet(encryption_key)
+            cursor.execute(f"PRAGMA table_info({table_name});")
+            columns = cursor.fetchall()
 
-    def query_encrypted_database(
-        self,
-        encrypted_path: str,
-        query: str,
-        params=None,
-    ):
-        """
-        Выполняет запрос к зашифрованной базе данных.
-        Дешифрует базу на лету, выполняет запрос, затем удаляет временный файл.
+            column_names = [column[1] for column in columns]
 
-        :param encrypted_path: Путь к зашифрованной базе.
-        :param query: SQL-запрос.
-        :param params: Параметры запроса.
-        :return: Результаты выполнения запроса.
-        """
-        encrypted_file = Path(encrypted_path)
-        decrypted_file = encrypted_file.with_suffix(".temp.sqlite")
+            cursor.execute(f"SELECT * FROM {table_name};")
+            rows = cursor.fetchall()
 
-        with Path.open(encrypted_file, "rb") as f:
-            encrypted_data = f.read()
+            for row in rows:
+                encrypted_row = []
+                for idx, value in enumerate(row):
+                    if isinstance(value, str):
+                        encrypted_value = self.encrypt(value)
+                        encrypted_row.append(encrypted_value)
+                    else:
+                        encrypted_row.append(value)
 
-        decrypted_data = self.cipher.decrypt(encrypted_data)
-        with Path.open(decrypted_file, "wb") as f:
-            f.write(decrypted_data)
+                set_clause = ", ".join(
+                    [f"{column} = ?" for column in column_names],
+                )
 
-        results = []
-        try:
-            with sqlite3.connect(decrypted_file) as conn:
-                cursor = conn.cursor()
-                cursor.execute(query, params or ())
-                results = cursor.fetchall()
-        finally:
-            if decrypted_file.exists():
-                decrypted_file.unlink()
+                cursor.execute(
+                    f"UPDATE {table_name} SET {set_clause} WHERE rowid = ?",
+                    (*encrypted_row, row[0]),
+                )
 
-        return results
+        conn.commit()
+        conn.close()

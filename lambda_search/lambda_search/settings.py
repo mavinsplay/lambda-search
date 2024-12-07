@@ -18,6 +18,11 @@ SECRET_KEY = os.getenv(
     "django-insecure-g^_9#0r_apxp3u27(sbh$-67hmm6mu1u5x0%eto309@091)!b-",
 )
 
+ENCRYPTION_KEY = os.getenv(
+    "DJANGO_ENCRYPTION_KEY",
+    "dsEa3e6lF983WPH88NsSS9A0HGCIK5xA",
+).encode()
+
 DEBUG = env_validator(os.getenv("DJANGO_DEBUG", "true"))
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
