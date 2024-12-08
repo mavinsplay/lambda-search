@@ -9,6 +9,8 @@
     --lambda-primary-focus: #592422;
     --lambda-border: #322c2b;
     --lambda-nav-active: #9a4c49;
+    --lambda-text: #000000;
+    --lambda-link: #0d4cab;
 
 }
 
@@ -20,6 +22,8 @@
     --lambda-primary-focus: #592422;
     --lambda-border: #ececec;
     --lambda-nav-active: #9a4c49;
+    --lambda-text: #ffffff;
+    --lambda-link: #0d6efd;
 }
 
 .lambda-bg {
@@ -93,28 +97,28 @@
 
 @font-face {
     font-family: "MontserratBold";  
-    src: url("../fonts/Montserrat-Bold.ttf") format("truetype"); 
+    src: url("fonts/Montserrat-Bold.ttf") format("truetype"); 
     font-style: normal; 
     font-weight: normal;
   }
 
 @font-face {
 font-family: "MontserratSemiBold";  
-src: url("../fonts/Montserrat-SemiBold.ttf") format("truetype"); 
+src: url("fonts/Montserrat-SemiBold.ttf") format("truetype"); 
 font-style: normal; 
 font-weight: normal;
 }
 
 @font-face {
 font-family: "MontserratFontMedium";  
-src: url("../fonts/Montserrat-Medium.ttf") format("truetype"); 
+src: url("fonts/Montserrat-Medium.ttf") format("truetype"); 
 font-style: normal; 
 font-weight: normal;
 }
 
 @font-face {
 font-family: "MontserratRegular";  
-src: url("../fonts/Montserrat-Regular.ttf") format("truetype"); 
+src: url("fonts/Montserrat-Regular.ttf") format("truetype"); 
 font-style: normal; 
 font-weight: normal;
 }
@@ -137,19 +141,32 @@ font-weight: normal;
 
 p {
     font-family: "MontserratRegular";
+    color: var(--lambda-text)
 }
 
 span {
     font-family: "MontserratRegular";
+    color: var(--lambda-text)
 }
 
 button {
     font-family: "MontserratRegular";
+    color: var(--lambda-text)
+}
+
+div {
+    font-family: "MontserratRegular";
+    color: var(--lambda-text)
 }
 
 .helptext {
     font-family: "MontserratRegular";
     font-size: 14px;
+    color: var(--lambda-text)
+}
+
+a {
+    color: var(--lambda-link);
 }
 
 h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
@@ -158,5 +175,6 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
     margin-bottom: 0.5rem;
     font-weight: 500;
     line-height: 1.2;
-    color: var(--bs-heading-color);
+    color: var(--lambda-text)
 }
+

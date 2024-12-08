@@ -17,34 +17,33 @@
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/lambda_theme.css' %}">
     <link rel="icon" type="image/png" href={% static "favicons/favicon-96x96.png" %} sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href={% static "favicons/favicon.svg" %}/>
-    <link rel="shortcut icon" href={% static "files/favicon.ico" %} />
+    <link rel="shortcut icon" href={% static "favicons/favicon.ico" %} />
     <link rel="apple-touch-icon" sizes="180x180" href={% static "favicons/apple-touch-icon.png" %}/>
     <meta name="apple-mobile-web-app-title" content="λ-search" />
     <link rel="manifest" href={% static "favicons/site.webmanifest" %} />
   </head>
-  <body class="lambda-bg">
-    <div class="wrapper">
-      
-      {% include "includes/header.html" %}
-      
+  <body class="lambda-bg wrapper">
+    
+    {% include "includes/header.html" %}
+    
 
-      <main>
-        <div class="container-md my-2">
-          {% block content %}
-          <div class="d-flex justify-content-center">
-            <div class="m-5 spinner-border" role="status"/>
-          </div>
-          {% endblock %}
+    <main>
+      <div class="container-md my-2">
+        {% block content %}
+        <div class="d-flex justify-content-center">
+          <div class="m-5 spinner-border" role="status"/>
         </div>
-      </main>
+        {% endblock %}
+      </div>
+    </main>
 
-      
-      {% include "includes/footer.html" %}
-      
-    </div>
+    
+    {% include "includes/footer.html" %}
+    
   </body>
 </html>

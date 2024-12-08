@@ -116,14 +116,16 @@ class ProfileView(LoginRequiredMixin, View):
             request.FILES,
             instance=request.user.profile,
         )
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect("users:profile")
 
-        if form.is_valid() and profile_form.is_valid():
+        if form.is_valid():
             user_form = form.save(commit=False)
             user_form.mail = users.models.UserManager().normalize_email(
                 form.cleaned_data["email"],
             )
             user_form.save()
-            profile_form.save()
             messages.success(request, _("Форма успешно отправлена!"))
             return redirect("users:profile")
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-04 12:48+0300\n"
+"POT-Creation-Date: 2024-12-08 19:17+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,34 +17,294 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\lambda_search\settings.py:111
-msgid "English"
-msgstr "Английский"
+#: .\homepage\apps.py:10
+msgid "Домашняя страница"
+msgstr "Домашняя страница"
 
-#: .\lambda_search\settings.py:112
+#: .\lambda_search\settings.py:144
+msgid "English"
+msgstr "Английский"
+
+#: .\lambda_search\settings.py:145
 msgid "Russian"
 msgstr "Русский"
 
-#: .\templates\includes\footer.html:4
+#: .\search\apps.py:10
+msgid "Поиск"
+msgstr "Поиск"
+
+#: .\search\models.py:30
+msgid "Имя базы данных"
+msgstr "Имя базы данных"
+
+#: .\search\models.py:34
+msgid "Файл базы данных"
+msgstr "Файл базы данных"
+
+#: .\search\models.py:39
+msgid "Определяет, используется ли эта база данных"
+msgstr "Определяет, используется ли эта база данных"
+
+#: .\search\models.py:78
+msgid "База данных"
+msgstr "База данных"
+
+#: .\search\models.py:79
+msgid "Базы данных"
+msgstr "Базы данных"
+
+#: .\search\views.py:27 .\templates\includes\header.html:16
+msgid "Search"
+msgstr "Поиск"
+
+#: .\templates\admin\error.html:4
+msgid "Ошибка"
+msgstr "Ошибка"
+
+#: .\templates\admin\error.html:6 .\templates\admin\view_database.html:33
+msgid "Назад"
+msgstr "Назад"
+
+#: .\templates\admin\view_database.html:4
+msgid "Содержимое базы данных:"
+msgstr "Содержимое базы данных:"
+
+#: .\templates\admin\view_database.html:8
+msgid "Таблица:"
+msgstr "Таблица:"
+
+#: .\templates\admin\view_database.html:30
+msgid "В базе данных нет таблиц или данные не могут быть загружены."
+msgstr "В базе данных нет таблиц или данные не могут быть загружены."
+
+#: .\templates\includes\footer.html:5
 msgid "All rights reserved"
 msgstr "Все права защищены"
 
-#: .\templates\includes\header.html:67
+#: .\templates\includes\header.html:75
 msgid "Admin-panel"
 msgstr "Админка"
 
-#: .\templates\includes\header.html:87
+#: .\templates\includes\header.html:108
 msgid "theme_button"
 msgstr "Тема"
 
-#: .\templates\includes\header.html:90
+#: .\templates\includes\header.html:111
 msgid "light_theme"
 msgstr "Светлая"
 
-#: .\templates\includes\header.html:91
+#: .\templates\includes\header.html:112
 msgid "dark_theme"
 msgstr "Тёмная"
 
-#: .\templates\includes\header.html:92
+#: .\templates\includes\header.html:113
 msgid "auto_theme"
 msgstr "Авто"
+
+#: .\templates\includes\header.html:134 .\templates\users\profile.html:59
+msgid "Profile"
+msgstr "Профиль"
+
+#: .\templates\includes\header.html:136
+msgid "Logout"
+msgstr "Выход"
+
+#: .\templates\includes\header.html:142 .\templates\users\login.html:17
+msgid "Login"
+msgstr "Вход"
+
+#: .\templates\users\login.html:25
+msgid "login_or_email_placeholder"
+msgstr "Логин или email"
+
+#: .\templates\users\login.html:35 .\templates\users\signup.html:45
+msgid "password_placeholder"
+msgstr "Пароль"
+
+#: .\templates\users\login.html:46
+msgid "Forgot password?"
+msgstr "Забыли пароль?"
+
+#: .\templates\users\login.html:50
+msgid "Login_confirm"
+msgstr "Войти"
+
+#: .\templates\users\login.html:55
+msgid "Don't have an account?"
+msgstr "Нет аккаунта?"
+
+#: .\templates\users\login.html:55
+msgid "Sign up"
+msgstr "Зарегистрироваться"
+
+#: .\templates\users\logout.html:6
+msgid "You have been logged out"
+msgstr "Вы вышли из системы"
+
+#: .\templates\users\logout.html:7
+msgid "Login again"
+msgstr "Войти снова"
+
+#: .\templates\users\password_change.html:6
+msgid "Смена пароля"
+msgstr "Смена пароля"
+
+#: .\templates\users\password_change.html:10
+msgid "Изменить пароль"
+msgstr "Изменить пароль"
+
+#: .\templates\users\password_change_done.html:6
+msgid "Пароль успешно изменён"
+msgstr "Пароль успешно изменён"
+
+#: .\templates\users\password_change_done.html:7
+msgid "Ваш пароль был успешно обновлен."
+msgstr "Ваш пароль был успешно обновлён."
+
+#: .\templates\users\password_change_done.html:8
+msgid "Вернуться в профиль"
+msgstr "Вернуться в профиль"
+
+#: .\templates\users\password_reset.html:6
+msgid "Восстановление пароля"
+msgstr "Восстановление пароля"
+
+#: .\templates\users\password_reset.html:7
+msgid "Введите свою электронную почту, и мы отправим вам инструкцию для сброса пароля."
+msgstr "Введите свою электронную почту, и мы отправим вам инструкцию для сброса пароля."
+
+#: .\templates\users\password_reset.html:11
+msgid "Отправить"
+msgstr "Отправить"
+
+#: .\templates\users\password_reset_complete.html:5
+msgid "Пароль успешно восстановлен"
+msgstr "Пароль успешно восстановлен"
+
+#: .\templates\users\password_reset_complete.html:6
+msgid "Ваш пароль был успешно сброшен. Теперь вы можете войти с новым паролем."
+msgstr "Ваш пароль был успешно сброшен. Теперь вы можете войти с новым паролем."
+
+#: .\templates\users\password_reset_complete.html:7
+msgid "Войти"
+msgstr "Войти"
+
+#: .\templates\users\password_reset_confirm.html:6
+msgid "Введите новый пароль"
+msgstr "Введите новый пароль"
+
+#: .\templates\users\password_reset_confirm.html:10
+msgid "Сохранить новый пароль"
+msgstr "Сохранить новый пароль"
+
+#: .\templates\users\password_reset_done.html:5
+msgid "Письмо для восстановления пароля отправлено"
+msgstr "Письмо для восстановления пароля отправлено"
+
+#: .\templates\users\password_reset_done.html:6
+msgid "Пожалуйста, проверьте свою почту и следуйте инструкциям для восстановления пароля."
+msgstr "Пожалуйста, проверьте свою почту и следуйте инструкциям для восстановления пароля."
+
+#: .\templates\users\profile.html:26
+msgid "Upload avatar"
+msgstr "Загрузить аватар"
+
+#: .\templates\users\profile.html:33
+msgid "Save avatar"
+msgstr "Сохранить аватар"
+
+#: .\templates\users\profile.html:41
+msgid "Delete avatar"
+msgstr "Удалить аватар"
+
+#: .\templates\users\profile.html:63
+msgid "first_name"
+msgstr "Имя"
+
+#: .\templates\users\profile.html:72
+msgid "last_name"
+msgstr "Фамилия"
+
+#: .\templates\users\profile.html:81
+msgid "email"
+msgstr "Электронная почта"
+
+#: .\templates\users\profile.html:93
+msgid "Save"
+msgstr "Сохранить"
+
+#: .\templates\users\profile.html:103
+msgid "change_password"
+msgstr "Сменить пароль"
+
+#: .\templates\users\signup.html:17
+msgid "Signup"
+msgstr "Регистрация"
+
+#: .\templates\users\signup.html:25
+msgid "login_placeholder"
+msgstr "Логин"
+
+#: .\templates\users\signup.html:35
+msgid "email_placeholder"
+msgstr "Электронная почта"
+
+#: .\templates\users\signup.html:59
+msgid "repeat_password_placeholder"
+msgstr "Повторите пароль"
+
+#: .\templates\users\signup.html:73
+msgid "I accept the terms of the"
+msgstr "Я принимаю условия"
+
+#: .\templates\users\signup.html:73
+msgid "user agreement"
+msgstr "пользовательского соглашения"
+
+#: .\templates\users\signup.html:78
+msgid "Signup_confirm"
+msgstr "Зарегистрироваться"
+
+#: .\templates\users\user_detail.html:6
+msgid "Информация о пользователе"
+msgstr "Информация о пользователе"
+
+#: .\templates\users\user_detail.html:7
+msgid "Почта:"
+msgstr "Почта:"
+
+#: .\templates\users\user_detail.html:8
+msgid "Имя:"
+msgstr "Имя:"
+
+#: .\templates\users\user_detail.html:9
+msgid "Фамилия:"
+msgstr "Фамилия:"
+
+#: .\templates\users\user_list.html:6
+msgid "Список пользователей"
+msgstr "Список пользователей"
+
+#: .\users\forms.py:44
+msgid "Введите логин"
+msgstr "Введите логин"
+
+#: .\users\forms.py:59
+msgid "Выберите себе картинку"
+msgstr "Выберите себе картинку"
+
+#: .\users\views.py:55
+msgid "Пользователь успешно активирован"
+msgstr "Пользователь успешно активирован"
+
+#: .\users\views.py:61
+msgid "Активация профиля была доступна в течение"
+msgstr "Активация профиля была доступна в течение"
+
+#: .\users\views.py:66
+msgid "Пользователь уже активирован"
+msgstr "Пользователь уже активирован"
+
+#: .\users\views.py:129
+msgid "Форма успешно отправлена!"
+msgstr "Форма успешно отправлена!"

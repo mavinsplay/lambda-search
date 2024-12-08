@@ -82,7 +82,17 @@ class Profile(django.db.models.Model):
         if self.image:
             return sorl.thumbnail.get_thumbnail(
                 self.image,
-                "100x100",
+                "50x50",
+                crop="center",
+            ).url
+
+        return None
+
+    def get_big_avatar(self):
+        if self.image:
+            return sorl.thumbnail.get_thumbnail(
+                self.image,
+                "150x150",
                 crop="center",
             ).url
 
