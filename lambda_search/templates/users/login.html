@@ -37,8 +37,8 @@
                     <div class="text-danger">{{ error }}</div>
                   {% endfor %}
                 </div>
-                <button type="button" class="btn btn-outline-secondary position-absolute end-0 me-3" onclick="togglePasswordVisibility('id_password')">
-                  <i class="bi bi-eye"></i>
+                <button type="button" class="btn justify-content-end align-start-0 position-absolute end-0 top-0" onclick="togglePasswordVisibility('id_password', 'pwd_toggle')">
+                  <i id="pwd_toggle" class="bi bi-eye"></i>
                 </button>
               </div>
 
@@ -63,10 +63,12 @@
 </section>
 
 <script>
-  function togglePasswordVisibility(inputId) {
+  function togglePasswordVisibility(inputId, iconId) {
     const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
     const type = input.type === 'password' ? 'text' : 'password';
     input.type = type;
+    icon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
   }
 </script>
 {% endblock %}
