@@ -67,10 +67,11 @@ class Profile(django.db.models.Model):
     image = django.db.models.ImageField(
         "путь к изображению профиля",
         upload_to="users/images/",
-        help_text="Загрузите изображение профиля",
+        help_text="Upload a profile picture",
         null=True,
         blank=True,
     )
+
     attempts_count = django.db.models.PositiveIntegerField(
         default=0,
     )

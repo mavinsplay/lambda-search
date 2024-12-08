@@ -44,10 +44,10 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                 django.contrib.messages.error(
                     request,
                     (
-                        "Вы превысили допустимое "
-                        "число попыток входа. Пожалйста "
-                        "активируйте свой аккаунт. "
-                        "Вам должно прийти письмо на почту c активацией."
+                        "You have exceeded the limit"
+                        "number of login attempts. Please "
+                        "activate your account."
+                        "You should receive an activation email."
                     ),
                 )
 
@@ -56,14 +56,13 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                     args=[user.username],
                 )
                 confirmation_link = (
-                    "Замечена подозрительная активность аккаунта. "
-                    "Для того чтобы активировать свой аккаунт, "
-                    "нажмите на ссылку ниже: "
+                    "Suspicious account activity has been detected."
+                    " To activate your account, click on the link below:"
                     f"http://127.0.0.1:8000{activation_path}"
                 )
 
                 django.core.mail.send_mail(
-                    "Активация аккаунта",
+                    "Account activation",
                     confirmation_link,
                     django.conf.settings.MAIL,
                     [user.email],

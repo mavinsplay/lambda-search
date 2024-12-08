@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.contrib import messages
+import django.contrib.auth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -32,6 +34,16 @@ class UserDetailView(DetailView):
     pk_url_kwarg = "user_id"
 
 
+class CustomLoginView(LoginView):
+    template_name = 'users/login.html'
+
+    def post(self, request, *args, **kwargs):
+        try:
+            return super().post(request, *args, **kwargs)
+        except Exception as e:
+            messages.error(request, _("Account Error"))
+
+
 class ActivateUserView(View):
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
@@ -52,18 +64,20 @@ class ActivateUserView(View):
                 user.save()
                 messages.success(
                     request,
-                    _("Пользователь успешно активирован"),
+                    _("User successfully activated"),
                 )
+                django.contrib.auth.login(request, user)
+                return redirect(reverse("homepage:homepage"))
             else:
                 messages.error(
                     request,
                     _(
-                        "Активация профиля была доступна в течение"
-                        f" {allowed_activation_time} часов после регистрации",
+                        "Profile activation was available for"
+                        f" {allowed_activation_time} hours after registration",
                     ),
                 )
         else:
-            messages.error(request, _("Пользователь уже активирован"))
+            messages.error(request, _("User is already activated"))
 
         return redirect(reverse("users:login"))
 
@@ -87,10 +101,10 @@ class SignupView(FormView):
     def send_activation_email(user):
         activation_link = f"{settings.SITE_URL}/auth/activate/{user.username}"
         send_mail(
-            "Активируйте ваш аккаунт",
+            "Activate your account",
             (
-                "Перейдите по ссылке, чтобы активировать"
-                f" акккаунт: {activation_link}"
+                "Follow the link to activate"
+                f" account: {activation_link}"
             ),
             settings.MAIL,
             [user.email],
@@ -124,7 +138,10 @@ class ProfileView(LoginRequiredMixin, View):
             )
             user_form.save()
             profile_form.save()
-            messages.success(request, _("Форма успешно отправлена!"))
+            messages.success(
+                request,
+                _("The form has been successfully submitted!"),
+            )
             return redirect("users:profile")
 
         return render(

@@ -40,7 +40,7 @@ class SignUpForm(UserCreationForm):
             "password2",
         )
         labels = {
-            UserChangeForm.Meta.model.username.field.name: _("Введите логин"),
+            UserChangeForm.Meta.model.username.field.name: _("Enter your login"),
         }
 
 
@@ -55,5 +55,5 @@ class UserProfileForm(BootstrapForm):
         fields = (Profile.image.field.name,)
 
         labels = {
-            Profile.image.field.name: _("Выберите себе картинку"),
+            Profile.image.field.name: _("Choose your picture"),
         }

@@ -34,7 +34,7 @@ class UserAdmin(BaseUserAdmin):
 
         return ""
 
-    main_image_thumbnail.short_description = "Изображение профиля"
+    main_image_thumbnail.short_description = "Profile picture"
 
 
 admin.site.unregister(user)
