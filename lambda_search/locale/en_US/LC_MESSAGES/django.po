@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-08 19:17+0300\n"
+"POT-Creation-Date: 2024-12-08 19:53+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -186,7 +186,8 @@ msgstr "Your password was successfully reset"
 
 #: .\templates\users\password_reset_complete.html:6
 msgid "Ваш пароль был успешно сброшен. Теперь вы можете войти с новым паролем."
-msgstr "Your password was successfully reset. Now you can login with new password."
+msgstr ""
+"Your password was successfully reset. Now you can login with new password."
 
 #: .\templates\users\password_reset_complete.html:7
 msgid "Войти"
@@ -208,8 +209,7 @@ msgstr "Mail for password recovery was sent"
 msgid ""
 "Пожалуйста, проверьте свою почту и следуйте инструкциям для восстановления "
 "пароля."
-msgstr ""
-"Please check your email and follow instructions for password recovery."
+msgstr "Please check your email and follow instructions for password recovery."
 
 #: .\templates\users\profile.html:26
 msgid "Upload avatar"
@@ -238,6 +238,10 @@ msgstr "Email"
 #: .\templates\users\profile.html:93
 msgid "Save"
 msgstr "Save"
+
+#: .\templates\users\profile.html:102
+msgid "Security"
+msgstr "Security"
 
 #: .\templates\users\profile.html:103
 msgid "change_password"
@@ -291,11 +295,11 @@ msgstr ""
 msgid "Список пользователей"
 msgstr ""
 
-#: .\users\forms.py:44
+#: .\users\forms.py:42
 msgid "Введите логин"
 msgstr ""
 
-#: .\users\forms.py:59
+#: .\users\forms.py:57
 msgid "Выберите себе картинку"
 msgstr "Upload avatar"
 
