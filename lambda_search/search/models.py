@@ -70,16 +70,23 @@ class ManagedDatabase(models.Model):
         return self.file.path
 
     def save(self, *args, **kwargs):
-        """Добавление в настройки Django."""
+        """Добавление в настройки Django с учётом шифрования."""
+        is_new = self.pk is None
+        if not is_new:
+            old_instance = ManagedDatabase.objects.get(pk=self.pk)
+            file_changed = old_instance.file != self.file
+
+            if file_changed:
+                self.is_encrypted = False
+
         super().save(*args, **kwargs)
-        validate_database(self.path)
 
         if not self.is_encrypted:
             key = settings.ENCRYPTION_KEY
             encryptor = CellEncryptor(key)
             encryptor.encrypt_database_cells(Path(self.path))
             self.is_encrypted = True
-            self.save()
+            super().save(update_fields=["is_encrypted"])
 
         self._update_database_config()
 
