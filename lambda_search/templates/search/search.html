@@ -2,31 +2,68 @@
 {% load i18n %}
 {% load static %}
 {% block title %}
-  {{title}}
+<title>{{title}}</title>
 {% endblock title %}
 {% block content %}
-<div class="row text-center my-3">
-  <div class="mb-3">
+<div class="container-md">
+  <div class="row text-center my-3">
     <h1>{{title}}</h1>
-  </div>
-  <div class="row justify-content-center">
-    
-    <form method="post" class="col-md-10">
+    <label for="id_search_query">{{ form.search_query.label }}</label>
+    <form method="post">
       {% csrf_token %}
       <div class="form-group">
-        <div class="input-group">
-          {{ form.search_query }}
-        </div>
+        <div class="input-group col-1">{{ form.search_query }}</div>
         {% if form.search_query.errors %}
-          <div class="text-danger">
-            {% for error in form.search_query.errors %}
-              <p>{{ error }}</p>
-            {% endfor %}
-          </div>
+        <div class="text-danger">
+          {% for error in form.search_query.errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
         {% endif %}
       </div>
+      <button type="submit" class="btn btn-primary col-md-2">Найти</button>
     </form>
-    <button type="submit" class="btn lambda-btn lambda-primary col-md-1">Найти</button>
+    <table class="table table-bordered mt-3 br-2">
+      <thead>
+        <tr>
+          <th>Ресурс</th>
+          <th>История утечки</th>
+          <th>Данные</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for result in results %}
+        <tr>
+          <td>{{ result.database }}</td>
+          <td>{{ result.history }}</td>
+          <td>
+            {% if result.data.critical %}
+            <div>
+              <strong>Критичные:</strong>
+              <span style="color: red"
+                >{{ result.data.critical|join:", " }}</span
+              >
+            </div>
+            {% endif %}
+            {% if result.data.medium %}
+            <div>
+                <strong>Средние:</strong>
+                <span style="color: orange"
+                  >{{ result.data.medium|join:", " }}</span
+                >
+              </div>
+            {% endif %}
+            {% if result.data.low %}
+            <div>
+              <strong>Низкие:</strong>
+              <span style="color: green">{{ result.data.low|join:", " }}</span>
+            </div>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}
