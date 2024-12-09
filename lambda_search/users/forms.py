@@ -12,9 +12,7 @@ class BootstrapForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.visible_fields():
-            field.field.widget.attrs["class"] = (
-                "form-control bg-black text-white"
-            )
+            field.field.widget.attrs["class"] = "form-control"
 
 
 class UserChangeForm(BootstrapForm):
@@ -27,7 +25,8 @@ class UserChangeForm(BootstrapForm):
         model = User
         fields = (
             model.email.field.name,
-            model.username.field.name,
+            model.first_name.field.name,
+            model.last_name.field.name,
         )
 
 

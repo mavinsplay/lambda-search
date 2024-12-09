@@ -2,9 +2,12 @@
 <html lang="ru" data-bs-theme="auto">
   <head>
     <meta charset="utf-8">
+
+    <title>
     {% block title %}
-      <title>Lambda Search</title>
+    Lambda Search
     {% endblock %}
+    </title>
 
     
 
@@ -14,29 +17,33 @@
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-    <link rel="icon" type="image/png" href={% static "files/favicon-96x96.png" %} sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href={% static "files/favicon.svg" %}/>
-    <link rel="shortcut icon" href={% static "files/favicon.ico" %} />
-    <link rel="apple-touch-icon" sizes="180x180" href={% static "files/apple-touch-icon.png" %}/>
+    <link rel="stylesheet" href="{% static 'css/lambda_theme.css' %}">
+    <link rel="icon" type="image/png" href={% static "favicons/favicon-96x96.png" %} sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href={% static "favicons/favicon.svg" %}/>
+    <link rel="shortcut icon" href={% static "favicons/favicon.ico" %} />
+    <link rel="apple-touch-icon" sizes="180x180" href={% static "favicons/apple-touch-icon.png" %}/>
     <meta name="apple-mobile-web-app-title" content="λ-search" />
-    <link rel="manifest" href={% static "files/site.webmanifest" %} />
+    <link rel="manifest" href={% static "favicons/site.webmanifest" %} />
   </head>
-  <body>
-    <div class="wrapper">
-      <header class="container-md">
-        {% include "includes/header.html" %}
-      </header>
+  <body class="lambda-bg wrapper">
+    
+    {% include "includes/header.html" %}
+    
 
-      <main>
+    <main>
+      <div class="container-md my-2">
         {% block content %}
-        <img src="{% static "images/where.jpg" %}" class="img-fluid" height=300 width=300>
+        <div class="d-flex justify-content-center">
+          <div class="m-5 spinner-border" role="status"/>
+        </div>
         {% endblock %}
-      </main>
+      </div>
+    </main>
 
-      <footer class="mt-5">
-        {% include "includes/footer.html" %}
-      </footer>
-    </div>
+    
+    {% include "includes/footer.html" %}
+    
   </body>
 </html>

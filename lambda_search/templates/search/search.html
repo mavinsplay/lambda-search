@@ -2,29 +2,31 @@
 {% load i18n %}
 {% load static %}
 {% block title %}
-  <title>{{title}}</title>
+  {{title}}
 {% endblock title %}
 {% block content %}
-<div class="container-md">
-  <div class="row text-center my-3">
+<div class="row text-center my-3">
+  <div class="mb-3">
     <h1>{{title}}</h1>
-    <label for="id_search_query">{{ form.search_query.label }}</label>
-      <form method="post" class="col">
-        {% csrf_token %}
-        <div class="form-group">
-          <div class="input-group">
-            {{ form.search_query }}
-          </div>
-          {% if form.search_query.errors %}
-            <div class="text-danger">
-              {% for error in form.search_query.errors %}
-                <p>{{ error }}</p>
-              {% endfor %}
-            </div>
-          {% endif %}
+  </div>
+  <div class="row justify-content-center">
+    
+    <form method="post" class="col-md-10">
+      {% csrf_token %}
+      <div class="form-group">
+        <div class="input-group">
+          {{ form.search_query }}
         </div>
-      </form>
-      <button type="submit" class="btn btn-primary col-md-1">Найти</button>
+        {% if form.search_query.errors %}
+          <div class="text-danger">
+            {% for error in form.search_query.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </form>
+    <button type="submit" class="btn lambda-btn lambda-primary col-md-1">Найти</button>
   </div>
 </div>
 {% endblock %}

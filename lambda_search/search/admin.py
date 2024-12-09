@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path
 from django.utils.html import format_html
+
 from search.models import ManagedDatabase
 
 __all__ = ()

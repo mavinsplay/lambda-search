@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
+
 from search.models import ManagedDatabase
 
 __all__ = ()
