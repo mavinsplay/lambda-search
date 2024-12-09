@@ -35,12 +35,12 @@ class UserDetailView(DetailView):
 
 
 class CustomLoginView(LoginView):
-    template_name = 'users/login.html'
+    template_name = "users/login.html"
 
     def post(self, request, *args, **kwargs):
         try:
             return super().post(request, *args, **kwargs)
-        except Exception as e:
+        except Exception:
             messages.error(request, _("Account Error"))
 
 
@@ -68,14 +68,14 @@ class ActivateUserView(View):
                 )
                 django.contrib.auth.login(request, user)
                 return redirect(reverse("homepage:homepage"))
-            else:
-                messages.error(
-                    request,
-                    _(
-                        "Profile activation was available for"
-                        f" {allowed_activation_time} hours after registration",
-                    ),
-                )
+
+            messages.error(
+                request,
+                _(
+                    "Profile activation was available for"
+                    f" {allowed_activation_time} hours after registration",
+                ),
+            )
         else:
             messages.error(request, _("User is already activated"))
 
@@ -102,10 +102,7 @@ class SignupView(FormView):
         activation_link = f"{settings.SITE_URL}/auth/activate/{user.username}"
         send_mail(
             "Activate your account",
-            (
-                "Follow the link to activate"
-                f" account: {activation_link}"
-            ),
+            ("Follow the link to activate" f" account: {activation_link}"),
             settings.MAIL,
             [user.email],
         )
