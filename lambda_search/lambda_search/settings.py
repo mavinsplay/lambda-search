@@ -87,10 +87,21 @@ TEMPLATES = [
 WSGI_APPLICATION = "lambda_search.wsgi.application"
 
 
+DB_NAME = os.getenv("DJANGO_POSTGRESQL_NAME")
+DB_USER = os.getenv("DJANGO_POSTGRESQL_USER", "postgres")
+DB_PASSWORD = os.getenv("DJANGO_POSTGRESQL_PASSWORD", "root")
+DB_HOST = os.getenv("DJANGO_POSTGRESQL_HOST", "localhost")
+DB_PORT = int(os.getenv("DJANGO_POSTGRESQL_PORT", "5432"))
+
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": DB_HOST,
+        "PORT": DB_PORT,
     },
 }
 
@@ -103,8 +114,6 @@ if LAMBDA_DBS_DIR.exists():
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": db_file,
         }
-
-ATABASE_ROUTERS = ["path.to.database_router.DatabaseRouter"]
 
 AUTH_PWD_MODULE = "django.contrib.auth.password_validation."
 
