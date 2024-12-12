@@ -7,7 +7,7 @@ from django.urls import path
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from search.models import ManagedDatabase
+from search.models import ManagedDatabase, Data
 from search.encryptor import DbsReader
 
 
@@ -16,14 +16,27 @@ __all__ = ()
 
 @admin.register(ManagedDatabase)
 class ManagedDatabaseAdmin(admin.ModelAdmin):
-    """Админка для управления базами данных."""
 
-    list_display = ("name", "active", "file", "view_content_button")
-    list_editable = ("active",)
-    search_fields = ("name",)
-    list_filter = ("active",)
-    readonly_fields = ("created_at", "updated_at")
-    fields = ("name", "file", "active", "history", "created_at", "updated_at")
+    list_display = (
+        ManagedDatabase.name.field.name,
+        ManagedDatabase.active.field.name,
+        "view_content_button",
+    )
+    list_editable = (ManagedDatabase.active.field.name,)
+    search_fields = (ManagedDatabase.name.field.name,)
+    list_filter = (ManagedDatabase.active.field.name,)
+    readonly_fields = (
+        ManagedDatabase.created_at.field.name,
+        ManagedDatabase.updated_at.field.name,
+    )
+    fields = (
+        ManagedDatabase.name.field.name,
+        ManagedDatabase.file.field.name,
+        ManagedDatabase.active.field.name,
+        ManagedDatabase.history.field.name,
+        ManagedDatabase.created_at.field.name,
+        ManagedDatabase.updated_at.field.name,
+    )
 
     def get_urls(self):
         """Добавляем кастомный URL для просмотра содержимого базы."""
@@ -69,3 +82,17 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
                 "admin/error.html",
                 {"error_message": _(f"Ошибка при открытии базы: {str(e)}")},
             )
+
+
+@admin.register(Data)
+class DataDatabaseAdmin(admin.ModelAdmin):
+    list_display = (
+        Data.user_index.field.name,
+        Data.database.field.name,
+        Data.column_name.field.name,
+        Data.value.field.name,
+    )
+    ordering = (
+        Data.database.field.name,
+        Data.user_index.field.name,
+    )

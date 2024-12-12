@@ -87,6 +87,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "lambda_search.wsgi.application"
 
+
 DB_NAME = os.getenv("DJANGO_POSTGRESQL_NAME")
 DB_USER = os.getenv("DJANGO_POSTGRESQL_USER", "postgres")
 DB_PASSWORD = os.getenv("DJANGO_POSTGRESQL_PASSWORD", "root")

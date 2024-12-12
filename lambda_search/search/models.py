@@ -10,13 +10,15 @@ from search.encryptor import UnifiedEncryptor
 __all__ = ()
 
 
+DEFAULT_STRING_LIMIT = 50
+
+
 def database_upload_path(instance, filename):
     """Генерирует путь для сохранения файла базы данных."""
     return str(Path("lambda-dbs") / filename)
 
 
 class ManagedDatabase(models.Model):
-    """Модель для хранения информации о базах данных."""
 
     name = models.CharField(
         _("Имя базы данных"),
@@ -37,6 +39,7 @@ class ManagedDatabase(models.Model):
         blank=True,
         null=True,
     )
+
     active = models.BooleanField(
         _("Активна"),
         help_text=_("Определяет, используется ли эта база данных"),
@@ -88,7 +91,7 @@ class ManagedDatabase(models.Model):
         verbose_name_plural = _("Базы данных")
 
     def __str__(self):
-        return self.name
+        return self.name[:DEFAULT_STRING_LIMIT]
 
 
 class DataMagager(models.Manager):
@@ -110,29 +113,49 @@ class DataMagager(models.Manager):
             .filter(
                 value=input_data,
             )
+            .values(
+                Data.database.field.name,
+                Data.user_index.field.name,
+            )
+        ).distinct()
+
+    def _search(self, indexes):
+        query = models.Q()
+        for indexes in indexes:
+            query |= models.Q(
+                database_id=indexes["database"],
+                user_index=indexes["user_index"],
+            )
+
+        return (
+            self._active()
+            .filter(
+                query,
+            )
+            .order_by(
+                Data.database.field.name,
+                Data.user_index.field.name,
+            )
             .only(
                 Data.database.field.name,
                 Data.user_index.field.name,
             )
         )
 
-    def _search(self, indexes):
+    def search(self, input_data):
         return (
-            self._active()
-            .filter(
-                database_id=indexes.database,
-                user_index=indexes.user_index,
-            )
-            .order_by(
-                Data.column_name.field.name,
-            )
-            .values(
+            self._search(self._search_value(input_data))
+            .select_related(Data.database.field.name)
+            .only(
+                f"{Data.database.field.name}__"
+                f"{ManagedDatabase.name.field.name}",
+                f"{Data.database.field.name}__"
+                f"{ManagedDatabase.history.field.name}",
+                Data.database.field.name,
+                Data.user_index.field.name,
                 Data.column_name.field.name,
             )
         )
-
-    def search(self, input_data):
-        return self._search(self._search_value(input_data))
 
 
 class Data(models.Model):
@@ -160,4 +183,4 @@ class Data(models.Model):
         verbose_name_plural = _("Данные")
 
     def __str__(self):
-        return self.value
+        return str(self.pk)[:DEFAULT_STRING_LIMIT]

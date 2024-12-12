@@ -51,35 +51,6 @@ class SearchView(FormView):
 
         return formatted_results
 
-    def _merge_results_by_database(self, raw_results):
-        """
-        Объединяет результаты по уникальным базам данных.
-        """
-        merged_results = {}
-
-        for entry in raw_results:
-            database = entry.get("database", "Неизвестно")
-            results = entry.get("results", [])
-
-            if database not in merged_results:
-                merged_results[database] = {
-                    "history": None,
-                    "columns": set(),
-                }
-
-            for result in results:
-                if not merged_results[database]["history"]:
-                    merged_results[database]["history"] = result.get(
-                        "history",
-                        "История отсутствует",
-                    )
-
-                merged_results[database]["columns"].update(
-                    result.get("columns", []),
-                )
-
-        return merged_results
-
     def _categorize_data(self, columns):
         """
         Классифицирует данные по уровням критичности (critical, medium, low)
