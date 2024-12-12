@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+<title>
+{% block title %}
+{% trans "История запросов" %}
+{% endblock title %}
+</title>
+
+{% block content %}
+<div class="container-md">
+  <h1 class="text-center">{% trans "История запросов" %}</h1>
+  <div class="row">
+    {% for query in queries %}
+      <div class="col-md-4 mb-3">
+        {% include "includes/history_card.html" %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

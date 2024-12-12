@@ -1,4 +1,5 @@
 import sqlite3
+from pathlib import Path
 
 from django.contrib import admin
 from django.shortcuts import render
@@ -7,6 +8,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from search.models import ManagedDatabase
+from search.encryptor import DbsReader
 
 
 __all__ = ()
@@ -53,26 +55,15 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
         db_path = database.file.path
 
         try:
-            with sqlite3.connect(db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute(
-                    "SELECT name FROM sqlite_master WHERE type='table';",
-                )
-                tables = cursor.fetchall()
-
-                table_data = {}
-                for (table_name,) in tables:
-                    cursor.execute(f"SELECT * FROM {table_name} LIMIT 10;")
-                    columns = [desc[0] for desc in cursor.description]
-                    rows = cursor.fetchall()
-                    table_data[table_name] = {"columns": columns, "rows": rows}
+            reader = DbsReader()
+            table_data = reader.read_data(Path(db_path), 10)
 
             context = {
                 "database": database,
                 "table_data": table_data,
             }
             return render(request, "admin/view_database.html", context)
-        except sqlite3.Error as e:
+        except (sqlite3.Error, ValueError) as e:
             return render(
                 request,
                 "admin/error.html",

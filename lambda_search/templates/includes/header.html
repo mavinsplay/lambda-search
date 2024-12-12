@@ -16,6 +16,12 @@
           {% trans "Search" %}
         </a>
       </li>
+      <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-nav{% if view_name == 'history:history' %} lambda-nav-active{% endif %}"
+          {% if view_name != 'history:history' %}href="{% url 'history:history' %}"{% endif %}>
+          {% trans "History" %}
+        </a>
+      </li>
       {% comment %} <li class="nav-item my-auto mx-1">
         <a class="nav-link {% if view_name == 'about:about' %} active {% endif %}"
           {% if view_name != 'about:about' %}href="{% url 'about:about' %}"{% endif %}>

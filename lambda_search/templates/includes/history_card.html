@@ -1,0 +1,28 @@
+{% load i18n %}
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ query.query }}</h5>
+      <p class="card-text">{% trans "Дата запроса:" %} {{ query.created_at }}</p>
+    </div>
+    <strong class="text-center">{% trans "Данные:" %}</strong>
+    <ul class="list-group list-group-flush">
+      {% if query.result %}
+      {% for result in query.result %}
+          <h5 class="m-2">{{ result.database }}</h5>
+          <li class="list-group-item">{% include "includes/search_result.html" %}</li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+    <div class="card-body">
+      {% if query.can_repeat %}
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="query_id" value="{{ query.id }}">
+          <button class="btn btn-primary">{% trans "Повторить запрос" %}</button>
+        </form>
+      {% endif %}
+      <a href="{% url 'history:history-detail' query.id %}" class="btn btn-secondary">{% trans "Подробнее" %}</a>
+      <a href="{% url 'history:history-detail' query.id %}" class="btn btn-danger">{% trans "Удалить" %}</a>
+
+    </div>
+</div>

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+<title>
+{% block title %}{% trans "Детали запроса" %}{% endblock title %}
+</title>
+
+{% block content %}
+<div class="container-md">
+  <h1 class="text-center">{% trans "Детали запроса" %}</h1>
+  <p><strong>{% trans "Запрос:" %}</strong> {{ query.query }}</p>
+  <p><strong>{% trans "Дата:" %}</strong> {{ query.created_at }}</p>
+  <h3>{% trans "Результаты:" %}</h3>
+  <table class="table table-bordered mt-3 br-2">
+    <thead>
+      <tr>
+        <th>{% trans "Ресурс" %}</th>
+        <th>{% trans "История утечки" %}</th>
+        <th>{% trans "Данные" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in results %}
+      <tr>
+        <td>{{ result.database }}</td>
+        <td>{{ result.history }}</td>
+        <td>
+          {% include "includes/search_result.html" %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

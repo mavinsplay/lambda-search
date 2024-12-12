@@ -10,6 +10,7 @@ urlpatterns = [
     path("auth/", include("users.urls")),
     path("auth/", include("django.contrib.auth.urls")),
     path("search/", include("search.urls")),
+    path("history/", include("history.urls")),
 ]
 
 urlpatterns += static(

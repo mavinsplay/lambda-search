@@ -1,8 +1,9 @@
 from django.utils.translation import gettext_lazy as _
 from django.views.generic.edit import FormView
 
+from history.models import QueryHistory
 from search.forms import SearchForm
-from search.models import UnifiedDatabase
+from search.models import Data
 
 
 __all__ = ()
@@ -14,8 +15,14 @@ class SearchView(FormView):
 
     def form_valid(self, form):
         query = form.cleaned_data["search_query"]
-        search_results = UnifiedDatabase.objects.search(query)
+        search_results = Data.objects.search(query)
         formatted_results = self.format_results(search_results)
+
+        QueryHistory.objects.create(
+            query=query,
+            database="UnifiedDatabase",
+            result=formatted_results,
+        )
 
         return self.render_to_response(
             self.get_context_data(results=formatted_results),
