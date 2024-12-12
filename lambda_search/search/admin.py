@@ -1,5 +1,5 @@
-import sqlite3
 from pathlib import Path
+import sqlite3
 
 from django.contrib import admin
 from django.shortcuts import render
@@ -7,8 +7,8 @@ from django.urls import path
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from search.models import ManagedDatabase, Data
 from search.encryptor import DbsReader
+from search.models import Data, ManagedDatabase
 
 
 __all__ = ()
@@ -19,6 +19,7 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
 
     list_display = (
         ManagedDatabase.name.field.name,
+        ManagedDatabase.file.field.name,
         ManagedDatabase.active.field.name,
         "view_content_button",
     )
