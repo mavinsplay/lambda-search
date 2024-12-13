@@ -5,7 +5,6 @@ from history.models import QueryHistory
 from search.forms import SearchForm
 from search.models import Data
 
-
 __all__ = ()
 
 

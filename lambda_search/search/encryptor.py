@@ -160,7 +160,7 @@ class CSVHandler(DatabaseHandler):
             rows = list(reader)
 
         headers = rows[0] if rows else []
-        limited_rows = rows[1 : n + 1]
+        limited_rows = rows[1: n + 1]
         return {
             f"{self.csv_path.name}": {
                 "columns": headers,

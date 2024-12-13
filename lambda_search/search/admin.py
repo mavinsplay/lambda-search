@@ -10,7 +10,6 @@ from django.utils.translation import gettext_lazy as _
 from search.encryptor import DbsReader
 from search.models import Data, ManagedDatabase
 
-
 __all__ = ()
 
 
