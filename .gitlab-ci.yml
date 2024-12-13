@@ -29,6 +29,7 @@ django-tests:
     - export DATABASE_URL=postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
     - apt-get update -qy
     - pip install -r requirements/test.txt
+    - cd lambda_search
     - python3 manage.py makemigrations
     - python3 manage.py migrate
     - python3 manage.py test
