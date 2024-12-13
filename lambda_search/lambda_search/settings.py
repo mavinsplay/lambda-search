@@ -91,7 +91,7 @@ WSGI_APPLICATION = "lambda_search.wsgi.application"
 DB_NAME = os.getenv("DJANGO_POSTGRESQL_NAME", "lambda_search")
 DB_USER = os.getenv("DJANGO_POSTGRESQL_USER", "postgres")
 DB_PASSWORD = os.getenv("DJANGO_POSTGRESQL_PASSWORD", "root")
-DB_HOST = os.getenv("DJANGO_POSTGRESQL_HOST", "localhost")
+DB_HOST = os.getenv("DJANGO_POSTGRESQL_HOST", "postgres")
 DB_PORT = int(os.getenv("DJANGO_POSTGRESQL_PORT", "5432"))
 
 
