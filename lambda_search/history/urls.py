@@ -2,7 +2,6 @@ from django.urls import path
 
 from history.views import HistoryDetailView, HistoryView
 
-
 app_name = "history"
 
 urlpatterns = [
