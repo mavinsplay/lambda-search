@@ -1,12 +1,8 @@
 from datetime import timedelta
 
 from django.http import HttpResponseForbidden, JsonResponse
-
-from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.timezone import now
 from django.views.generic import DetailView, ListView
-
-from history.models import QueryHistory
 
 from history.models import QueryHistory
 
