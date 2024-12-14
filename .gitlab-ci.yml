@@ -1,12 +1,3 @@
-services:
-    - postgres:17
-
-variables:
-  POSTGRES_DB: test_db
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: root
-  POSTGRES_HOST: postgres
-
 stages:
   - lint
   - test
@@ -24,6 +15,8 @@ black_check:
     - black --check .
 
 django-tests:
+  services:
+    - postgres:17
   stage: test
   image: python:3.12
   variables:
@@ -33,7 +26,7 @@ django-tests:
     DJANGO_POSTGRESQL_HOST: postgres
     DJANGO_POSTGRESQL_PORT: 5432
   script:
-    - export DATABASE_URL=$POSTGRES_HOST://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB
+    - export postgres://$DJANGO_POSTGRESQL_USER:$DJANGO_POSTGRESQL_PASSWORD@$DJANGO_POSTGRESQL_HOST:$DJANGO_POSTGRESQL_PORT/$DJANGO_POSTGRESQL_NAME
     - apt-get update -qy
     - pip install -r requirements/test.txt
     - cd lambda_search
