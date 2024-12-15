@@ -22,6 +22,9 @@ if should_modify_email_field():
 
 
 class UserManager(django.contrib.auth.models.UserManager):
+    def get_queryset(self):
+        return super().get_queryset().select_related("profile")
+
     def normalize_email(self, email):
         email = super().normalize_email(email)
         email = email.lower()
@@ -52,6 +55,14 @@ class UserManager(django.contrib.auth.models.UserManager):
 
 class User(django.contrib.auth.models.User):
     objects = UserManager()
+
+    def create_profile(self):
+        if not hasattr(self, "profile"):
+            Profile.objects.create(user=self)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.create_profile()
 
     class Meta:
         proxy = True

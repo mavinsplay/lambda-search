@@ -10,7 +10,7 @@ class SearchForm(forms.Form):  # TODO
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Введите запрос...",
-                "class": "form-control",
+                "class": "form-control rounded-end-0",
             },
         ),
     )

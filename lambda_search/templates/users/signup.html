@@ -7,84 +7,86 @@
 {% endblock title %}
 
 {% block content %}
-<section>
-  <div class="container mt-5">
-    <div class="d-flex justify-content-center align-items-center">
-      <div class="card lambda-secondary rounded rounded-5">
-        <div class="card-body", style="width: 30rem;">
-          <div class="col">
+<div class="container-md mt-5">
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="card lambda-secondary rounded rounded-5 lambda-login lambda-margin-center">
+      <div class="card-body">
+        <div class="col">
 
-            <p class="text-center h3 mb-5 mx-1 mt-4">{% trans "Signup" %}</p>
+          <p class="text-center h2 mb-5 mx-1 mt-4">{% trans "Signup" %}</p>
 
-            <form method="post" class="mx-1 mx-md-4">
-              {% csrf_token %}
+          <form method="post" class="mx-1 mx-md-4">
+            {% csrf_token %}
 
-              <div class="d-flex flex-row align-items-center mb-4">
-                <i class="bi bi-person-fill me-2"></i>
-                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                  <input type="text" id="id_username" name="username" class="form-control" placeholder="{% trans 'login_placeholder' %}">
-                  {% for error in form.username.errors %}
-                    <div class="text-danger">{{ error }}</div>
-                  {% endfor %}
-                </div>
+            <div class="d-flex flex-row align-items-center mb-4">
+              <i class="bi bi-person-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="text" id="id_username" name="username" class="form-control" placeholder="{% trans 'login_placeholder' %}">
+                {% for error in form.username.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
               </div>
+            </div>
 
-              <div class="d-flex flex-row align-items-center mb-4">
-                <i class="bi bi-envelope-at me-2"></i>
-                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                  <input type="email" id="id_email" name="email" class="form-control" placeholder="{% trans 'email_placeholder' %}">
-                  {% for error in form.email.errors %}
-                    <div class="text-danger">{{ error }}</div>
-                  {% endfor %}
-                </div>
+            <div class="d-flex flex-row align-items-center mb-4">
+              <i class="bi bi-envelope-at me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="email" id="id_email" name="email" class="form-control" placeholder="{% trans 'email_placeholder' %}">
+                {% for error in form.email.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
               </div>
+            </div>
 
-              <div class="d-flex flex-row align-items-center mb-4 position-relative">
-                <i class="bi bi-key-fill me-2"></i>
-                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                  <input type="password" id="id_password1" name="password1" class="form-control" placeholder="{% trans 'password_placeholder' %}">
-                  {% for error in form.password1.errors %}
-                    <div class="text-danger">{{ error }}</div>
-                  {% endfor %}
-                </div>
-                <button type="button" class="btn justify-content-end align-start-0 position-absolute end-0 top-0" onclick="togglePasswordVisibility('id_password1', 'pwd_toggle1')">
-                  <i id="pwd_toggle1" class="bi bi-eye"></i>
-                </button>
+            <div class="d-flex flex-row align-items-center mb-4 position-relative">
+              <i class="bi bi-key-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="password" id="id_password1" name="password1" class="form-control" placeholder="{% trans 'password_placeholder' %}">
+                {% for error in form.password1.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
               </div>
+              <button type="button" class="btn justify-content-end align-start-0 position-absolute end-0 top-0" onclick="togglePasswordVisibility('id_password1', 'pwd_toggle1')">
+                <i id="pwd_toggle1" class="bi bi-eye"></i>
+              </button>
+            </div>
 
-              <div class="d-flex flex-row align-items-center mb-4 position-relative">
-                <i class="bi bi-key-fill me-2"></i>
-                <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                  
-                  <input type="password" id="id_password2" name="password2" class="form-control" placeholder="{% trans 'repeat_password_placeholder' %}">
+            <div class="d-flex flex-row align-items-center mb-4 position-relative">
+              <i class="bi bi-key-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                
+                <input type="password" id="id_password2" name="password2" class="form-control" placeholder="{% trans 'repeat_password_placeholder' %}">
 
-                  {% for error in form.password2.errors %}
-                    <div class="text-danger">{{ error }}</div>
-                  {% endfor %}
-                </div>
-                <button type="button" class="btn justify-content-end align-start-0 position-absolute end-0 top-0" onclick="togglePasswordVisibility('id_password2', 'pwd_toggle2')">
-                  <i id="pwd_toggle2" class="bi bi-eye"></i>
-                </button>
+                {% for error in form.password2.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
               </div>
+              <button type="button" class="btn justify-content-end align-start-0 position-absolute end-0 top-0" onclick="togglePasswordVisibility('id_password2', 'pwd_toggle2')">
+                <i id="pwd_toggle2" class="bi bi-eye"></i>
+              </button>
+            </div>
 
-              <div class="form-check d-flex justify-content-center mb-5">
-                <input class="form-check-input me-2" type="checkbox" id="terms" required>
-                <label class="form-check-label" for="terms">
-                  {% trans "I accept the terms of the" %} <a href="#">{% trans "user agreement" %}</a>
-                </label>
-              </div>
+            <div class="form-check d-flex justify-content-center mb-4 ">
+              <input class="form-check-input me-2" type="checkbox" id="terms" required>
+              <label class="form-check-label lambda-font-medium" for="terms">
+                {% trans "I accept the terms of the" %} <a href="#">{% trans "user agreement" %}</a>
+              </label>
+            </div>
 
-              <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                <button type="submit" class="btn lambda-primary lambda-btn btn-lg">{% trans "Signup_confirm" %}</button>
-              </div>
-            </form>
+            <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+              <button type="submit" class="btn lambda-primary lambda-btn btn-lg">{% trans "Signup_confirm" %}</button>
+            </div>
+          </form>
 
+          <div class="d-flex justify-content-center align-items-center mt-1">
+            <p class="lambda-font-medium"> {% trans "Already have an account?" %} <a href="{% url 'users:login' %}">{% trans "Login_confirm" %}</a></p>
           </div>
+
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <script>
   function togglePasswordVisibility(inputId, iconId) {

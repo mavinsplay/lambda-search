@@ -40,7 +40,7 @@
     color: var(--bs-white);
 }
 
-.lambda-btn:hover {
+.lambda-btn:hover, .lambda-btn-pressed {
     background-color: var(--lambda-primary-hover);
     border-color: var(--lambda-primary-hover);
     color: var(--bs-white);
@@ -59,9 +59,12 @@
 }
 
 .lambda-border {
-    border-color: var(--lambda-border);
+    border-color: var(--lambda-border) !important;
 }
 
+.lambda-border-primary {
+    border-color: var(--lambda-primary) !important;
+}
 
 .lambda-nav {
     position: relative;
@@ -187,3 +190,8 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 .lambda-login {
     width: 40%;
 }
+
+.lambda-margin-center {
+    margin-top: 15%;
+  }
+  

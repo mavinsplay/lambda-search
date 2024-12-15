@@ -1,3 +1,4 @@
+import django.contrib.auth
 from django.utils.deprecation import MiddlewareMixin
 
 from users.models import User
@@ -6,11 +7,11 @@ __all__ = []
 
 
 class ProxyUserMiddleware(MiddlewareMixin):
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
+    def process_request(self, request):
         if request.user.is_authenticated:
-            request.user = User.objects.get(pk=request.user.pk)
-
-        return self.get_response(request)
+            try:
+                User.create_profile(request.user)
+                profile = User.objects.get_queryset()
+                request.user = profile.get(pk=request.user.pk)
+            except AttributeError:
+                request.user = django.contrib.auth.get_user_model()
