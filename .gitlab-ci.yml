@@ -1,7 +1,7 @@
 stages:
   - lint
-  - test
   - deploy
+  - test
 
 flake8-check:
   stage: lint
@@ -52,9 +52,9 @@ prod-deploy:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/SSH_PRIVATE_KEY
-    - chmod 400 ~/.ssh
-    - ssh-add ~/.ssh/SSH_PRIVATE_KEY
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/gitlab_ci
+    - chmod 400 ~/.ssh/gitlab_ci
+    - ssh-add ~/.ssh/gitlab_ci
     - echo "$SERVER_HOST_KEY" >> ~/.ssh/known_hosts
   script:
     - ssh $SERVER_USER@$SERVER_HOST <<EOF
