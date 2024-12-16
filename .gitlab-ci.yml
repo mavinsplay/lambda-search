@@ -1,3 +1,5 @@
+include: 'https://gitlab.com/gitlab-cd/ssh-template/raw/master/ssh.yml'
+
 stages:
   - lint
   - deploy
@@ -48,15 +50,8 @@ prod-deploy:
     - black-check
     - flake8-check
   before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/gitlab_ci
-    - chmod 400 ~/.ssh/gitlab_ci
-    - echo "$SERVER_HOST_KEY" >> ~/.ssh/known_hosts
+    - ssh_init "$SSH_PRIVATE_KEY" "$SERVER_HOST"
   script:
-    - ssh $SERVER_USER@$SERVER_HOST -i ~/.ssh/gitlab_ci <<EOF
-      cd ~/team-3
-      git reset --hard origin/main
-      git pull origin main
-      EOF
+    - ssh $SERVER_USER@$SERVER_HOST "cd ~/team-3;
+      git reset --hard origin/main;
+      git pull origin main;"
