@@ -54,8 +54,7 @@ prod-deploy:
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
+    - ssh-add ~/.ssh/$SSH_PRIVATE_KEY
     - chmod 700 ~/.ssh
     - echo "$SERVER_HOST_KEY" >> ~/.ssh/known_hosts
   script:
