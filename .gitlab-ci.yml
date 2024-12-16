@@ -53,8 +53,8 @@ prod-deploy:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/SSH_PRIVATE_KEY
+    - chmod 400 ~/.ssh
     - ssh-add ~/.ssh/SSH_PRIVATE_KEY
-    - chmod 700 ~/.ssh
     - echo "$SERVER_HOST_KEY" >> ~/.ssh/known_hosts
   script:
     - ssh $SERVER_USER@$SERVER_HOST <<EOF
