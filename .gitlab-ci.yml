@@ -57,9 +57,9 @@ prod-deploy:
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+    - echo "$SERVER_HOST_KEY" >> ~/.ssh/known_hosts
   script:
-    - ssh $SERVER_USER@$SERVER_IP <<EOF
+    - ssh $SERVER_USER@$SERVER_HOST <<EOF
         cd ~/team-3
         git reset --hard origin/main
         git pull origin main
