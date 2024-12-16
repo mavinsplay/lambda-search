@@ -57,6 +57,7 @@ prod-deploy:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
     - ssh $SSH_USER@$SERVER_IP
+    - pwd
     - cd ..
     - ls
     - cd team-3 
