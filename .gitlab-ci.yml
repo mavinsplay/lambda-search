@@ -56,7 +56,7 @@ prod-deploy:
     - echo "$SERVER_HOST_KEY" >> ~/.ssh/known_hosts
   script:
     - ssh $SERVER_USER@$SERVER_HOST -i ~/.ssh/gitlab_ci <<EOF
-cd ~/team-3
-git reset --hard origin/main
-git pull origin main
-EOF
+      cd ~/team-3
+      git reset --hard origin/main
+      git pull origin main
+      EOF
