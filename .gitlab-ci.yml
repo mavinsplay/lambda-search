@@ -10,14 +10,15 @@ variables:
 stages:
   - lint
   - test
+  - deploy
 
-pep8_check:
+flake8-check:
   stage: lint
   image: registry.gitlab.com/pipeline-components/flake8:latest
   script:
     - flake8 --verbose .
 
-black_check:
+black-check:
   stage: lint
   image: registry.gitlab.com/pipeline-components/black:latest
   script:
@@ -40,3 +41,26 @@ django-tests:
     - python3 manage.py makemigrations
     - python3 manage.py migrate
     - python3 manage.py test
+
+prod-deploy:
+  stage: deploy
+  only:
+    - main
+    - docker
+  dependencies:
+    - black-check
+    - flake8-check
+    - django-tests
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+  script:
+    - ssh $SERVER_USER@$SERVER_IP <<EOF
+        cd ~/team-3
+        git reset --hard origin/main
+        git pull origin main
+      EOF
