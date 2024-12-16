@@ -50,7 +50,7 @@ prod-deploy:
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
+    - mkdir -p ~/ssh
     - echo "$SSH_PRIVATE_KEY" > ~/ssh/gitlab_ci
     - chmod 400 ~/ssh/gitlab_ci
     - ssh-add ~/ssh/gitlab_ci
