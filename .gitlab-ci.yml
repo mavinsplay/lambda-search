@@ -1,5 +1,3 @@
-include: 'https://gitlab.com/gitlab-cd/ssh-template/raw/master/ssh.yml'
-
 stages:
   - lint
   - deploy
@@ -58,4 +56,4 @@ prod-deploy:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh $SERVER_USER@$SERVER_HOST "cd ~/team-3 && git reset --hard origin/main && git pull origin main"
+    - ssh $SERVER_USER@$SERVER_HOST 'cd ~/team-3 && git reset --hard origin/main && git pull origin main'
