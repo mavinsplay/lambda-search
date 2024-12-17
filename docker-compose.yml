@@ -44,7 +44,6 @@ services:
       - "443:443"
     volumes:
       - ./for_docker/nginx-confs/lambda_search_prod.conf:/etc/nginx/user_conf.d/lambda_search.conf
-      - ./for_docker/nginx-confs/robots.txt:/lambda_search/static/robots.txt
       - ./for_docker/nginx_certificates:/etc/letsencrypt
       - ./for_docker/static:/lambda_search/static
       - ./for_docker/media:/lambda_search/media
