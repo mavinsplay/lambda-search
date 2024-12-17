@@ -4,7 +4,7 @@ RUN apt update
 RUN apt install gettext -y
 
 COPY ./requirements /requirements
-RUN pip install -r requirements/prod.txt
+RUN pip install -r requirements/dev.txt
 RUN rm -rf requirements
 
 COPY ./lambda_search /lambda_search/
