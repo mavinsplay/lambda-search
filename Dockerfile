@@ -17,5 +17,5 @@ CMD python manage.py makemigrations \
  && gunicorn datanar.wsgi:application \
     --workers $(nproc) \
     --bind 0.0.0.0:8000 \
-    --access-logfile /datanar/logs/gunicorn_access.log \
-    --error-logfile /datanar/logs/gunicorn_error.log
+    --access-logfile /lambda_search/logs/gunicorn_access.log \
+    --error-logfile /lambda_search/logs/gunicorn_error.log
