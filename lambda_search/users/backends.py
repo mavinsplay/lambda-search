@@ -28,6 +28,7 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                 user.profile
             except Exception:
                 users.models.Profile.objects.create(user=user)
+
             if user.check_password(password):
                 user.profile.attempts_count = 0
                 return user
@@ -54,13 +55,21 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                         "You should receive an activation email."
                     ),
                 )
-                key = 'lamda_search'
+                key = "lamda_search"
 
                 activation_path = django.urls.reverse(
                     "users:activate",
-                    args=[users.views.vigenere_encode(username, key * (len(username) // len(key) + key[:len(username) % len(key)]))],
+                    args=[
+                        users.views.vigenere_encode(
+                            username,
+                            key
+                            * (
+                                len(username) // len(key)
+                                + key[: len(username) % len(key)]
+                            ),
+                        ),
+                    ],
                 )
-                print(f"http://127.0.0.1:8000{activation_path}")
                 confirmation_link = (
                     "Suspicious account activity has been detected."
                     " To activate your account, click on the link below:"

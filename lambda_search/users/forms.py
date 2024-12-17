@@ -40,7 +40,9 @@ class SignUpForm(UserCreationForm):
             "password2",
         )
         labels = {
-            UserChangeForm.Meta.model.username.field.name: _("Enter your login"),
+            UserChangeForm.Meta.model.username.field.name: _(
+                "Enter your login",
+            ),
         }
 
 
