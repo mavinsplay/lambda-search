@@ -1,3 +1,5 @@
+import random
+
 from django.conf import settings
 from django.contrib import messages
 import django.contrib.auth
@@ -15,7 +17,61 @@ from django.views.generic import DetailView, FormView, ListView
 import users.forms
 from users.models import Profile
 
+
 __all__ = ()
+
+
+def vigenere_encode(plaintext, key):
+    key = key.lower()
+    key_length = len(key)
+    
+    encrypted_text = []
+    
+    key_index = 0
+    
+    for char in plaintext:
+        if char.isalpha():
+            shift = ord(key[key_index % key_length]) - ord('a')
+            if char.islower():
+                encrypted_char = chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+            else:
+                encrypted_char = chr((ord(char) - ord('A') + shift) % 26 + ord('A'))
+            
+            encrypted_text.append(encrypted_char)
+            key_index += 1
+        else:
+            caesar_shift = 13
+            encrypted_digit = int(char) + caesar_shift
+            encrypted_text.append(str(encrypted_digit))
+    
+    return ''.join(encrypted_text)
+
+
+def vigenere_decode(encrypted_text, key):
+    key = key.lower()
+    key_length = len(key)
+    
+    decrypted_text = []
+    
+    key_index = 0
+    
+    for char in encrypted_text:
+        if char.isalpha():
+            shift = ord(key[key_index % key_length]) - ord('a')
+            if char.islower():
+                decrypted_char = chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
+            else:
+                decrypted_char = chr((ord(char) - ord('A') + shift) % 26 + ord('A'))
+            
+            decrypted_text.append(decrypted_char)
+            key_index += 1
+        else:
+            caesar_shift = 13
+            decrypted_digit = int(char) - caesar_shift
+            decrypted_text.append(str(decrypted_digit))
+
+    
+    return ''.join(decrypted_text)
 
 
 class UserListView(ListView):
@@ -35,7 +91,7 @@ class UserDetailView(DetailView):
 
 
 class CustomLoginView(LoginView):
-    template_name = "users/login.html"
+    template_name = 'users/login.html'
 
     def post(self, request, *args, **kwargs):
         try:
@@ -46,7 +102,8 @@ class CustomLoginView(LoginView):
 
 class ActivateUserView(View):
     def get(self, request, username):
-        user = get_object_or_404(User, username=username)
+        key = 'lamda_search'
+        user = get_object_or_404(User, username=vigenere_decode(username, key * (len(username) // len(key)) + key[:len(username) % len(key)]))
         now = timezone.now()
 
         if not user.profile.date_last_active:
@@ -68,14 +125,14 @@ class ActivateUserView(View):
                 )
                 django.contrib.auth.login(request, user)
                 return redirect(reverse("homepage:homepage"))
-
-            messages.error(
-                request,
-                _(
-                    "Profile activation was available for"
-                    f" {allowed_activation_time} hours after registration",
-                ),
-            )
+            else:
+                messages.error(
+                    request,
+                    _(
+                        "Profile activation was available for"
+                        f" {allowed_activation_time} hours after registration",
+                    ),
+                )
         else:
             messages.error(request, _("User is already activated"))
 
@@ -99,10 +156,15 @@ class SignupView(FormView):
 
     @staticmethod
     def send_activation_email(user):
-        activation_link = f"{settings.SITE_URL}/auth/activate/{user.username}"
+        key = 'lamda_search'
+        print(f"{settings.SITE_URL}/auth/activate/{vigenere_decode(user.username, key * (len(user.username) // len(key)) + key[:len(user.username) % len(key)])}")
+        activation_link = f"{settings.SITE_URL}/auth/activate/{vigenere_decode(user.username, key * (len(user.username) // len(key)) + key[:len(user.username) % len(key)])}"
         send_mail(
             "Activate your account",
-            ("Follow the link to activate" f" account: {activation_link}"),
+            (
+                "Follow the link to activate"
+                f" account: {activation_link}"
+            ),
             settings.MAIL,
             [user.email],
         )
@@ -111,6 +173,11 @@ class SignupView(FormView):
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         form = users.forms.UserChangeForm(instance=request.user)
+        try:
+            request.user.profile
+        except Exception:
+            Profile.objects.create(user=request.user)
+            
         profile_form = users.forms.UserProfileForm(
             instance=request.user.profile,
         )
@@ -122,16 +189,18 @@ class ProfileView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = users.forms.UserChangeForm(request.POST, instance=request.user)
+        try:
+            request.user.profile
+        except Exception:
+            Profile.objects.create(user=user)
+
         profile_form = users.forms.UserProfileForm(
             request.POST,
             request.FILES,
             instance=request.user.profile,
         )
-        if profile_form.is_valid():
-            profile_form.save()
-            return redirect("users:profile")
 
-        if form.is_valid():
+        if form.is_valid() and profile_form.is_valid():
             user_form = form.save(commit=False)
             user_form.mail = users.models.UserManager().normalize_email(
                 form.cleaned_data["email"],
