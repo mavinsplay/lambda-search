@@ -12,6 +12,7 @@ WORKDIR /lambda_search
 
 CMD python manage.py makemigrations \
  && python manage.py migrate \
+ && python manage.py init_superuser \
  && python manage.py compilemessages \
  && python manage.py collectstatic --no-input \
  && gunicorn lambda_search.wsgi:application \
