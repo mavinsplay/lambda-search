@@ -59,6 +59,7 @@ prod-deploy:
     - |
       ssh $SSH_USER@$SERVER_IP << EOF
         cd lambda_search
+        docker compose down
         git reset --hard origin/docker
         git pull origin docker
         docker compose --profile prod up --build -d
