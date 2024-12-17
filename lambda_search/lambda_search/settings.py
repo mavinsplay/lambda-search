@@ -27,9 +27,7 @@ DEBUG = env_validator(os.getenv("DJANGO_DEBUG", "true"))
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
-CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS = [
-    f"https://{x}" for x in ALLOWED_HOSTS
-]
+CSRF_TRUSTED_ORIGINS = [f"https://{x}" for x in ALLOWED_HOSTS]
 
 DEFAULT_USER_IS_ACTIVE = env_validator(
     os.getenv("DJANGO_DEFAULT_USER_IS_ACTIVE", "true" if DEBUG else "false"),
