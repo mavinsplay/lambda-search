@@ -16,4 +16,4 @@ CMD python manage.py makemigrations \
  && python manage.py collectstatic --no-input \
  && gunicorn lambda_search.wsgi:application \
     --workers $(nproc) \
-    --bind 0.0.0.0:8000 \
+    --bind localhost:8000 \
