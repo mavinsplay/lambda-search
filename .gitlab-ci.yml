@@ -56,4 +56,4 @@ prod-deploy:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh $SSH_USER@$SERVER_IP "cd team-3 && git reset --hard origin/main && git pull origin main"
+    - ssh $SSH_USER@$SERVER_IP "cd team-3 && git reset --hard origin/docker && git pull origin docker"
