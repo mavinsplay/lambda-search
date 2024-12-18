@@ -1,7 +1,7 @@
 stages:
   - lint
-  - deploy
   - test
+  - deploy
 
 flake8-check:
   stage: lint
@@ -47,6 +47,7 @@ prod-deploy:
   dependencies:
     - black-check
     - flake8-check
+    - django-tests
   before_script:
     - apt-get update -qq
     - apt-get install -qq git
