@@ -31,7 +31,7 @@ DEFAULT_USER_IS_ACTIVE = env_validator(
     os.getenv("DJANGO_DEFAULT_USER_IS_ACTIVE", "true" if DEBUG else "false"),
 )
 
-MAIL = os.getenv("DJANGO_MAIL", "django_mail@example.com")
+MAIL = "lambda-search@yandex.ru"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,10 +45,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_cleanup.apps.CleanupConfig",
+    "feedback.apps.FeedbackConfig",
+    "history.apps.HistoryConfig",
     "homepage.apps.HomepageConfig",
     "search.apps.SearchConfig",
-    "history.apps.HistoryConfig",
-    "django_cleanup.apps.CleanupConfig",
     "users.apps.UsersConfig",
     "sorl.thumbnail",
 ]
@@ -158,10 +159,13 @@ LOCALE_PATHS = (BASE_DIR / "locale",)
 
 ITEMS_PER_PAGE = 5
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-
-EMAIL_FILE_PATH = BASE_DIR / "send_mail"
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = "lambda-search@yandex.ru"
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "lambda-search@yandex.ru"
+EMAIL_HOST_PASSWORD = 'fxzxpenjgrrxjrtk'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 if DEBUG:

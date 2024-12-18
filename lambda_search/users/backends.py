@@ -80,7 +80,7 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                     "Account activation",
                     confirmation_link,
                     django.conf.settings.MAIL,
-                    [user.email],
+                    [users.models.UserManager().normalize_email(user.email)],
                     fail_silently=False,
                 )
 

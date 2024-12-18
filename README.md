@@ -8,9 +8,9 @@
 
 1. Скопируйте проект в нужную папку при помощи команды:
 
-    ```bash
+```bash
     git clone https://gitlab.crja72.ru/django/2024/autumn/course/students/182732-mavinsplay2007-course-1187
-    ```
+```
 
     (на вашем пк должен быть установлен git, [подробнее](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
 
@@ -61,48 +61,48 @@
 1. Скачайте нужные зависимости
     пропишите в командную строку:
 
-    ```bash
+```bash
     pip3 install -r requirements/prod.txt
-    ```
+```
 
     (Для запуска в проде) или
 
-    ```bash
+```bash
     pip3 install -r requirements/dev.txt
-    ```
+```
 
     (для запуска в dev режиме)
 
 1. Запустите проект.
     пропишите в командную строку:
 
-    ```bash
+```bash
     cd lambda_search
     python manage.py runserver
-    ```
+```
 
 1. Создать фикстуру можно командой
 
-    ```bash
+```bash
     python -Xutf8 manage.py dumpdata catalog > fixtures/data.json --indent 4
-    ```
+```
 
     применить фикстуру можно командой:
 
-    ```bash
+```bash
     python manage.py loaddata fixtures/data.json
-    ```
+```
 
 1. Локализация проекта
 
     1. Добавьте поддержку языков в settings.py перечислив желаемые языки в параметре LANGUAGE. Этот файл находится в каталоге lambda_search/lambda_search/settings.py. Пример:
 
-        ```python
+```python
             LANGUAGES = [
             ("en", _("English")),
             ("ru", _("Russian")),
             ]
-        ```
+```
 
     1. Сгенерируйте файлы сообщений переводов, сделать это можно командой:
 

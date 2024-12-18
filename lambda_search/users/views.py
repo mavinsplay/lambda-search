@@ -170,7 +170,7 @@ class SignupView(FormView):
     def send_activation_email(user):
         key = "lamda_search"
 
-        path = vigenere_decode(
+        path = vigenere_encode(
             user.username,
             key * (len(user.username) // len(key))
             + key[: len(user.username) % len(key)],
@@ -181,7 +181,7 @@ class SignupView(FormView):
             "Activate your account",
             ("Follow the link to activate" f" account: {activation_link}"),
             settings.MAIL,
-            [user.email],
+            [users.models.UserManager().normalize_email(user.email)],
         )
 
 
@@ -215,18 +215,41 @@ class ProfileView(LoginRequiredMixin, View):
             instance=request.user.profile,
         )
 
-        if form.is_valid() and profile_form.is_valid():
-            user_form = form.save(commit=False)
-            user_form.mail = users.models.UserManager().normalize_email(
-                form.cleaned_data["email"],
-            )
-            user_form.save()
-            profile_form.save()
+        try:
+            if form.is_valid():
+                user_form = form.save(commit=False)
+                if form.cleaned_data["email"]:
+                    user_form.mail = users.models.UserManager().normalize_email(
+                        form.cleaned_data["email"],
+                    )
+
+                user_form.save()
+
+                messages.success(
+                    request,
+                    _("The form has been successfully submitted!"),
+                )
+                return redirect("users:profile")
+
+        except Exception as ex:
+            print(ex)
+
+        try:
+            if profile_form.is_valid():
+                new_profile_form = profile_form.save(commit=False)
+                new_profile_form.image = profile_form.cleaned_data["image"]
+
+                new_profile_form.save()
+        
             messages.success(
                 request,
                 _("The form has been successfully submitted!"),
             )
             return redirect("users:profile")
+        
+        except Exception as ex:
+            print(ex)
+
 
         return render(
             request,
