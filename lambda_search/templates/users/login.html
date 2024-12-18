@@ -13,9 +13,19 @@
       <div class="card-body">
         <div class="col">
 
-          <p class="text-center h2 mb-5 mx-1 mt-4">{% trans "Login" %}</p>
+          <p class="text-center h2 mx-1 mt-4">{% trans "Login" %}</p>
 
-          <form method="post" class="mx-1 mx-md-4">
+          <div class="mx-1 mx-md-4">
+          {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+          <p class="alert alert-danger">
+              {{ error }}
+          </p>
+          {% endfor %}
+          {% endif %}
+          </div>
+
+          <form method="post" class="mx-1 mx-md-4 mt-4">
             {% csrf_token %}
 
             <div class="d-flex flex-row align-items-center mb-4">
