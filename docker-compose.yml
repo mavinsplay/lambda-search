@@ -36,8 +36,9 @@ services:
     container_name: nginx-prod
     environment:
       DEBUG: ${LAMBDA_CERTBOT_DEBUG}
-      STAGING: 0
       CERTBOT_EMAIL: ${LAMBDA_CERTBOT_EMAIL}
+    env_file:
+      - ./.env
     restart: always
     ports:
       - "80:80"
