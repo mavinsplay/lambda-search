@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 02:22+0300\n"
+"POT-Creation-Date: 2024-12-20 02:27+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,9 +157,13 @@ msgid "Значение"
 msgstr "Value"
 
 #: .\search\models.py:214 .\search\models.py:215
-#: .\templates\includes\table.html:7 .\templates\search\search.html:40
+#: .\templates\includes\table.html:7 .\templates\search\search.html:39
 msgid "Данные"
 msgstr "Data"
+
+#: .\search\views.py:173 .\templates\includes\header.html:16
+msgid "Search"
+msgstr "Search"
 
 #: .\templates\about\about.html:15
 msgid "О проекте"
@@ -358,10 +362,6 @@ msgstr ""
 msgid "Проверить свои данные"
 msgstr "Repeat request"
 
-#: .\templates\includes\header.html:16
-msgid "Search"
-msgstr "Search"
-
 #: .\templates\includes\header.html:22
 msgid "Go feedback"
 msgstr "Feedback"
@@ -453,15 +453,15 @@ msgstr "Medium:"
 msgid "Низкие:"
 msgstr "Low:"
 
-#: .\templates\includes\table.html:5 .\templates\search\search.html:38
+#: .\templates\includes\table.html:5 .\templates\search\search.html:37
 msgid "Ресурс"
 msgstr "Resource"
 
-#: .\templates\includes\table.html:6 .\templates\search\search.html:39
+#: .\templates\includes\table.html:6 .\templates\search\search.html:38
 msgid "История утечки"
 msgstr "Leak history"
 
-#: .\templates\search\search.html:24
+#: .\templates\search\search.html:23
 msgid "Найти"
 msgstr "Find"
 
