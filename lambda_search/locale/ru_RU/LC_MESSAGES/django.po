@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 02:27+0300\n"
+"POT-Creation-Date: 2024-12-20 02:30+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "About"
 msgstr "О проекте"
 
-#: .\about\views.py:13 .\templates\about\about.html:51
+#: .\about\views.py:13
 msgid "User Agreement"
 msgstr "пользовательского соглашения"
 
@@ -63,8 +63,6 @@ msgid "История запросов"
 msgstr "История запросов"
 
 #: .\history\views.py:93
-#, fuzzy
-#| msgid "Ваш пароль успешно изменён"
 msgid "Запрос успешно удалён."
 msgstr "Пароль успешно изменён"
 
@@ -101,8 +99,6 @@ msgid "Длина запроса должна быть от 8 до 100 симв�
 msgstr "Длина запроса должна быть от 8 до 100 символов."
 
 #: .\search\forms.py:45
-#, fuzzy
-#| msgid "Введите новый пароль"
 msgid "Введите запрос..."
 msgstr "Введите новый пароль"
 
@@ -247,6 +243,10 @@ msgstr ""
 "другими сервисами и внедрить функции интеллектуального поиска утечек с "
 "использованием искусственного интеллекта."
 
+#: .\templates\about\about.html:51
+msgid "User Agreement Terms"
+msgstr "Пользовательское соглашение"
+
 #: .\templates\admin\error.html:4
 msgid "Ошибка"
 msgstr "Ошибка"
@@ -276,8 +276,6 @@ msgid "user agreement"
 msgstr "пользовательского соглашения"
 
 #: .\templates\history\history.html:28
-#, fuzzy
-#| msgid "Домашняя страница"
 msgid "Навигация по страницам"
 msgstr "Домашняя страница"
 
@@ -428,8 +426,6 @@ msgid "элемента"
 msgstr "элемента"
 
 #: .\templates\includes\history_card.html:19
-#, fuzzy
-#| msgid "Данные"
 msgid "Данных нет"
 msgstr "Данные"
 

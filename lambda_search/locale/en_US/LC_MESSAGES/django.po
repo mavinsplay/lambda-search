@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 02:27+0300\n"
+"POT-Creation-Date: 2024-12-20 02:30+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "About"
 msgstr "About"
 
-#: .\about\views.py:13 .\templates\about\about.html:51
+#: .\about\views.py:13
 msgid "User Agreement"
 msgstr "User agreement"
 
@@ -99,8 +99,6 @@ msgid "Длина запроса должна быть от 8 до 100 симв�
 msgstr "The length of the request must be between 8 and 100 characters."
 
 #: .\search\forms.py:45
-#, fuzzy
-#| msgid "Введите новый пароль"
 msgid "Введите запрос..."
 msgstr "Enter new password"
 
@@ -243,6 +241,10 @@ msgstr ""
 "services, and implement intelligent leak detection functionsusing artificial "
 "intelligence."
 
+#: .\templates\about\about.html:51
+msgid "User Agreement Terms"
+msgstr "User agreement"
+
 #: .\templates\admin\error.html:4
 msgid "Ошибка"
 msgstr "Error"
@@ -272,8 +274,6 @@ msgid "user agreement"
 msgstr "user agreement"
 
 #: .\templates\history\history.html:28
-#, fuzzy
-#| msgid "Домашняя страница"
 msgid "Навигация по страницам"
 msgstr "Homepage"
 
@@ -424,8 +424,6 @@ msgid "элемента"
 msgstr "element"
 
 #: .\templates\includes\history_card.html:19
-#, fuzzy
-#| msgid "Данные"
 msgid "Данных нет"
 msgstr "Data"
 
