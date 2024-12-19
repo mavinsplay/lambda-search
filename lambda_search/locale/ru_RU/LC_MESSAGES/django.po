@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 00:49+0300\n"
+"POT-Creation-Date: 2024-12-20 02:12+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\about\apps.py:11 .\templates\includes\header.html:28
+#: .\about\apps.py:10 .\templates\includes\header.html:35
 msgid "About"
 msgstr "О проекте"
 
@@ -25,7 +25,7 @@ msgstr "О проекте"
 msgid "User Agreement"
 msgstr "пользовательского соглашения"
 
-#: .\history\apps.py:10 .\search\models.py:34
+#: .\history\apps.py:10 .\search\models.py:36
 msgid "История"
 msgstr "История"
 
@@ -45,26 +45,28 @@ msgstr "Запрос"
 msgid "Дата запроса"
 msgstr "Дата запроса"
 
-#: .\history\models.py:29 .\search\models.py:89
-msgid "База данных"
-msgstr "База данных"
-
-#: .\history\models.py:33
+#: .\history\models.py:29
 msgid "Результаты"
 msgstr "Результаты"
 
-#: .\history\models.py:34
+#: .\history\models.py:30
 msgid "Результаты поиска в формате JSON"
 msgstr "Результаты поиска в формате JSON"
 
-#: .\history\models.py:38
+#: .\history\models.py:34
 msgid "История запроса"
 msgstr "История запроса"
 
-#: .\history\models.py:39 .\templates\history\history.html:6
+#: .\history\models.py:35 .\templates\history\history.html:6
 #: .\templates\history\history.html:11
 msgid "История запросов"
 msgstr "История запросов"
+
+#: .\history\views.py:93
+#, fuzzy
+#| msgid "Ваш пароль успешно изменён"
+msgid "Запрос успешно удалён."
+msgstr "Пароль успешно изменён"
 
 #: .\homepage\apps.py:10
 msgid "Домашняя страница"
@@ -74,11 +76,11 @@ msgstr "Домашняя страница"
 msgid "Lambda Search"
 msgstr "Lambda Search"
 
-#: .\lambda_search\settings.py:151
+#: .\lambda_search\settings.py:157
 msgid "English"
 msgstr "Английский"
 
-#: .\lambda_search\settings.py:152
+#: .\lambda_search\settings.py:158
 msgid "Russian"
 msgstr "Русский"
 
@@ -94,94 +96,72 @@ msgstr "Ошибка при открытии базы: {str(e)}"
 msgid "Поиск"
 msgstr "Поиск"
 
-#: .\search\models.py:23 .\search\models.py:166
+#: .\search\forms.py:34
+msgid "Длина запроса должна быть от 8 до 100 символов."
+msgstr "Длина запроса должна быть от 8 до 100 символов."
+
+#: .\search\forms.py:45
+#, fuzzy
+#| msgid "Введите новый пароль"
+msgid "Введите запрос..."
+msgstr "Введите новый пароль"
+
+#: .\search\models.py:24 .\search\models.py:198
 msgid "Имя базы данных"
 msgstr "Имя базы данных"
 
-#: .\search\models.py:35
+#: .\search\models.py:37
 msgid "Краткая история об утечке (не более 500 символов)"
 msgstr "Краткая история об утечке (не более 500 символов)"
 
-#: .\search\models.py:36
+#: .\search\models.py:38
 msgid "История об этой базе не найдена"
 msgstr "История об этой базе не найдена"
 
-#: .\search\models.py:43
+#: .\search\models.py:45
 msgid "Активна"
 msgstr "Активна"
 
-#: .\search\models.py:44
+#: .\search\models.py:46
 msgid "Определяет, используется ли эта база данных"
 msgstr "Определяет, используется ли эта база данных"
 
-#: .\search\models.py:48
+#: .\search\models.py:50
 msgid "Зашифрована"
 msgstr "Зашифрована"
 
-#: .\search\models.py:52
+#: .\search\models.py:54
 msgid "Дата создания"
 msgstr "Дата создания"
 
-#: .\search\models.py:57
+#: .\search\models.py:59
 msgid "Дата обновления"
 msgstr "Дата обновления"
 
-#: .\search\models.py:90
+#: .\search\models.py:95
+msgid "База данных"
+msgstr "База данных"
+
+#: .\search\models.py:96
 msgid "Базы данных"
 msgstr "Базы данных"
 
-#: .\search\models.py:169
+#: .\search\models.py:201
 msgid "Индекс пользователя"
 msgstr "Индекс пользователя"
 
-#: .\search\models.py:172
+#: .\search\models.py:204
 msgid "Название колонки"
 msgstr "Название колонки"
 
-#: .\search\models.py:176
+#: .\search\models.py:208
 msgid "Значение"
 msgstr "Значение"
 
-#: .\search\models.py:182 .\search\models.py:183
-#: .\templates\history\history_detail.html:19 .\templates\search\search.html:31
+#: .\search\models.py:214 .\search\models.py:215
+#: .\templates\includes\table.html:7 .\templates\search\search.html:40
 msgid "Данные"
 msgstr "Данные"
-
-#: .\search\views.py:16 .\templates\includes\header.html:16
-msgid "Search"
-msgstr "Поиск"
-
-#: .\search\views.py:128
-msgid "Email"
-msgstr "Электронная почта"
-
-#: .\search\views.py:129
-msgid "Телефон"
-msgstr "Телефон"
-
-#: .\search\views.py:130
-msgid "Пароль"
-msgstr "Пароль"
-
-#: .\search\views.py:131
-msgid "Банковская карта"
-msgstr "Банковская карта"
-
-#: .\search\views.py:132
-msgid "Дата рождения"
-msgstr "Дата рождения"
-
-#: .\search\views.py:133
-msgid "Адрес"
-msgstr "Адрес"
-
-#: .\search\views.py:134
-msgid "Город"
-msgstr "Город"
-
-#: .\search\views.py:135
-msgid "Имя"
-msgstr "Имя"
 
 #: .\templates\about\about.html:15
 msgid "О проекте"
@@ -283,6 +263,40 @@ msgstr "Таблица:"
 msgid "В базе данных нет таблиц или данные не могут быть загружены."
 msgstr "В базе данных нет таблиц или данные не могут быть загружены."
 
+#: .\templates\feedback\feedback.html:14 .\templates\users\signup.html:72
+msgid "I accept the terms of the"
+msgstr "Я принимаю условия"
+
+#: .\templates\feedback\feedback.html:14 .\templates\users\signup.html:72
+msgid "user agreement"
+msgstr "пользовательского соглашения"
+
+#: .\templates\history\history.html:28
+#, fuzzy
+#| msgid "Домашняя страница"
+msgid "Навигация по страницам"
+msgstr "Домашняя страница"
+
+#: .\templates\history\history.html:32
+msgid "Первая"
+msgstr "Первая"
+
+#: .\templates\history\history.html:37 .\templates\history\history.html:44
+msgid "Предыдущая"
+msgstr "Предыдущая"
+
+#: .\templates\history\history.html:50
+msgid "из"
+msgstr "из"
+
+#: .\templates\history\history.html:56 .\templates\history\history.html:65
+msgid "Следующая"
+msgstr "Следующая"
+
+#: .\templates\history\history.html:59
+msgid "Последняя"
+msgstr "Последняя"
+
 #: .\templates\history\history_detail.html:6
 #: .\templates\history\history_detail.html:10
 msgid "Детали запроса"
@@ -299,14 +313,6 @@ msgstr "Дата:"
 #: .\templates\history\history_detail.html:13
 msgid "Результаты:"
 msgstr "Результаты:"
-
-#: .\templates\history\history_detail.html:17 .\templates\search\search.html:29
-msgid "Ресурс"
-msgstr "Ресурс"
-
-#: .\templates\history\history_detail.html:18 .\templates\search\search.html:30
-msgid "История утечки"
-msgstr "История утечки"
 
 #: .\templates\homepage\main.html:12
 msgid "Сервис проверки утечек пользовательских данных"
@@ -356,64 +362,86 @@ msgstr ""
 msgid "Проверить свои данные"
 msgstr "Повторить запрос"
 
+#: .\templates\includes\header.html:16
+msgid "Search"
+msgstr "Поиск"
+
 #: .\templates\includes\header.html:22
 msgid "History"
 msgstr "History"
 
-#: .\templates\includes\header.html:37
+#: .\templates\includes\header.html:28
+msgid "Go feedback"
+msgstr "Обратная связь"
+
+#: .\templates\includes\header.html:44
 msgid "Admin-panel"
 msgstr "Админка"
 
-#: .\templates\includes\header.html:70
+#: .\templates\includes\header.html:77
 msgid "theme_button"
 msgstr "Тема"
 
-#: .\templates\includes\header.html:73
+#: .\templates\includes\header.html:80
 msgid "light_theme"
 msgstr "Светлая"
 
-#: .\templates\includes\header.html:74
+#: .\templates\includes\header.html:81
 msgid "dark_theme"
 msgstr "Тёмная"
 
-#: .\templates\includes\header.html:75
+#: .\templates\includes\header.html:82
 msgid "auto_theme"
 msgstr "Авто"
 
-#: .\templates\includes\header.html:96 .\templates\users\profile.html:59
+#: .\templates\includes\header.html:101 .\templates\users\profile.html:59
 msgid "Profile"
 msgstr "Профиль"
 
-#: .\templates\includes\header.html:98
+#: .\templates\includes\header.html:103
 msgid "Logout"
 msgstr "Выход"
 
-#: .\templates\includes\header.html:105 .\templates\users\login.html:16
+#: .\templates\includes\header.html:110 .\templates\users\login.html:16
 #: .\templates\users\password_reset_complete.html:20
 msgid "Login"
 msgstr "Вход"
 
-#: .\templates\includes\header.html:111 .\templates\users\signup.html:16
+#: .\templates\includes\header.html:116 .\templates\users\signup.html:16
 msgid "Signup"
 msgstr "Регистрация"
 
-#: .\templates\includes\history_card.html:5
+#: .\templates\includes\history_card.html:6
 msgid "Дата запроса:"
 msgstr "Дата запроса:"
 
-#: .\templates\includes\history_card.html:7
+#: .\templates\includes\history_card.html:10
 msgid "Данные:"
 msgstr "Данные:"
 
-#: .\templates\includes\history_card.html:21
+#: .\templates\includes\history_card.html:16
+msgid "и ещё"
+msgstr "и ещё"
+
+#: .\templates\includes\history_card.html:16
+msgid "элемента"
+msgstr "элемента"
+
+#: .\templates\includes\history_card.html:19
+#, fuzzy
+#| msgid "Данные"
+msgid "Данных нет"
+msgstr "Данные"
+
+#: .\templates\includes\history_card.html:27
 msgid "Повторить запрос"
 msgstr "Повторить запрос"
 
-#: .\templates\includes\history_card.html:24
+#: .\templates\includes\history_card.html:31
 msgid "Подробнее"
 msgstr "Подробнее"
 
-#: .\templates\includes\history_card.html:25
+#: .\templates\includes\history_card.html:35
 msgid "Удалить"
 msgstr "Удалить"
 
@@ -429,7 +457,15 @@ msgstr "Средние:"
 msgid "Низкие:"
 msgstr "Низкие:"
 
-#: .\templates\search\search.html:23
+#: .\templates\includes\table.html:5 .\templates\search\search.html:38
+msgid "Ресурс"
+msgstr "Ресурс"
+
+#: .\templates\includes\table.html:6 .\templates\search\search.html:39
+msgid "История утечки"
+msgstr "История утечки"
+
+#: .\templates\search\search.html:24
 msgid "Найти"
 msgstr "Найти"
 
@@ -445,7 +481,7 @@ msgstr "Пароль"
 msgid "Forgot password?"
 msgstr "Забыли пароль?"
 
-#: .\templates\users\login.html:59 .\templates\users\signup.html:82
+#: .\templates\users\login.html:59 .\templates\users\signup.html:86
 msgid "Login_confirm"
 msgstr "Войти"
 
@@ -564,47 +600,35 @@ msgstr "Электронная почта"
 msgid "repeat_password_placeholder"
 msgstr "Повторите пароль"
 
-#: .\templates\users\signup.html:72
-msgid "I accept the terms of the"
-msgstr "Я принимаю условия"
-
-#: .\templates\users\signup.html:72
-msgid "user agreement"
-msgstr "пользовательского соглашения"
-
-#: .\templates\users\signup.html:77
+#: .\templates\users\signup.html:82
 msgid "Signup_confirm"
 msgstr "Зарегистрироваться"
 
-#: .\templates\users\signup.html:82
+#: .\templates\users\signup.html:86
 msgid "Already have an account?"
 msgstr "Уже есть аккаунт?"
 
-#: .\templates\users\user_detail.html:6
+#: .\templates\users\user_detail.html:10
 msgid "Информация о пользователе"
 msgstr "Информация о пользователе"
 
-#: .\templates\users\user_detail.html:7
+#: .\templates\users\user_detail.html:11
 msgid "Почта:"
 msgstr "Почта:"
 
-#: .\templates\users\user_detail.html:8
+#: .\templates\users\user_detail.html:12
 msgid "Имя:"
 msgstr "Имя:"
 
-#: .\templates\users\user_detail.html:9
+#: .\templates\users\user_detail.html:13
 msgid "Фамилия:"
 msgstr "Фамилия:"
 
-#: .\templates\users\user_list.html:6
-msgid "Список пользователей"
-msgstr "Список пользователей"
-
-#: .\users\forms.py:43
+#: .\users\forms.py:47
 msgid "Enter your login"
 msgstr "Введите логин"
 
-#: .\users\forms.py:59
+#: .\users\forms.py:63
 msgid "Choose your picture"
 msgstr "Выберите аватар"
 
@@ -612,21 +636,48 @@ msgstr "Выберите аватар"
 msgid "Файл слишком большой, максимум 50 МБ"
 msgstr "Файл слишком большой, максимум 50 МБ"
 
-#: .\users\views.py:56
+#: .\users\views.py:45
 msgid "User successfully activated"
 msgstr "Пользователь успешно активирован"
 
-#: .\users\views.py:64
+#: .\users\views.py:53
 msgid "Profile activation was available for"
 msgstr "Активация была доступна в течение"
 
-#: .\users\views.py:69
+#: .\users\views.py:58
 msgid "User is already activated"
 msgstr "Пользователь уже активирован"
 
-#: .\users\views.py:132
+#: .\users\views.py:137 .\users\views.py:153
 msgid "The form has been successfully submitted!"
 msgstr "Форма успешно отправлена!"
+
+#~ msgid "Email"
+#~ msgstr "Электронная почта"
+
+#~ msgid "Телефон"
+#~ msgstr "Телефон"
+
+#~ msgid "Пароль"
+#~ msgstr "Пароль"
+
+#~ msgid "Банковская карта"
+#~ msgstr "Банковская карта"
+
+#~ msgid "Дата рождения"
+#~ msgstr "Дата рождения"
+
+#~ msgid "Адрес"
+#~ msgstr "Адрес"
+
+#~ msgid "Город"
+#~ msgstr "Город"
+
+#~ msgid "Имя"
+#~ msgstr "Имя"
+
+#~ msgid "Список пользователей"
+#~ msgstr "Список пользователей"
 
 #~ msgid "Смена пароля"
 #~ msgstr "Смена пароля"
@@ -663,9 +714,6 @@ msgstr "Форма успешно отправлена!"
 
 #~ msgid "Войти"
 #~ msgstr "Войти"
-
-#~ msgid "Введите новый пароль"
-#~ msgstr "Введите новый пароль"
 
 #~ msgid "Сохранить новый пароль"
 #~ msgstr "Сохранить новый пароль"
