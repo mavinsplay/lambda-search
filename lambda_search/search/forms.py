@@ -43,7 +43,7 @@ class SearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "placeholder": _("Введите запрос..."),
-                "class": "form-control",
+                "class": "form-control rounded-end-0",
                 "minlength": 8,
                 "maxlength": 100,
             },
