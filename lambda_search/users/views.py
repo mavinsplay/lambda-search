@@ -3,7 +3,6 @@ from django.contrib import messages
 import django.contrib.auth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -16,16 +15,6 @@ import users.forms
 from users.models import Profile
 
 __all__ = ()
-
-
-class CustomLoginView(LoginView):
-    template_name = "users/login.html"
-
-    def post(self, request, *args, **kwargs):
-        try:
-            return super().post(request, *args, **kwargs)
-        except Exception:
-            messages.error(request, _("Account Error"))
 
 
 class ActivateUserView(View):

@@ -210,6 +210,7 @@ class Data(models.Model):
     )
 
     class Meta:
+        unique_together = ("database", "user_index", "column_name", "value")
         verbose_name = _("Данные")
         verbose_name_plural = _("Данные")
 

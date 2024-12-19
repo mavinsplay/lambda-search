@@ -1,188 +1,162 @@
-# Lambda-search project
+# Lambda Search
 
-## Как запустить проект
+![Pipeline Status](https://gitlab.crja72.ru/django/2024/autumn/course/projects/team-3/badges/main/pipeline.svg)
 
-### Требования
+## О проекте
+Lambda Search — это инструмент, созданный для проверки, были ли ваши данные скомпрометированы в результате утечек. Мы ориентированы на российских пользователей и учитываем локальные риски и угрозы. Сервис предоставляет удобный интерфейс для анализа утечек, позволяя пользователям быстро реагировать на возможные угрозы.
 
-Наличие [python](https://www.python.org/) >= 3.9
+## Требования
 
-1. Скопируйте проект в нужную папку при помощи команды:
+- python 3.12.1
+- PostgreSQL (установка: [PostgreSQL Official Docs](https://www.postgresql.org/download/))
 
-    ```bash
-    git clone https://gitlab.crja72.ru/django/2024/autumn/course/students/182732-mavinsplay2007-course-1187
-    ```
+## Инструкция по запуску проекта
 
-    (на вашем пк должен быть установлен git, [подробнее](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
+1. **Клонируйте репозиторий:**
 
-1. Создайте виртуальное окружение
- | Для windows / linux / macos
+   ```bash
+   git clone https://gitlab.crja72.ru/django/2024/autumn/course/projects/team-3.git
+   cd lambda_search
+   ```
 
-    откройте папку со скаченным репозиторием
+2. **Создайте и активируйте виртуальное окружение:**
 
-    создайте виртуальное окружение,
-    пропишите в командную строку:
+   - На Linux/macOS:
 
-    ```bash
-    python3 -m venv venv
-    ```
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
 
-    активируйте виртуальное окружение,
-    пропишите в командную строку:
+   - На Windows:
 
-    Для windows
+     ```bash
+     python3 -m venv venv
+     venv\Scripts\activate
+     ```
 
-    ```bash
-    venv\Scripts\activate
-    ```
+   2.1 **Обновите pip:**
 
-    Для linux и macos
+   ```bash
+   python3 -m pip3 install --upgrade pip
+   ```
 
-    ```bash
-    source venv/bin/activate
-    ```
+3. **Установите зависимости:**
 
-1. Добавьте переменные окружения,
-пропишите в командную строку:
-для linux:
+   1. Основные:
 
-    ```bash
-    cp .env.example .env
-    ```
+      ```bash
+      pip3 install -r requirements/prod.txt
+      ```
 
-    для windows:
+   2. Для тестирования:
 
-    ```bash
-    copy .env.example .env
-    ```
+      ```bash
+      pip3 install -r requirements/test.txt
+      ```
 
-    измените нужные вам параметры в файле .env
-    согласно комментариям-подсказкам
+   3. Для разработки:
 
-1. Скачайте нужные зависимости
-    пропишите в командную строку:
+      ```bash
+      pip3 install -r requirements/dev.txt
+      ```
 
-    ```bash
-    pip3 install -r requirements/prod.txt
-    ```
+4. **Настройка окружения:**
 
-    (Для запуска в проде) или
+   Скопируйте шаблон файла настроек окружения и заполните его:
 
-    ```bash
-    pip3 install -r requirements/dev.txt
-    ```
+   ```bash
+   cp .env.template .env
+   ```
 
-    (для запуска в dev режиме)
+   Пример файла `.env`:
 
-1. Запустите проект.
-    пропишите в командную строку:
+   ```plaintext
+   # Django project settings
+   DJANGO_DEBUG=False
+   DJANGO_SECRET_KEY=your_secret_key
+   DJANGO_ALLOWED_HOSTS=*
+   DJANGO_SITE_URL="https://lambda-search.ru"
+   DJANGO_ENCRYPTION_KEY="dsEa3e6lF983WPH88NsSS9A0HGCIK5xA"
 
-    ```bash
-    cd lambda_search
-    python manage.py runserver
-    ```
+   # Superuser settings
+   LAMBDA_SUPERUSER_NAME=admin
+   LAMBDA_SUPERUSER_EMAIL=lambda-search@yandex.ru
+   LAMBDA_SUPERUSER_PASSWORD=4pNWn03s!6zKka7Bhed574H
 
-1. Создать фикстуру можно командой
+   # PostgreSQL database settings
+   DJANGO_POSTGRESQL_NAME=lambda_db
+   DJANGO_POSTGRESQL_USER=lambda_user
+   DJANGO_POSTGRESQL_PASSWORD=your_password
+   DJANGO_POSTGRESQL_HOST=localhost
+   DJANGO_POSTGRESQL_PORT=5432
 
-    ```bash
-    python -Xutf8 manage.py dumpdata catalog > fixtures/data.json --indent 4
-    ```
+   # Let's Encrypt settings for nginx
+   LAMBDA_CERTBOT_DEBUG=1
+   LAMBDA_CERTBOT_STAGING=1
+   LAMBDA_CERTBOT_EMAIL=lambda-search@yandex.ru
+   ```
 
-    применить фикстуру можно командой:
+5. **Выполните локализации**
 
-    ```bash
-    python manage.py loaddata fixtures/data.json
-    ```
+   Необходимо установить **gettext**
 
-1. Локализация проекта
+   Windows: [gettext](https://mlocati.github.io/articles/gettext-iconv-windows.html)
 
-    1. Добавьте поддержку языков в settings.py перечислив желаемые языки в параметре LANGUAGE. Этот файл находится в каталоге lambda_search/lambda_search/settings.py. Пример:
+   Linux:
+   (Пакетный менеджер может отличаться)
 
-        ```python
-            LANGUAGES = [
-            ("en", _("English")),
-            ("ru", _("Russian")),
-            ]
-        ```
+   ```bash
+   apt-get update
+   apt-get install gettext
+   ```
 
-    1. Сгенерируйте файлы сообщений переводов, сделать это можно командой:
+   MacOS:
 
-        ```bash
-            django-admin makemessages -l ru -l en
-        ```
+   ```bash
+   brew install gettext
+   ```
 
-        (через [-l "язык"] указываются нужные вам языки, которые вы указали ранее в settings.py)
+   В данный момент добавлен русский и английский язык
 
-    1. Заполните переводы в файлах locale/ru/ LC_MESSAGES/django.pо и locale/en/LC_MESSAGES/_ django.po (файлы могут различаться, смотрите на язык в каталогах), сделать это можно примерно так:
+   Перед запуском необходимо скомпилировать локализации
 
-         ```bash
-            #: .\lambda_search\settings.py:268
-            msgid "Russian"
-            msgstr "Russian"
+   ```bash
+   cd lyceum
+   django-admin compilemessages
+   ```
 
-            #: .\templates\includes\header.html:15 .\templates\includes\header.html:17
-            msgid "На главную"
-            msgstr "Homepage"
+6. **Примените миграции:**
 
-            #: .\templates\includes\header.html:22 .\templates\includes\header.html:24
-            msgid "О проекте"
-            msgstr "About"
+   ```bash
+   python3 manage.py makemigrations
+   python3 manage.py migrate
+   ```
 
-            #: .\templates\includes\header.html:29 .\templates\includes\header.html:31
-            msgid "Список товаров"
-            msgstr "Item list"
-        ```
+7. **Запустите сервер:**
 
-    1. Скомпилируйте сообщения при помощи команды:
+   ```bash
+   python3 manage.py runserver
+   ```
 
-        ```bash
-            django-admin compilemessages
-        ```
+   После этого сервер будет доступен по адресу [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
-1. Проведение миграций, после изменения моделей
 
-    Если вы изменили модель в каком-то из файлов, то необходимо провести миграции командами:
+## Другие команды
 
-    ```bash
-        python manage.py makemigrations
-        python manage.py migrate
-    ```
+**Для создания суперпользователя:**
 
-1. Тестирование приложения
+```bash
+python3 manage.py createsuperuser
+```
 
-    Если после изменения кода вы хотите протестировать приложение, то измените нужные вам тесты в файлах с именем test*.py и воспользуйтесь командой:
+**Для тестов:**
 
-    ```bash
-        python manage.py test
-    ```
+```bash
+python3 manage.py test
+```
 
-1. Сбор статики
+## ER-диаграмма БД
 
-    Чтобы собрать статику необходимо воспользоваться командой:
+![image info](ER.jpg)
 
-    ```bash
-        python manage.py collectstatic
-    ```
-
-1. Создание суперпользователя
-
-    Чтобы создать пользователя с правами администратора необходимо воспользоваться командой:
-
-    ```bash
-        python3 manage.py createsuperuser
-    ```
-
-    следуйте указанным инструкциям в подсказках, указанных в терминале
-1. Уменьшение количества миграций
-
-    Чтобы уменьшить количество миграций нужно прописать в командной строке следующие:
-
-    ```bash
-        python manage.py squashmigrations <appname> <squashfrom> <squashto>
-    ```
-
-    appname - Имя приложения
-    squashfrom - Первая миграция
-    squashto - Последняяя миграция
-
-ER диаграмма базы данных:
-![image](ER.jpg)

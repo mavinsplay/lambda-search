@@ -4,6 +4,7 @@ import re
 import django.conf
 import django.contrib.auth.models
 import django.db
+from django.utils.translation import gettext as _
 import sorl.thumbnail
 
 __all__ = ()
@@ -22,6 +23,9 @@ if should_modify_email_field():
 
 
 class UserManager(django.contrib.auth.models.UserManager):
+    def get_queryset(self):
+        return super().get_queryset().select_related("profile")
+
     def normalize_email(self, email):
         email = super().normalize_email(email)
         email = email.lower()
@@ -53,9 +57,25 @@ class UserManager(django.contrib.auth.models.UserManager):
 class User(django.contrib.auth.models.User):
     objects = UserManager()
 
+    def create_profile(self):
+        if not hasattr(self, "profile"):
+            Profile.objects.create(user=self)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.create_profile()
+
     class Meta:
         proxy = True
         db_table = "auth_user"
+
+
+def file_size(value):
+    limit = 50 * 1024 * 1024
+    if value.size > limit:
+        raise django.core.exceptions.ValidationError(
+            _("Файл слишком большой, максимум 50 МБ"),
+        )
 
 
 class Profile(django.db.models.Model):
@@ -71,6 +91,7 @@ class Profile(django.db.models.Model):
         help_text="Upload a profile picture",
         null=True,
         blank=True,
+        validators=[file_size],
     )
 
     attempts_count = django.db.models.PositiveIntegerField(

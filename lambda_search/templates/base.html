@@ -33,13 +33,11 @@
     
 
     <main>
-      <div class="container-md my-2">
-        {% block content %}
-        <div class="d-flex justify-content-center">
-          <div class="m-5 spinner-border" role="status"/>
-        </div>
-        {% endblock %}
+      {% block content %}
+      <div class="d-flex justify-content-center">
+        <div class="m-5 spinner-border" role="status"/>
       </div>
+      {% endblock %}
     </main>
 
     

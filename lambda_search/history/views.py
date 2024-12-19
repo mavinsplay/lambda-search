@@ -14,6 +14,7 @@ from django.views.generic.edit import DeleteView
 from history.models import QueryHistory
 from search.encryptor import CellEncryptor
 
+
 __all__ = ()
 
 
