@@ -37,8 +37,9 @@ class SearchView(LoginRequiredMixin, FormView):
             query=query,
             result=formatted_results,
         )
+        form = self.form_class()
         return self.render_to_response(
-            self.get_context_data(results=formatted_results),
+            self.get_context_data(results=formatted_results, form=form),
         )
 
     def form_invalid(self, form):

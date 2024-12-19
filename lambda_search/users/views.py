@@ -10,28 +10,12 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views import View
-from django.views.generic import DetailView, FormView, ListView
+from django.views.generic import FormView
 
 import users.forms
 from users.models import Profile
 
 __all__ = ()
-
-
-class UserListView(ListView):
-    model = User
-    template_name = "users/user_list.html"
-    context_object_name = "users"
-
-    def get_queryset(self):
-        return User.objects.filter(is_active=True)
-
-
-class UserDetailView(DetailView):
-    model = User
-    template_name = "users/user_detail.html"
-    context_object_name = "user"
-    pk_url_kwarg = "user_id"
 
 
 class CustomLoginView(LoginView):

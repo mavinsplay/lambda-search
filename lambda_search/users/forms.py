@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
+from captcha.fields import CaptchaField
 
 from users.models import Profile
 
@@ -31,6 +32,8 @@ class UserChangeForm(BootstrapForm):
 
 
 class SignUpForm(UserCreationForm):
+    captcha = CaptchaField()
+
     class Meta(UserCreationForm.Meta):
         fields = (
             UserChangeForm.Meta.model.email.field.name,

@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container-md">
   <div class="row text-center my-3">
-    <h1>{{title}}</h1>
+    <h1>{{ title }}</h1>
     <label for="id_search_query">{{ form.search_query.label }}</label>
     <form method="post">
       {% csrf_token %}
@@ -16,33 +16,42 @@
         {% if form.search_query.errors %}
         <div class="text-danger">
           {% for error in form.search_query.errors %}
-          <p>{{ error }}</p>
+            <p>{{ error }}</p>
           {% endfor %}
         </div>
         {% endif %}
       </div>
+      <div class="d-flex flex-row align-items-center mb-4">
+        {{ form.captcha }}
+        {% for error in form.captcha.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+      </div>
       <button type="submit" class="btn btn-primary col-md-2">{% trans "Найти" %}</button>
     </form>
-    <table class="table table-bordered mt-3 br-2">
-      <thead>
-        <tr>
-          <th>{% trans "Ресурс" %}</th>
-          <th>{% trans "История утечки" %}</th>
-          <th>{% trans "Данные" %}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for result in results %}
-        <tr>
-          <td>{{ result.database }}</td>
-          <td>{{ result.history }}</td>
-          <td>
-            {% include "includes/search_result.html" %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    {% if results %}
+      <table class="table table-bordered mt-3 br-2">
+        <thead>
+          <tr>
+            <th>{% trans "Ресурс" %}</th>
+            <th>{% trans "История утечки" %}</th>
+            <th>{% trans "Данные" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in results %}
+          <tr>
+            <td>{{ result.database }}</td>
+            <td>{{ result.history }}</td>
+            <td>
+              {% include "includes/search_result.html" %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    {% endif %}
   </div>
 </div>
 {% endblock %}

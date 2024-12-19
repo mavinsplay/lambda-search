@@ -27,7 +27,9 @@
             <button class="btn btn-primary">{% trans "Повторить запрос" %}</button>
         </form>
         {% endif %}
-        <a href="{% url 'history:history-detail' query.id %}" class="btn btn-secondary">{% trans "Подробнее" %}</a>
+        {% if query.result %}
+          <a href="{% url 'history:history-detail' query.id %}" class="btn btn-secondary">{% trans "Подробнее" %}</a>
+        {% endif %}
         <form method="post" action="{% url 'history:history-delete' query.id %}" class="d-inline">
             {% csrf_token %}
             <button class="btn btn-danger">{% trans "Удалить" %}</button>

@@ -13,26 +13,7 @@
   <p><strong>{% trans "Запрос:" %}</strong> {{ query.query }}</p>
   <p><strong>{% trans "Дата:" %}</strong> {{ query.created_at }}</p>
   <h3>{% trans "Результаты:" %}</h3>
-  <table class="table table-bordered mt-3 br-2">
-    <thead>
-      <tr>
-        <th>{% trans "Ресурс" %}</th>
-        <th>{% trans "История утечки" %}</th>
-        <th>{% trans "Данные" %}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for result in query.result %}
-      <tr>
-        <td>{{ result.database }}</td>
-        <td>{{ result.history }}</td>
-        <td>
-          {% include "includes/search_result.html" %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  {% include "includes/table.html" %}
   <a href="{% url "history:history" %}" class="text-white">назад</a>
 </div>
 {% endblock %}

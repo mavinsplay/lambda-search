@@ -11,6 +11,7 @@ urlpatterns = [
     path("auth/", include("django.contrib.auth.urls")),
     path("search/", include("search.urls")),
     path("history/", include("history.urls")),
+    path("captcha/", include("captcha.urls")),
 ]
 
 urlpatterns += static(
