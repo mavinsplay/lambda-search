@@ -8,6 +8,7 @@ django.mo
 **/static_root
 **/send_mail
 **/lambda-dbs
+**/media
 # media #
 
 # Backup files # 

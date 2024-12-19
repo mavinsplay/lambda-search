@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from django.conf import settings
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -28,6 +29,7 @@ class ManagedDatabase(models.Model):
         ("Файл базы данных"),
         upload_to=database_upload_path,
         blank=True,
+        validators=[FileExtensionValidator(["csv", "sqlite", "db"])],
     )
 
     history = models.TextField(
@@ -72,11 +74,15 @@ class ManagedDatabase(models.Model):
         super().save(*args, **kwargs)
 
         if not self.is_encrypted:
-            key = settings.ENCRYPTION_KEY
-            encryptor = UnifiedEncryptor(key)
-            encryptor.encrypt_database_cells(Path(self.file.path))
-            self.is_encrypted = True
-            super().save(update_fields=["is_encrypted"])
+            self.encrypt_database()
+
+    def encrypt_database(self):
+        """Encrypt the database file."""
+        key = settings.ENCRYPTION_KEY
+        encryptor = UnifiedEncryptor(key)
+        encryptor.encrypt_database_cells(file_path=Path(self.file.path))
+        self.is_encrypted = True
+        super().save(update_fields=["is_encrypted"])
 
     def delete(self, *args, **kwargs):
         """Удаление базы данных из конфигурации."""
@@ -95,55 +101,80 @@ class ManagedDatabase(models.Model):
 
 class DataMagager(models.Manager):
     def _active(self):
+        """
+        Возвращает активные и зашифрованные базы данных.
+        """
         return (
             self.get_queryset()
             .filter(
-                database__active=True,
-                database__is_encrypted=True,
+                **{
+                    f"{Data.database.field.name}__"
+                    f"{ManagedDatabase.active.field.name}": True,
+                    f"{Data.database.field.name}__"
+                    f"{ManagedDatabase.is_encrypted.field.name}": True,
+                },
             )
             .order_by(
-                Data.database.field.name,
+                f"{Data.database.field.name}__"
+                f"{ManagedDatabase.name.field.name}",
             )
         )
 
     def _search_value(self, input_data):
+        """
+        Ищет значения, соответствующие введённым данным,
+        в активных и зашифрованных базах данных.
+        """
         return (
             self._active()
-            .filter(
-                value=input_data,
-            )
+            .filter(**{f"{Data.value.field.name}__iexact": input_data})
             .values(
                 Data.database.field.name,
                 Data.user_index.field.name,
             )
-        ).distinct()
+            .distinct()
+        )
 
     def _search(self, indexes):
+        """
+        Ищет данные в активных базах данных на основе индексов.
+        """
         query = models.Q()
-        for indexes in indexes:
+        for index in indexes:
             query |= models.Q(
-                database_id=indexes["database"],
-                user_index=indexes["user_index"],
+                **{
+                    Data.database.field.name: index[Data.database.field.name],
+                    Data.user_index.field.name: index[
+                        Data.user_index.field.name
+                    ],
+                },
             )
+
+        if not indexes:
+            return self.none()
 
         return (
             self._active()
-            .filter(
-                query,
-            )
+            .filter(query)
             .order_by(
-                Data.database.field.name,
-                Data.user_index.field.name,
-            )
-            .only(
-                Data.database.field.name,
+                f"{Data.database.field.name}__"
+                f"{ManagedDatabase.name.field.name}",
                 Data.user_index.field.name,
             )
         )
 
     def search(self, input_data):
+        """
+        Основной метод поиска. Находит все совпадения для указанного значения
+        и возвращает соответствующие результаты.
+        """
+        indexes = list(self._search_value(input_data))
+
+        if not indexes:
+            return self.none()
+
         return (
-            self._search(self._search_value(input_data))
+            self._search(indexes)
             .select_related(Data.database.field.name)
             .only(
                 f"{Data.database.field.name}__"
@@ -153,6 +184,7 @@ class DataMagager(models.Manager):
                 Data.database.field.name,
                 Data.user_index.field.name,
                 Data.column_name.field.name,
+                Data.value.field.name,
             )
         )
 

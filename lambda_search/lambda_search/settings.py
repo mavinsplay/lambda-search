@@ -25,7 +25,11 @@ ENCRYPTION_KEY = os.getenv(
 
 DEBUG = env_validator(os.getenv("DJANGO_DEBUG", "true"))
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "lamdba-search.ru").split(
+    ","
+)
+
+CSRF_TRUSTED_ORIGINS = [f"https://{x}" for x in ALLOWED_HOSTS]
 
 DEFAULT_USER_IS_ACTIVE = env_validator(
     os.getenv("DJANGO_DEFAULT_USER_IS_ACTIVE", "true" if DEBUG else "false"),

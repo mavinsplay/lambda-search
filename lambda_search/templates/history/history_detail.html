@@ -22,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for result in results %}
+      {% for result in query.result %}
       <tr>
         <td>{{ result.database }}</td>
         <td>{{ result.history }}</td>
@@ -33,5 +33,6 @@
       {% endfor %}
     </tbody>
   </table>
+  <a href="{% url "history:history" %}" class="text-white">назад</a>
 </div>
 {% endblock %}

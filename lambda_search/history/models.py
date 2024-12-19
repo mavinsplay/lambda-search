@@ -25,10 +25,6 @@ class QueryHistory(models.Model):
         _("Дата запроса"),
         auto_now_add=True,
     )
-    database = models.CharField(
-        _("База данных"),
-        max_length=255,
-    )
     result = models.JSONField(
         _("Результаты"),
         help_text=_("Результаты поиска в формате JSON"),
