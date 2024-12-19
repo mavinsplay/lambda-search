@@ -16,5 +16,6 @@ CMD python manage.py makemigrations \
  && python manage.py compilemessages \
  && python manage.py collectstatic --no-input \
  && gunicorn lambda_search.wsgi:application \
+    --timeout 600 \
     --workers $(nproc) \
     --bind 0.0.0.0:8000 \
