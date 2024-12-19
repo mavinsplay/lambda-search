@@ -11,15 +11,21 @@ from django.utils.translation import gettext as _
 from django.views import View
 from django.views.generic import FormView
 
+from search.encryptor import CellEncryptor
 import users.forms
 from users.models import Profile
+
 
 __all__ = ()
 
 
 class ActivateUserView(View):
     def get(self, request, username):
-        user = get_object_or_404(User, username=username)
+        Cell = CellEncryptor(settings.ENCRYPTION_KEY)
+        user = get_object_or_404(
+            User,
+            username=Cell.decrypt(username),
+        )
         now = timezone.now()
 
         if not user.profile.date_last_active:
@@ -72,18 +78,27 @@ class SignupView(FormView):
 
     @staticmethod
     def send_activation_email(user):
-        activation_link = f"{settings.SITE_URL}/auth/activate/{user.username}"
+        Cell = CellEncryptor(settings.ENCRYPTION_KEY)
+
+        path = Cell.encrypt(user.username)
+
+        activation_link = f"{settings.SITE_URL}/auth/activate/{path}"
         send_mail(
             "Activate your account",
             ("Follow the link to activate" f" account: {activation_link}"),
             settings.MAIL,
-            [user.email],
+            [users.models.UserManager().normalize_email(user.email)],
         )
 
 
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         form = users.forms.UserChangeForm(instance=request.user)
+        try:
+            request.user.profile
+        except Exception:
+            Profile.objects.create(user=request.user)
+
         profile_form = users.forms.UserProfileForm(
             instance=request.user.profile,
         )
@@ -95,27 +110,52 @@ class ProfileView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = users.forms.UserChangeForm(request.POST, instance=request.user)
+        try:
+            request.user.profile
+        except Exception:
+            Profile.objects.create(user=request.user)
+
         profile_form = users.forms.UserProfileForm(
             request.POST,
             request.FILES,
             instance=request.user.profile,
         )
-        if profile_form.is_valid():
-            profile_form.save()
-            return redirect("users:profile")
 
-        if form.is_valid():
-            user_form = form.save(commit=False)
-            user_form.mail = users.models.UserManager().normalize_email(
-                form.cleaned_data["email"],
-            )
-            user_form.save()
-            profile_form.save()
+        try:
+            if form.is_valid():
+                user_form = form.save(commit=False)
+                if form.cleaned_data["email"]:
+                    user_form.mail = users.models.UserManager().normalize_email(
+                        form.cleaned_data["email"],
+                    )
+
+                user_form.save()
+
+                messages.success(
+                    request,
+                    _("The form has been successfully submitted!"),
+                )
+                return redirect("users:profile")
+
+        except Exception as ex:
+            pass
+
+        try:
+            if profile_form.is_valid():
+                new_profile_form = profile_form.save(commit=False)
+                new_profile_form.image = profile_form.cleaned_data["image"]
+
+                new_profile_form.save()
+        
             messages.success(
                 request,
                 _("The form has been successfully submitted!"),
             )
             return redirect("users:profile")
+        
+        except Exception as ex:
+            pass
+
 
         return render(
             request,

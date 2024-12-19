@@ -2,7 +2,6 @@ __all__ = []
 
 import datetime
 import http
-from unittest import skip
 
 import django.contrib.auth.models
 import django.contrib.messages
@@ -76,8 +75,7 @@ class SignupTest(django.test.TestCase):
         self.assertEqual(count_models, 1)
 
 
-@skip
-class ActivateUserTest(django.test.TestCase):  # TODO
+class ActivateUserTest(django.test.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -205,8 +203,7 @@ class TestAuthinicateUser(django.test.TestCase):
         self.assertFalse(response.wsgi_request.user.is_authenticated)
 
 
-@skip
-class NormalEmailTests(django.test.TestCase):  # TODO
+class NormalEmailTests(django.test.TestCase):
 
     def test_has_user_mail_normal_form(self):
         data = {

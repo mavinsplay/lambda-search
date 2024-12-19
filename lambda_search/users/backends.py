@@ -6,6 +6,7 @@ import django.shortcuts
 import django.urls
 import django.utils.timezone
 
+import search.encryptor
 import users
 
 __all__ = ()
@@ -24,6 +25,11 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
             return None
 
         if user:
+            try:
+                user.profile
+            except Exception:
+                users.models.Profile.objects.create(user=user)
+
             if user.check_password(password):
                 user.profile.attempts_count = 0
                 return user
@@ -51,9 +57,13 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                     ),
                 )
 
+                Cell = search.encryptor.CellEncryptor(django.conf.settings.ENCRYPTION_KEY)
+
                 activation_path = django.urls.reverse(
                     "users:activate",
-                    args=[user.username],
+                    args=[
+                        Cell.encrypt(username),
+                    ],
                 )
                 confirmation_link = (
                     "Suspicious account activity has been detected."
@@ -65,9 +75,10 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                     "Account activation",
                     confirmation_link,
                     django.conf.settings.MAIL,
-                    [user.email],
+                    [users.models.UserManager().normalize_email(user.email)],
                     fail_silently=False,
                 )
+                print(users.models.UserManager().normalize_email(user.email))
 
         return None
 

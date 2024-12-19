@@ -23,6 +23,13 @@
         </a>
       </li>
       <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-nav {% if view_name == 'feedback:feedback' %} lambda-nav-active {% endif %}"
+          {% if view_name != 'feedback:feedback' %}href="{% url 'feedback:feedback' %}"{% endif %}>
+          {% trans "Go feedback" %}
+        </a>
+      </li>
+
+      <li class="nav-item mx-1 my-auto">
         <a class="btn lambda-nav{% if view_name == 'about:about' %} lambda-nav-active{% endif %}"
           {% if view_name != 'about:about' %}href="{% url 'about:about' %}"{% endif %}>
           {% trans "About" %}
@@ -91,7 +98,6 @@
           </button>
           
           <ul class="dropdown-menu lambda-secondary">
-            {% comment %} <li><a class="dropdown-item lambda-btn" href="{% url "users:search-history" %}">{% trans "Search_history" %}</a></li> {% endcomment %}
             <li><a class="dropdown-item lambda-btn" href="{% url "users:profile" %}">{% trans "Profile" %}</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item lambda-btn" href="{% url "users:logout" %}">{% trans "Logout" %}</a></li>
