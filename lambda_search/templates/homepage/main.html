@@ -7,23 +7,41 @@
 {% endblock title %}
 
 {% block content %}
-  <div class="container text-center my-3">
-      <h1>{{ title }}</h1>
+<div class="container text-center my-5">
+  <h1 class="mb-4">{{ title }}</h1>
+  <p class="mt-3 lambda-font-medium">{% trans "Сервис проверки утечек пользовательских данных" %}</p>
+</div>
+<div class="container-md d-flex justify-content-around flex-wrap">
+  
+  <div class="card shadow-sm p-3 mb-4 text-center" style="width: 18rem;">
+      <div class="card-body">
+          <h5 class="card-title">{% trans "Приватность" %}</h5>
+          <p class="card-text">
+              {% trans "Наш сервис позволяет вам быстро и удобно проверить, были ли ваши личные данные слиты в общедоступные базы данных. Мы заботимся о вашей приватности и никогда не отображаем полные данные пользователей." %}
+          </p>
+      </div>
   </div>
-  <div class="container-md">
-    <p>
-        {% trans "Наш сервис позволяет вам быстро и удобно проверить, были ли ваши личные данные слиты в общедоступные базы данных. Мы заботимся о вашей приватности и никогда не отображаем полные данные пользователей." %}
-    </p>
-    <p>
-        {% trans "Мы используем только современные технологии шифрования для хранения и обработки данных. Даже в случае кражи баз данных, получить доступ к информации будет невозможно." %}
-    </p>
-    <p>
-        {% trans "Все соединения осуществляются по защищенному протоколу TLS, избегая перехвата данных." %}
-    </p>
-    <div class="text-center mt-4">
-        <a class="btn btn-primary btn-lg" href="{% url "search:search" %}">
-            {% trans "Проверить свои данные" %}
-        </a>
-    </div>
+  <div class="card shadow-sm p-3 mb-4 text-center" style="width: 18rem;">
+      <div class="card-body">
+          <h5 class="card-title">{% trans "Безопасность" %}</h5>
+          <p class="card-text">
+              {% trans "Мы используем только современные технологии шифрования для хранения и обработки данных. Даже в случае кражи баз данных, получить доступ к информации будет невозможно." %}
+          </p>
+      </div>
   </div>
+  <div class="card shadow-sm p-3 mb-4 text-center" style="width: 18rem;">
+      <div class="card-body">
+          <h5 class="card-title">{% trans "Шифрование" %}</h5>
+          <p class="card-text">
+              {% trans "Все соединения осуществляются по защищенному протоколу TLS, избегая перехвата данных." %}
+          </p>
+      </div>
+  </div>
+</div>
+<div class="text-center mt-4">
+  <a class="btn lambda-btn lambda-primary btn-lg" href="{% url "search:search" %}">
+      {% trans "Проверить свои данные" %}
+  </a>
+</div>
+  
 {% endblock %}

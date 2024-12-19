@@ -22,25 +22,12 @@
           {% trans "History" %}
         </a>
       </li>
-      {% comment %} <li class="nav-item my-auto mx-1">
-        <a class="nav-link {% if view_name == 'about:about' %} active {% endif %}"
+      <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-nav{% if view_name == 'about:about' %} lambda-nav-active{% endif %}"
           {% if view_name != 'about:about' %}href="{% url 'about:about' %}"{% endif %}>
-          {% trans "Go about" %}
+          {% trans "About" %}
         </a>
       </li>
-      <li class="nav-item my-auto mx-1">
-        <a class="nav-link {% if view_name == 'utils:api' %} active {% endif %}"
-          {% if view_name != 'utils:api' %}href="{% url 'utils:api' %}"{% endif %}>
-          {% trans "Go api" %}
-        </a>
-      </li>
-      <li class="nav-item my-auto mx-1">
-        <a class="nav-link {% if view_name == 'feedback:feedback' %} active {% endif %}"
-          {% if view_name != 'feedback:feedback' %}href="{% url 'feedback:feedback' %}"{% endif %}>
-          {% trans "Go feedback" %}
-        </a>
-      </li>
-      {% endcomment %}
     </ul>
 
     <ul class="nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">

@@ -4,6 +4,7 @@ import re
 import django.conf
 import django.contrib.auth.models
 import django.db
+from django.utils.translation import gettext as _
 import sorl.thumbnail
 
 __all__ = ()
@@ -69,6 +70,14 @@ class User(django.contrib.auth.models.User):
         db_table = "auth_user"
 
 
+def file_size(value):
+    limit = 50 * 1024 * 1024
+    if value.size > limit:
+        raise django.core.exceptions.ValidationError(
+            _("Файл слишком большой, максимум 50 МБ"),
+        )
+
+
 class Profile(django.db.models.Model):
     user = django.db.models.OneToOneField(
         django.conf.settings.AUTH_USER_MODEL,
@@ -82,6 +91,7 @@ class Profile(django.db.models.Model):
         help_text="Upload a profile picture",
         null=True,
         blank=True,
+        validators=[file_size],
     )
 
     attempts_count = django.db.models.PositiveIntegerField(
