@@ -85,12 +85,13 @@ class SQLiteHandler(DatabaseHandler):
                         encrypted_value = self.encryptor.encrypt(value)
                         encrypted_row.append(encrypted_value)
 
-                        Data.objects.create(
+                        data_record = Data(
                             database=managed_database,
                             user_index=row_id,
                             column_name=columns[idx],
                             value=encrypted_value[:255],
                         )
+                        data_record.save()
                     else:
                         encrypted_row.append(value)
 

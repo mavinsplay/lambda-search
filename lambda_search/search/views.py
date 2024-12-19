@@ -1,28 +1,42 @@
-from django.utils.translation import gettext_lazy as _
+from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 
 from history.models import QueryHistory
+from search.encryptor import CellEncryptor
 from search.forms import SearchForm
 from search.models import Data
+
 
 __all__ = ()
 
 
-class SearchView(FormView):
+class SearchView(LoginRequiredMixin, FormView):
     template_name = "search/search.html"
     form_class = SearchForm
+    key = settings.ENCRYPTION_KEY
+    encryptor = CellEncryptor(key)
 
-    def form_valid(self, form):
-        query = form.cleaned_data["search_query"]
-        search_results = Data.objects.search(query)
-        formatted_results = self.format_results(search_results)
-
-        QueryHistory.objects.create(
-            query=query,
-            database="UnifiedDatabase",
-            result=formatted_results,
+    def get(self, request, *args, **kwargs):
+        """
+        Обработка GET-запроса для предзаполнения формы.
+        """
+        req = request.GET.get("search_query", "")
+        search_query = self.encryptor.decrypt(req) if req else ""
+        form = self.form_class(initial={"search_query": search_query})
+        return self.render_to_response(
+            self.get_context_data(form=form, results=None),
         )
 
+    def form_valid(self, form):
+        query = self.encryptor.encrypt(form.cleaned_data["search_query"])
+        search_results = Data.objects.search(query)
+        formatted_results = self._format_results(search_results)
+        QueryHistory.objects.create(
+            user=self.request.user,
+            query=query,
+            result=formatted_results,
+        )
         return self.render_to_response(
             self.get_context_data(results=formatted_results),
         )
@@ -35,7 +49,7 @@ class SearchView(FormView):
             ),
         )
 
-    def format_results(self, raw_results):
+    def _format_results(self, raw_results):
         unique_databases = self._merge_results_by_database(raw_results)
         formatted_results = []
 
@@ -50,10 +64,28 @@ class SearchView(FormView):
 
         return formatted_results
 
+    def _merge_results_by_database(self, results):
+        """
+        Группирует результаты по базе данных и собирает соответствующие данные.
+        """
+        grouped_data = {}
+
+        for item in results:
+            db_name = item.database.name
+
+            if db_name not in grouped_data:
+                grouped_data[db_name] = {
+                    "history": item.database.history,
+                    "columns": [],
+                }
+
+            grouped_data[db_name]["columns"].append(item.column_name)
+
+        return grouped_data
+
     def _categorize_data(self, columns):
         """
-        Классифицирует данные по уровням критичности (critical, medium, low)
-        с учётом нормализации названий.
+        Классифицирует данные по уровням критичности (critical, medium, low).
         """
         danger_levels = {
             "critical": {
@@ -61,7 +93,6 @@ class SearchView(FormView):
                 "email",
                 "phone_number",
                 "credit_card",
-                "card_number",
                 "cvv",
                 "address",
                 "bank_account",
@@ -73,6 +104,8 @@ class SearchView(FormView):
                 "name",
                 "zip",
                 "postal_code",
+                "username",
+                "last_name",
             },
             "low": set(),
         }
@@ -81,24 +114,33 @@ class SearchView(FormView):
 
         categorized_data = {"critical": [], "medium": [], "low": []}
         for column in normalized_columns:
-            if column in danger_levels["critical"]:
+            if (
+                column in danger_levels["critical"]
+                and column not in categorized_data["critical"]
+            ):
                 categorized_data["critical"].append(column)
-            elif column in danger_levels["medium"]:
+
+            elif (
+                column in danger_levels["medium"]
+                and column not in categorized_data["medium"]
+            ):
                 categorized_data["medium"].append(column)
-            else:
+
+            elif column not in categorized_data["low"]:
                 categorized_data["low"].append(column)
 
         return categorized_data
 
     def _normalize_column_names(self, columns):
         """
-        Приводит названия колонок к единообразному внутреннему формату.
+        Приводит названия колонок к единообразному формату.
         """
         normalization_map = {
             "email": "email",
             "почта": "email",
             "номер телефона": "phone_number",
             "phone number": "phone_number",
+            "phone": "phone_number",
             "number": "phone_number",
             "телефон": "phone_number",
             "password": "password",
@@ -113,22 +155,14 @@ class SearchView(FormView):
             "city": "city",
             "город": "city",
             "имя": "name",
+            "first_name": "name",
+            "фамилия": "last_name",
+            "пользователь": "username",
+            "профессия": "profession",
+            "работа": "job",
+            "описание": "description",
         }
 
         return [
             normalization_map.get(col.strip().lower(), col) for col in columns
         ]
-
-    def _translate_column_names(self, columns):
-        translation_map = {
-            "email": _("Email"),
-            "phone_number": _("Телефон"),
-            "password": _("Пароль"),
-            "credit_card": _("Банковская карта"),
-            "birth_date": _("Дата рождения"),
-            "address": _("Адрес"),
-            "city": _("Город"),
-            "name": _("Имя"),
-        }
-
-        return [translation_map.get(col, col) for col in columns]
