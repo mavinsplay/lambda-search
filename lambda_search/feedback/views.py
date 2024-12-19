@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
 from django.views import View
 
@@ -39,16 +39,18 @@ class FeedbackView(View):
                 user_info=feedback,
             )
 
-            for file in file_form.cleaned_data.get("files"):
-                feedback.files.create(file=file)
+            subject = 'Subject Here'
+            email = EmailMessage(subject, f'From {mail}\n' + text, settings.MAIL, [settings.MAIL])
 
-            send_mail(
-                "Тестовое сообщение",
-                text,
-                settings.MAIL,
-                [mail],
-                fail_silently=False,
-            )
+            for file in file_form.cleaned_data.get("files"):
+                email.attach(file.name, file.read(), file.content_type)
+
+            try:
+                email.send()
+                success = True
+            except Exception as ex:
+                print(ex)
+                success = False
 
             StatusLog.objects.create(
                 feedback=feedback,
@@ -56,7 +58,11 @@ class FeedbackView(View):
                 to=feedback.status,
             )
 
-            messages.success(request, "Форма успешно отправлена!")
+            if success:
+                messages.success(request, "Форма успешно отправлена!")
+            else:
+                messages.success(request, "Возникли проблемы при отправке.")
+
             return redirect("feedback:feedback")
 
         context = {

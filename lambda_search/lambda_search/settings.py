@@ -162,9 +162,9 @@ ITEMS_PER_PAGE = 5
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = "lambda-search@yandex.ru"
+DEFAULT_FROM_EMAIL = MAIL
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "lambda-search@yandex.ru"
+EMAIL_HOST_USER = MAIL
 EMAIL_HOST_PASSWORD = 'fxzxpenjgrrxjrtk'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

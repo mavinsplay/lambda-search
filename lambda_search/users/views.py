@@ -177,6 +177,7 @@ class SignupView(FormView):
         )
 
         activation_link = f"{settings.SITE_URL}/auth/activate/{path}"
+        print(users.models.UserManager().normalize_email(user.email))
         send_mail(
             "Activate your account",
             ("Follow the link to activate" f" account: {activation_link}"),

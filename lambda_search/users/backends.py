@@ -83,6 +83,7 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                     [users.models.UserManager().normalize_email(user.email)],
                     fail_silently=False,
                 )
+                print(users.models.UserManager().normalize_email(user.email))
 
         return None
 

@@ -54,7 +54,11 @@ class FeedbackForm(forms.ModelForm):
 
 
 class FilesForm(forms.ModelForm):
-    files = MultipleFileField(label="Файлы", required=False)
+    files = MultipleFileField(
+        label="Файлы",
+        required=False,
+        help_text="Добавьте файл для лучшего понимания проблемы",
+    )
 
     def __init__(self, *args, **kwargs):
         super(FilesForm, self).__init__(*args, **kwargs)
