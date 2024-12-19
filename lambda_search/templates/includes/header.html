@@ -17,12 +17,6 @@
         </a>
       </li>
       <li class="nav-item mx-1 my-auto">
-        <a class="btn lambda-nav{% if view_name == 'history:history' %} lambda-nav-active{% endif %}"
-          {% if view_name != 'history:history' %}href="{% url 'history:history' %}"{% endif %}>
-          {% trans "History" %}
-        </a>
-      </li>
-      <li class="nav-item mx-1 my-auto">
         <a class="btn lambda-nav {% if view_name == 'feedback:feedback' %} lambda-nav-active {% endif %}"
           {% if view_name != 'feedback:feedback' %}href="{% url 'feedback:feedback' %}"{% endif %}>
           {% trans "Go feedback" %}
@@ -99,6 +93,7 @@
           
           <ul class="dropdown-menu lambda-secondary">
             <li><a class="dropdown-item lambda-btn" href="{% url "users:profile" %}">{% trans "Profile" %}</a></li>
+            <li><a class="dropdown-item lambda-btn" href="{% url 'history:history' %}">{% trans "History" %}</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item lambda-btn" href="{% url "users:logout" %}">{% trans "Logout" %}</a></li>
           </ul>

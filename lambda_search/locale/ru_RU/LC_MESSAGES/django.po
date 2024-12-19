@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 02:12+0300\n"
+"POT-Creation-Date: 2024-12-20 02:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\about\apps.py:10 .\templates\includes\header.html:35
+#: .\about\apps.py:10 .\templates\includes\header.html:29
 msgid "About"
 msgstr "О проекте"
 
@@ -367,47 +367,47 @@ msgid "Search"
 msgstr "Поиск"
 
 #: .\templates\includes\header.html:22
-msgid "History"
-msgstr "History"
-
-#: .\templates\includes\header.html:28
 msgid "Go feedback"
 msgstr "Обратная связь"
 
-#: .\templates\includes\header.html:44
+#: .\templates\includes\header.html:38
 msgid "Admin-panel"
 msgstr "Админка"
 
-#: .\templates\includes\header.html:77
+#: .\templates\includes\header.html:71
 msgid "theme_button"
 msgstr "Тема"
 
-#: .\templates\includes\header.html:80
+#: .\templates\includes\header.html:74
 msgid "light_theme"
 msgstr "Светлая"
 
-#: .\templates\includes\header.html:81
+#: .\templates\includes\header.html:75
 msgid "dark_theme"
 msgstr "Тёмная"
 
-#: .\templates\includes\header.html:82
+#: .\templates\includes\header.html:76
 msgid "auto_theme"
 msgstr "Авто"
 
-#: .\templates\includes\header.html:101 .\templates\users\profile.html:59
+#: .\templates\includes\header.html:95 .\templates\users\profile.html:59
 msgid "Profile"
 msgstr "Профиль"
 
-#: .\templates\includes\header.html:103
+#: .\templates\includes\header.html:96
+msgid "History"
+msgstr "История запросов"
+
+#: .\templates\includes\header.html:98
 msgid "Logout"
 msgstr "Выход"
 
-#: .\templates\includes\header.html:110 .\templates\users\login.html:16
+#: .\templates\includes\header.html:105 .\templates\users\login.html:16
 #: .\templates\users\password_reset_complete.html:20
 msgid "Login"
 msgstr "Вход"
 
-#: .\templates\includes\header.html:116 .\templates\users\signup.html:16
+#: .\templates\includes\header.html:111 .\templates\users\signup.html:16
 msgid "Signup"
 msgstr "Регистрация"
 
