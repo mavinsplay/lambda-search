@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 00:49+0300\n"
+"POT-Creation-Date: 2024-12-20 02:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\about\apps.py:11 .\templates\includes\header.html:28
+#: .\about\apps.py:10 .\templates\includes\header.html:35
 msgid "About"
 msgstr "About"
 
@@ -25,7 +25,7 @@ msgstr "About"
 msgid "User Agreement"
 msgstr "User agreement"
 
-#: .\history\apps.py:10 .\search\models.py:34
+#: .\history\apps.py:10 .\search\models.py:36
 msgid "История"
 msgstr "History"
 
@@ -45,26 +45,26 @@ msgstr "Request"
 msgid "Дата запроса"
 msgstr "Date of request"
 
-#: .\history\models.py:29 .\search\models.py:89
-msgid "База данных"
-msgstr "Database"
-
-#: .\history\models.py:33
+#: .\history\models.py:29
 msgid "Результаты"
 msgstr "Results"
 
-#: .\history\models.py:34
+#: .\history\models.py:30
 msgid "Результаты поиска в формате JSON"
 msgstr "Search results in JSON format"
 
-#: .\history\models.py:38
+#: .\history\models.py:34
 msgid "История запроса"
 msgstr "Request history"
 
-#: .\history\models.py:39 .\templates\history\history.html:6
+#: .\history\models.py:35 .\templates\history\history.html:6
 #: .\templates\history\history.html:11
 msgid "История запросов"
 msgstr "Request history"
+
+#: .\history\views.py:93
+msgid "Запрос успешно удалён."
+msgstr "Your password was successfully changed"
 
 #: .\homepage\apps.py:10
 msgid "Домашняя страница"
@@ -74,11 +74,11 @@ msgstr "Homepage"
 msgid "Lambda Search"
 msgstr "Lambda Search"
 
-#: .\lambda_search\settings.py:151
+#: .\lambda_search\settings.py:157
 msgid "English"
 msgstr "English"
 
-#: .\lambda_search\settings.py:152
+#: .\lambda_search\settings.py:158
 msgid "Russian"
 msgstr "Russian"
 
@@ -94,94 +94,72 @@ msgstr "Error opening database: {str(e)}"
 msgid "Поиск"
 msgstr "Search"
 
-#: .\search\models.py:23 .\search\models.py:166
+#: .\search\forms.py:34
+msgid "Длина запроса должна быть от 8 до 100 символов."
+msgstr "The length of the request must be between 8 and 100 characters."
+
+#: .\search\forms.py:45
+#, fuzzy
+#| msgid "Введите новый пароль"
+msgid "Введите запрос..."
+msgstr "Enter new password"
+
+#: .\search\models.py:24 .\search\models.py:198
 msgid "Имя базы данных"
 msgstr "Database name"
 
-#: .\search\models.py:35
+#: .\search\models.py:37
 msgid "Краткая история об утечке (не более 500 символов)"
 msgstr "Short history of the leak (up to 500 characters)"
 
-#: .\search\models.py:36
+#: .\search\models.py:38
 msgid "История об этой базе не найдена"
 msgstr "No history found for this database"
 
-#: .\search\models.py:43
+#: .\search\models.py:45
 msgid "Активна"
 msgstr "Active"
 
-#: .\search\models.py:44
+#: .\search\models.py:46
 msgid "Определяет, используется ли эта база данных"
 msgstr "Defines whether this database is in use"
 
-#: .\search\models.py:48
+#: .\search\models.py:50
 msgid "Зашифрована"
 msgstr "Encrypted"
 
-#: .\search\models.py:52
+#: .\search\models.py:54
 msgid "Дата создания"
 msgstr "Creation date"
 
-#: .\search\models.py:57
+#: .\search\models.py:59
 msgid "Дата обновления"
 msgstr "Date of update"
 
-#: .\search\models.py:90
+#: .\search\models.py:95
+msgid "База данных"
+msgstr "Database"
+
+#: .\search\models.py:96
 msgid "Базы данных"
 msgstr "Databases"
 
-#: .\search\models.py:169
+#: .\search\models.py:201
 msgid "Индекс пользователя"
 msgstr "User index"
 
-#: .\search\models.py:172
+#: .\search\models.py:204
 msgid "Название колонки"
 msgstr "Column name"
 
-#: .\search\models.py:176
+#: .\search\models.py:208
 msgid "Значение"
 msgstr "Value"
 
-#: .\search\models.py:182 .\search\models.py:183
-#: .\templates\history\history_detail.html:19 .\templates\search\search.html:31
+#: .\search\models.py:214 .\search\models.py:215
+#: .\templates\includes\table.html:7 .\templates\search\search.html:40
 msgid "Данные"
 msgstr "Data"
-
-#: .\search\views.py:16 .\templates\includes\header.html:16
-msgid "Search"
-msgstr "Search"
-
-#: .\search\views.py:128
-msgid "Email"
-msgstr "Email"
-
-#: .\search\views.py:129
-msgid "Телефон"
-msgstr "Phone"
-
-#: .\search\views.py:130
-msgid "Пароль"
-msgstr "Password"
-
-#: .\search\views.py:131
-msgid "Банковская карта"
-msgstr "Bank card"
-
-#: .\search\views.py:132
-msgid "Дата рождения"
-msgstr "Birthday date"
-
-#: .\search\views.py:133
-msgid "Адрес"
-msgstr "Address"
-
-#: .\search\views.py:134
-msgid "Город"
-msgstr "City"
-
-#: .\search\views.py:135
-msgid "Имя"
-msgstr "Name"
 
 #: .\templates\about\about.html:15
 msgid "О проекте"
@@ -195,11 +173,10 @@ msgid ""
 "анализировать такие данные, как электронная почта, номера телефонов, пароли, "
 "и многое другое."
 msgstr ""
-"Lambda Search is a tool that helps users find
-out if their data has been compromised as a result of leaks. We strive
-to make " verification " convenient, safe and useful for everyone. Our service allows you to "
-"analyze data such as email, phone numbers, passwords, "
-"and more."
+"Lambda Search is a tool that helps users findout if their data has been "
+"compromised as a result of leaks. We striveto make  verification  "
+"convenient, safe and useful for everyone. Our service allows you to analyze "
+"data such as email, phone numbers, passwords, and more."
 
 #: .\templates\about\about.html:22
 msgid "Команда"
@@ -222,8 +199,8 @@ msgid ""
 "Наша команда работает над созданием сервиса, который станет доступным и "
 "актуальным для российских пользователей."
 msgstr ""
-"Our team is working on creating a service that will be accessible and
-relevant to Russian users."
+"Our team is working on creating a service that will be accessible "
+"andrelevant to Russian users."
 
 #: .\templates\about\about.html:34
 msgid "Используемые технологии"
@@ -246,8 +223,7 @@ msgid ""
 "Мы применяем современные технологии для обеспечения надежности и "
 "производительности сервиса."
 msgstr ""
-"We use modern technologies to ensure reliability and
-service performance."
+"We use modern technologies to ensure reliability andservice performance."
 
 #: .\templates\about\about.html:46
 msgid "Перспективы"
@@ -259,9 +235,9 @@ msgid ""
 "другими сервисами и внедрить функции интеллектуального поиска утечек с "
 "использованием искусственного интеллекта."
 msgstr ""
-"In the future, we plan to add more databases, improve integration with
-other services, and implement intelligent leak detection functions
-using artificial intelligence."
+"In the future, we plan to add more databases, improve integration withother "
+"services, and implement intelligent leak detection functionsusing artificial "
+"intelligence."
 
 #: .\templates\admin\error.html:4
 msgid "Ошибка"
@@ -283,6 +259,40 @@ msgstr "Table:"
 msgid "В базе данных нет таблиц или данные не могут быть загружены."
 msgstr "There are no tables in the database or the data cannot be loaded."
 
+#: .\templates\feedback\feedback.html:14 .\templates\users\signup.html:72
+msgid "I accept the terms of the"
+msgstr "I accept the terms of the"
+
+#: .\templates\feedback\feedback.html:14 .\templates\users\signup.html:72
+msgid "user agreement"
+msgstr "user agreement"
+
+#: .\templates\history\history.html:28
+#, fuzzy
+#| msgid "Домашняя страница"
+msgid "Навигация по страницам"
+msgstr "Homepage"
+
+#: .\templates\history\history.html:32
+msgid "Первая"
+msgstr "first"
+
+#: .\templates\history\history.html:37 .\templates\history\history.html:44
+msgid "Предыдущая"
+msgstr "before"
+
+#: .\templates\history\history.html:50
+msgid "из"
+msgstr "of"
+
+#: .\templates\history\history.html:56 .\templates\history\history.html:65
+msgid "Следующая"
+msgstr "next"
+
+#: .\templates\history\history.html:59
+msgid "Последняя"
+msgstr "last"
+
 #: .\templates\history\history_detail.html:6
 #: .\templates\history\history_detail.html:10
 msgid "Детали запроса"
@@ -300,14 +310,6 @@ msgstr "Date:"
 msgid "Результаты:"
 msgstr "Results:"
 
-#: .\templates\history\history_detail.html:17 .\templates\search\search.html:29
-msgid "Ресурс"
-msgstr "Resource"
-
-#: .\templates\history\history_detail.html:18 .\templates\search\search.html:30
-msgid "История утечки"
-msgstr "Leak history"
-
 #: .\templates\homepage\main.html:12
 msgid "Сервис проверки утечек пользовательских данных"
 msgstr "Service for checking user data leaks"
@@ -322,9 +324,9 @@ msgid ""
 "данные слиты в общедоступные базы данных. Мы заботимся о вашей приватности и "
 "никогда не отображаем полные данные пользователей."
 msgstr ""
-"Our service allows you to quickly and conveniently check whether your personal
-data has been merged into public databases. We take care of your privacy and "
-"never display complete user data."
+"Our service allows you to quickly and conveniently check whether your "
+"personaldata has been merged into public databases. We take care of your "
+"privacy and never display complete user data."
 
 #: .\templates\homepage\main.html:26
 msgid "Безопасность"
@@ -336,9 +338,9 @@ msgid ""
 "обработки данных. Даже в случае кражи баз данных, получить доступ к "
 "информации будет невозможно."
 msgstr ""
-"We use only modern encryption technologies for storing and
-processing data. Even in the case of database theft, it will be impossible to access the "
-" information."
+"We use only modern encryption technologies for storing andprocessing data. "
+"Even in the case of database theft, it will be impossible to access the  "
+"information."
 
 #: .\templates\homepage\main.html:34
 msgid "Шифрование"
@@ -349,70 +351,93 @@ msgid ""
 "Все соединения осуществляются по защищенному протоколу TLS, избегая "
 "перехвата данных."
 msgstr ""
-"All connections are made over the secure TLS protocol, avoiding data interception."
+"All connections are made over the secure TLS protocol, avoiding data "
+"interception."
 
 #: .\templates\homepage\main.html:43
 msgid "Проверить свои данные"
 msgstr "Repeat request"
 
+#: .\templates\includes\header.html:16
+msgid "Search"
+msgstr "Search"
+
 #: .\templates\includes\header.html:22
 msgid "History"
 msgstr "History"
 
-#: .\templates\includes\header.html:37
+#: .\templates\includes\header.html:28
+msgid "Go feedback"
+msgstr "Feedback"
+
+#: .\templates\includes\header.html:44
 msgid "Admin-panel"
 msgstr "Admin Panel"
 
-#: .\templates\includes\header.html:70
+#: .\templates\includes\header.html:77
 msgid "theme_button"
 msgstr "Theme"
 
-#: .\templates\includes\header.html:73
+#: .\templates\includes\header.html:80
 msgid "light_theme"
 msgstr "Light"
 
-#: .\templates\includes\header.html:74
+#: .\templates\includes\header.html:81
 msgid "dark_theme"
 msgstr "Dark"
 
-#: .\templates\includes\header.html:75
+#: .\templates\includes\header.html:82
 msgid "auto_theme"
 msgstr "Auto"
 
-#: .\templates\includes\header.html:96 .\templates\users\profile.html:59
+#: .\templates\includes\header.html:101 .\templates\users\profile.html:59
 msgid "Profile"
 msgstr "Profile"
 
-#: .\templates\includes\header.html:98
+#: .\templates\includes\header.html:103
 msgid "Logout"
 msgstr "Logout"
 
-#: .\templates\includes\header.html:105 .\templates\users\login.html:16
+#: .\templates\includes\header.html:110 .\templates\users\login.html:16
 #: .\templates\users\password_reset_complete.html:20
 msgid "Login"
 msgstr "Login"
 
-#: .\templates\includes\header.html:111 .\templates\users\signup.html:16
+#: .\templates\includes\header.html:116 .\templates\users\signup.html:16
 msgid "Signup"
 msgstr "Signup"
 
-#: .\templates\includes\history_card.html:5
+#: .\templates\includes\history_card.html:6
 msgid "Дата запроса:"
 msgstr "Request date:"
 
-#: .\templates\includes\history_card.html:7
+#: .\templates\includes\history_card.html:10
 msgid "Данные:"
 msgstr "Data:"
 
-#: .\templates\includes\history_card.html:21
+#: .\templates\includes\history_card.html:16
+msgid "и ещё"
+msgstr "and more"
+
+#: .\templates\includes\history_card.html:16
+msgid "элемента"
+msgstr "element"
+
+#: .\templates\includes\history_card.html:19
+#, fuzzy
+#| msgid "Данные"
+msgid "Данных нет"
+msgstr "Data"
+
+#: .\templates\includes\history_card.html:27
 msgid "Повторить запрос"
 msgstr "Repeat request"
 
-#: .\templates\includes\history_card.html:24
+#: .\templates\includes\history_card.html:31
 msgid "Подробнее"
 msgstr "Details"
 
-#: .\templates\includes\history_card.html:25
+#: .\templates\includes\history_card.html:35
 msgid "Удалить"
 msgstr "Delete"
 
@@ -428,7 +453,15 @@ msgstr "Medium:"
 msgid "Низкие:"
 msgstr "Low:"
 
-#: .\templates\search\search.html:23
+#: .\templates\includes\table.html:5 .\templates\search\search.html:38
+msgid "Ресурс"
+msgstr "Resource"
+
+#: .\templates\includes\table.html:6 .\templates\search\search.html:39
+msgid "История утечки"
+msgstr "Leak history"
+
+#: .\templates\search\search.html:24
 msgid "Найти"
 msgstr "Find"
 
@@ -444,7 +477,7 @@ msgstr "Password"
 msgid "Forgot password?"
 msgstr "Forgot password?"
 
-#: .\templates\users\login.html:59 .\templates\users\signup.html:82
+#: .\templates\users\login.html:59 .\templates\users\signup.html:86
 msgid "Login_confirm"
 msgstr "Login"
 
@@ -561,47 +594,35 @@ msgstr "Email"
 msgid "repeat_password_placeholder"
 msgstr "Repeat password"
 
-#: .\templates\users\signup.html:72
-msgid "I accept the terms of the"
-msgstr "I accept the terms of the"
-
-#: .\templates\users\signup.html:72
-msgid "user agreement"
-msgstr "user agreement"
-
-#: .\templates\users\signup.html:77
+#: .\templates\users\signup.html:82
 msgid "Signup_confirm"
 msgstr "Sign up"
 
-#: .\templates\users\signup.html:82
+#: .\templates\users\signup.html:86
 msgid "Already have an account?"
 msgstr "Already have an account?"
 
-#: .\templates\users\user_detail.html:6
+#: .\templates\users\user_detail.html:10
 msgid "Информация о пользователе"
 msgstr "User information"
 
-#: .\templates\users\user_detail.html:7
+#: .\templates\users\user_detail.html:11
 msgid "Почта:"
 msgstr "Email:"
 
-#: .\templates\users\user_detail.html:8
+#: .\templates\users\user_detail.html:12
 msgid "Имя:"
 msgstr "First name:"
 
-#: .\templates\users\user_detail.html:9
+#: .\templates\users\user_detail.html:13
 msgid "Фамилия:"
 msgstr "Last name:"
 
-#: .\templates\users\user_list.html:6
-msgid "Список пользователей"
-msgstr "User list"
-
-#: .\users\forms.py:43
+#: .\users\forms.py:47
 msgid "Enter your login"
 msgstr "Enter your login"
 
-#: .\users\forms.py:59
+#: .\users\forms.py:63
 msgid "Choose your picture"
 msgstr "Choose your picture"
 
@@ -609,21 +630,48 @@ msgstr "Choose your picture"
 msgid "Файл слишком большой, максимум 50 МБ"
 msgstr "File is too large, maximum 50 MB"
 
-#: .\users\views.py:56
+#: .\users\views.py:45
 msgid "User successfully activated"
 msgstr "User successfully activated"
 
-#: .\users\views.py:64
+#: .\users\views.py:53
 msgid "Profile activation was available for"
 msgstr "Profile activation was available for"
 
-#: .\users\views.py:69
+#: .\users\views.py:58
 msgid "User is already activated"
 msgstr "User is already activated"
 
-#: .\users\views.py:132
+#: .\users\views.py:137 .\users\views.py:153
 msgid "The form has been successfully submitted!"
 msgstr "The form has been successfully submitted!"
+
+#~ msgid "Email"
+#~ msgstr "Email"
+
+#~ msgid "Телефон"
+#~ msgstr "Phone"
+
+#~ msgid "Пароль"
+#~ msgstr "Password"
+
+#~ msgid "Банковская карта"
+#~ msgstr "Bank card"
+
+#~ msgid "Дата рождения"
+#~ msgstr "Birthday date"
+
+#~ msgid "Адрес"
+#~ msgstr "Address"
+
+#~ msgid "Город"
+#~ msgstr "City"
+
+#~ msgid "Имя"
+#~ msgstr "Name"
+
+#~ msgid "Список пользователей"
+#~ msgstr "User list"
 
 #~ msgid "Смена пароля"
 #~ msgstr "Password change"
@@ -659,9 +707,6 @@ msgstr "The form has been successfully submitted!"
 
 #~ msgid "Войти"
 #~ msgstr "Login"
-
-#~ msgid "Введите новый пароль"
-#~ msgstr "Enter new password"
 
 #~ msgid "Сохранить новый пароль"
 #~ msgstr "Save new password"
