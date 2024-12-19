@@ -43,7 +43,6 @@ prod-deploy:
   stage: deploy
   only:
     - main
-    - docker
   dependencies:
     - black-check
     - flake8-check
@@ -61,7 +60,7 @@ prod-deploy:
       ssh $SSH_USER@$SERVER_IP << EOF
         cd lambda_search
         docker compose down
-        git reset --hard origin/docker
-        git pull origin docker
+        git reset --hard origin/main
+        git pull origin main
         docker compose --profile prod up --build -d
       EOF
