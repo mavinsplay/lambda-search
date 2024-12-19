@@ -12,12 +12,6 @@ urlpatterns = [
         views.ActivateUserView.as_view(),
         name="activate",
     ),
-    path("users/", views.UserListView.as_view(), name="user-list"),
-    path(
-        "users/<int:user_id>/",
-        views.UserDetailView.as_view(),
-        name="user-detail",
-    ),
     path("profile/", views.ProfileView.as_view(), name="profile"),
     path("login/", views.CustomLoginView.as_view(), name="login"),
     path(

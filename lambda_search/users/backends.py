@@ -6,6 +6,7 @@ import django.shortcuts
 import django.urls
 import django.utils.timezone
 
+import search.encryptor
 import users
 
 __all__ = ()
@@ -55,19 +56,13 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                         "You should receive an activation email."
                     ),
                 )
-                key = "lamda_search"
+
+                Cell = search.encryptor.CellEncryptor(django.conf.settings.ENCRYPTION_KEY)
 
                 activation_path = django.urls.reverse(
                     "users:activate",
                     args=[
-                        users.views.vigenere_encode(
-                            username,
-                            key
-                            * (
-                                len(username) // len(key)
-                                + key[: len(username) % len(key)]
-                            ),
-                        ),
+                        Cell.encrypt(username),
                     ],
                 )
                 confirmation_link = (

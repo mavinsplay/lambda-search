@@ -12,87 +12,12 @@ from django.utils.translation import gettext as _
 from django.views import View
 from django.views.generic import DetailView, FormView, ListView
 
+from search.encryptor import CellEncryptor
 import users.forms
 from users.models import Profile
 
 
 __all__ = ()
-
-
-def vigenere_encode(plaintext, key):
-    key = key.lower()
-    key_length = len(key)
-
-    encrypted_text = []
-
-    key_index = 0
-
-    for char in plaintext:
-        if char.isalpha():
-            shift = ord(key[key_index % key_length]) - ord("a")
-            if char.islower():
-                encrypted_char = chr(
-                    (ord(char) - ord("a") + shift) % 26 + ord("a"),
-                )
-            else:
-                encrypted_char = chr(
-                    (ord(char) - ord("A") + shift) % 26 + ord("A"),
-                )
-
-            encrypted_text.append(encrypted_char)
-            key_index += 1
-        else:
-            caesar_shift = 13
-            encrypted_digit = int(char) + caesar_shift
-            encrypted_text.append(str(encrypted_digit))
-
-    return "".join(encrypted_text)
-
-
-def vigenere_decode(encrypted_text, key):
-    key = key.lower()
-    key_length = len(key)
-
-    decrypted_text = []
-
-    key_index = 0
-
-    for char in encrypted_text:
-        if char.isalpha():
-            shift = ord(key[key_index % key_length]) - ord("a")
-            if char.islower():
-                decrypted_char = chr(
-                    (ord(char) - ord("a") + shift) % 26 + ord("a"),
-                )
-            else:
-                decrypted_char = chr(
-                    (ord(char) - ord("A") + shift) % 26 + ord("A"),
-                )
-
-            decrypted_text.append(decrypted_char)
-            key_index += 1
-        else:
-            caesar_shift = 13
-            decrypted_digit = int(char) - caesar_shift
-            decrypted_text.append(str(decrypted_digit))
-
-    return "".join(decrypted_text)
-
-
-class UserListView(ListView):
-    model = User
-    template_name = "users/user_list.html"
-    context_object_name = "users"
-
-    def get_queryset(self):
-        return User.objects.filter(is_active=True)
-
-
-class UserDetailView(DetailView):
-    model = User
-    template_name = "users/user_detail.html"
-    context_object_name = "user"
-    pk_url_kwarg = "user_id"
 
 
 class CustomLoginView(LoginView):
@@ -107,14 +32,10 @@ class CustomLoginView(LoginView):
 
 class ActivateUserView(View):
     def get(self, request, username):
-        key = "lamda_search"
+        Cell = CellEncryptor(settings.ENCRYPTION_KEY)
         user = get_object_or_404(
             User,
-            username=vigenere_decode(
-                username,
-                key * (len(username) // len(key))
-                + key[: len(username) % len(key)],
-            ),
+            username=Cell.decrypt(username),
         )
         now = timezone.now()
 
@@ -168,16 +89,11 @@ class SignupView(FormView):
 
     @staticmethod
     def send_activation_email(user):
-        key = "lamda_search"
+        Cell = CellEncryptor(settings.ENCRYPTION_KEY)
 
-        path = vigenere_encode(
-            user.username,
-            key * (len(user.username) // len(key))
-            + key[: len(user.username) % len(key)],
-        )
+        path = Cell.encrypt(user.username)
 
         activation_link = f"{settings.SITE_URL}/auth/activate/{path}"
-        print(users.models.UserManager().normalize_email(user.email))
         send_mail(
             "Activate your account",
             ("Follow the link to activate" f" account: {activation_link}"),
@@ -233,7 +149,7 @@ class ProfileView(LoginRequiredMixin, View):
                 return redirect("users:profile")
 
         except Exception as ex:
-            print(ex)
+            pass
 
         try:
             if profile_form.is_valid():
@@ -249,7 +165,7 @@ class ProfileView(LoginRequiredMixin, View):
             return redirect("users:profile")
         
         except Exception as ex:
-            print(ex)
+            pass
 
 
         return render(
