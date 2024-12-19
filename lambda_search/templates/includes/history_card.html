@@ -1,0 +1,38 @@
+{% load i18n %}
+{% load static %}
+<div class="card d-flex flex-column" style="height: 100%">
+    <div class="card-body">
+        <h5 class="card-title">{{ query.query }}</h5>
+        <p class="card-text">{% trans "Дата запроса:" %} {{ query.created_at }}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        {% if query.result %}
+        <strong class="text-center">{% trans "Данные:" %}</strong>
+          {% with result=query.result.0 %}
+            <h5 class="m-2">{{ result.database }}</h5>
+            <li class="list-group-item">{% include "includes/search_result.html" %}</li>
+          {% endwith %}
+          {% if query.result|length > 1 %}
+            <strong class="text-center">{% trans "и ещё" %} {{ query.result|length }} {% trans "элемента" %}</strong>
+          {% endif %}
+        {% else %}
+        <h2 class="text-center">{% trans "Данных нет" %}</h2>
+        {% endif %}
+    </ul>
+    <div class="card-body mt-auto">
+        {% if query.can_repeat %}
+        <form method="post" class="d-inline">
+            {% csrf_token %}
+            <input type="hidden" name="query_id" value="{{ query.id }}">
+            <button class="btn btn-primary">{% trans "Повторить запрос" %}</button>
+        </form>
+        {% endif %}
+        {% if query.result %}
+          <a href="{% url 'history:history-detail' query.id %}" class="btn btn-secondary">{% trans "Подробнее" %}</a>
+        {% endif %}
+        <form method="post" action="{% url 'history:history-delete' query.id %}" class="d-inline">
+            {% csrf_token %}
+            <button class="btn btn-danger">{% trans "Удалить" %}</button>
+        </form>
+    </div>
+</div>

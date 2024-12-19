@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+{% block title %}{% trans "Детали запроса" %}{% endblock title %}
+
+{% block content %}
+<div class="container-md">
+  <h1 class="text-center">{% trans "Детали запроса" %}</h1>
+  <p><strong>{% trans "Запрос:" %}</strong> {{ query.query }}</p>
+  <p><strong>{% trans "Дата:" %}</strong> {{ query.created_at }}</p>
+  <h3>{% trans "Результаты:" %}</h3>
+  {% include "includes/table.html" %}
+  <a href="{% url "history:history" %}" class="text-white">назад</a>
+</div>
+{% endblock %}

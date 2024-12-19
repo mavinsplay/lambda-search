@@ -1,0 +1,124 @@
+{% load i18n %}
+{% load static %}
+{% with request.resolver_match.view_name as view_name %}
+<header class="container-fluid mt-3">
+  <div class="d-flex flex-wrap align-items-center justify-content-center
+  justify-content-md-between lambda-secondary rounded-4 mx-2 p-3">
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">
+      <li class="nav-item my-auto mx-2 me-3">
+        <a href="{% url 'homepage:homepage' %}">
+          <img src="{% static 'images/logo.png' %}" height="40" alt="search">
+        </a>
+      </li>
+      <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-nav{% if view_name == 'search:search' %} lambda-nav-active{% endif %}"
+          {% if view_name != 'search:search' %}href="{% url 'search:search' %}"{% endif %}>
+          {% trans "Search" %}
+        </a>
+      </li>
+      <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-nav{% if view_name == 'history:history' %} lambda-nav-active{% endif %}"
+          {% if view_name != 'history:history' %}href="{% url 'history:history' %}"{% endif %}>
+          {% trans "History" %}
+        </a>
+      </li>
+      <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-nav {% if view_name == 'feedback:feedback' %} lambda-nav-active {% endif %}"
+          {% if view_name != 'feedback:feedback' %}href="{% url 'feedback:feedback' %}"{% endif %}>
+          {% trans "Go feedback" %}
+        </a>
+      </li>
+
+      <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-nav{% if view_name == 'about:about' %} lambda-nav-active{% endif %}"
+          {% if view_name != 'about:about' %}href="{% url 'about:about' %}"{% endif %}>
+          {% trans "About" %}
+        </a>
+      </li>
+    </ul>
+
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-end mb-md-0">
+      {% if request.user.is_authenticated and request.user.is_staff %}
+        <li class="nav-item my-auto mx-1">
+          <a class="btn lambda-primary lambda-btn" href="{% url 'admin:index' %}">
+            {% trans "Admin-panel" %}
+          </a>
+        </li>
+      {% endif %}
+
+      <div class="dropdown my-auto mx-1 lambda-nav lambda-nav-active">
+        <button id="language-text" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {% get_current_language as LANGUAGE_CODE %}
+          {% get_language_info for LANGUAGE_CODE as current_language %}
+          {{ current_language.name_local }}
+        </button>
+        <ul class="dropdown-menu lambda-secondary">
+          {% get_available_languages as LANGUAGES %}
+          {% get_language_info_list for LANGUAGES as languages %}
+          {% for language in languages%}
+            <li>
+              <form action="{% url 'set_language' %}" method="post" id="{{language.code}}_form">
+                {% csrf_token %}
+                <input type="hidden" name="language" value="{{ language.code }}">
+                <button type="button" class="dropdown-item lambda-btn {% if language.code == current_language.code %}lambda-primary{% endif %}"
+                aria-pressed="{% if language.code == current_language.code %}true{% else %}false{% endif %}"
+                onclick="document.getElementById('{{ language.code }}_form').submit();">
+                {{ language.name_local }}
+                </button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      
+      <div class="dropdown my-auto mx-1 lambda-nav lambda-nav-active">
+        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {% trans "theme_button" %}
+        </button>
+        <ul class="dropdown-menu lambda-secondary">
+          <li><a class="dropdown-item lambda-btn" data-bs-theme-value="light" href="">{% trans "light_theme" %}</a></li>
+          <li><a class="dropdown-item lambda-btn" data-bs-theme-value="dark" href="">{% trans "dark_theme" %}</a></li>
+          <li><a class="dropdown-item lambda-btn" data-bs-theme-value="auto" href="">{% trans "auto_theme" %}</a></li>
+        </ul>
+      </div>
+
+      {% if request.user.is_authenticated %}
+        <div class="dropdown my-auto mx-1">
+          <button class="btn dropdown-toggle bg-transparent d-flex align-items-center border-1 lambda-border" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+            {% if request.user.profile.get_small_avatar %}
+            <img src="{{ request.user.profile.get_small_avatar }}" class="rounded-circle me-2"
+            width="32" height="32" alt="">
+            {% else %}
+            <img src="{% static "images/default_avatar.svg" %}" class="rounded-circle me-2"
+            width="32" height="32" alt="">
+            {% endif %}
+            <span class="lambda-font-medium">{{ request.user.username }}</span>
+          </button>
+          
+          <ul class="dropdown-menu lambda-secondary">
+            <li><a class="dropdown-item lambda-btn" href="{% url "users:profile" %}">{% trans "Profile" %}</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item lambda-btn" href="{% url "users:logout" %}">{% trans "Logout" %}</a></li>
+          </ul>
+        </div>
+      {% else %}
+      <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-btn lambda-primary{% if view_name == 'users:login' %} lambda-btn-pressed{% endif %}"
+          {% if view_name != 'users:login' %}href="{% url 'users:login' %}"{% endif %}>
+          {% trans "Login" %}
+        </a>
+      </li>
+      <li class="nav-item mx-1 my-auto">
+        <a class="btn lambda-btn lambda-primary{% if view_name == 'users:signup' %} lambda-btn-pressed{% endif %}"
+          {% if view_name != 'users:signup' %}href="{% url 'users:signup' %}"{% endif %}>
+          {% trans "Signup" %}
+        </a>
+      </li>
+      {% endif %}
+
+    </ul>
+  </div>
+</header>
+{% endwith %}

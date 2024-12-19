@@ -1,0 +1,53 @@
+name: "lambda_search"
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${DJANGO_POSTGRESQL_NAME}
+      POSTGRES_USER: ${DJANGO_POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${DJANGO_POSTGRESQL_PASSWORD}
+    restart: always
+    volumes:
+      - ./for_docker/postgres_data:/var/lib/postgresql/data
+    profiles:
+      - prod
+      - dev
+
+  django:
+    build: .
+    container_name: django
+    env_file:
+      - ./.env
+    restart: always
+    volumes:
+      - ./for_docker/static:/lambda_search/static
+      - ./for_docker/media:/lambda_search/media
+      - ./for_docker/logs:/lambda_search/logs
+    depends_on:
+      - postgres
+    profiles:
+      - prod
+      - dev
+
+  nginx-prod:
+    image: jonasal/nginx-certbot:latest
+    container_name: nginx-prod
+    environment:
+      DEBUG: ${LAMBDA_CERTBOT_DEBUG}
+      STAGING: ${LAMBDA_CERTBOT_STAGING}
+      CERTBOT_EMAIL: ${LAMBDA_CERTBOT_EMAIL}
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./for_docker/nginx-confs/lambda_search_prod.conf:/etc/nginx/user_conf.d/lambda_search.conf
+      - ./for_docker/nginx_certificates:/etc/letsencrypt
+      - ./for_docker/static:/lambda_search/static
+      - ./for_docker/media:/lambda_search/media
+    depends_on:
+      - django
+    profiles:
+      - prod

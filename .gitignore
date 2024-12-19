@@ -7,6 +7,8 @@ __pycache__/
 django.mo
 **/static_root
 **/send_mail
+**/lambda-dbs
+**/media
 # media #
  
 # Backup files # 
@@ -68,7 +70,7 @@ wheels/
 *.whl
 *.egg-info/ 
 .installed.cfg 
-*.egg 
+*.egg
 *.manifest 
 *.spec 
 

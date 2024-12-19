@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+{% trans "История запросов" %}
+{% endblock title %}
+
+{% block content %}
+<div class="container-md">
+  <h1 class="text-center">{% trans "История запросов" %}</h1>
+  {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+  {% endif %}
+  <div class="row">
+    {% for query in queries %}
+      <div class="col-md-4 mb-3">
+        {% include "includes/history_card.html" %}
+      </div>
+    {% endfor %}
+  </div>
+  <nav aria-label="{% trans 'Навигация по страницам' %}" class="mt-4">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="{% trans 'Первая' %}">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans 'Предыдущая' %}</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">&laquo;</span>
+        </li>
+        <li class="page-item disabled">
+          <span class="page-link">{% trans 'Предыдущая' %}</span>
+        </li>
+      {% endif %}
+
+      <li class="page-item active">
+        <span class="page-link">
+          {{ page_obj.number }} {% trans 'из' %} {{ page_obj.paginator.num_pages }}
+        </span>
+      </li>
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans 'Следующая' %}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="{% trans 'Последняя' %}">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link">{% trans 'Следующая' %}</span>
+        </li>
+        <li class="page-item disabled">
+          <span class="page-link">&raquo;</span>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endblock %}

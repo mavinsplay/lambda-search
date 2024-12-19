@@ -1,0 +1,34 @@
+{% extends "admin/base_site.html" %}
+ {% block content %}
+  {% load i18n %}
+<h1>{% trans "Содержимое базы данных:" %} {{ database.name }}</h1>
+
+{% if table_data %}
+{% for table_name, table in table_data.items %}
+<h2>{% trans "Таблица:" %} {{ table_name }}</h2>
+<table border="1">
+  <thead>
+    <tr>
+      {% for column in table.columns %}
+        <th>{{ column }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in table.rows %}
+    <tr>
+      {% for cell in row %}
+        <td>{{ cell|truncatechars:50 }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %} 
+{% else %}
+<p>
+  {% trans "В базе данных нет таблиц или данные не могут быть загружены." %}
+</p>
+{% endif %}
+<a href="{{ request.META.HTTP_REFERER }}">{% trans "Назад" %}</a>
+{% endblock %}

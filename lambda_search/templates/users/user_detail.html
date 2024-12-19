@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="card lambda-secondary rounded rounded-5">
+      <div class="card-body", style="width: 30rem;">
+        <div class="col">
+          <h2>{% trans "Информация о пользователе" %}</h2>
+          <p><strong>{% trans "Почта:" %}</strong> {{ user.email }}</p>
+          <p><strong>{% trans "Имя:" %}</strong> {{ user.first_name|default:"<span style='font-style: italic;'>не указано</span>"|safe }}</p>
+          <p><strong>{% trans "Фамилия:" %}</strong> {{ user.last_name|default:"<span style='font-style: italic;'>не указано</span>"|safe }}</p>
+          {% if user.profile.image %}
+            <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" width="700">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

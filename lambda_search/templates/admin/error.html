@@ -1,0 +1,7 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Ошибка" %}</h1>
+<p>{{ error_message }}</p>
+<a href="{{ request.META.HTTP_REFERER }}">{% trans "Назад" %}</a>
+{% endblock %}

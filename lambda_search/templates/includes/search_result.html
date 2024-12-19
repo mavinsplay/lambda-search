@@ -1,0 +1,23 @@
+{% load i18n %}
+{% if result.data.critical %}
+<div>
+  <strong>{% trans "Критичные:" %}</strong>
+  <span style="color: red"
+    >{{ result.data.critical|join:", " }}</span
+  >
+</div>
+{% endif %}
+{% if result.data.medium %}
+<div>
+    <strong>{% trans "Средние:" %}</strong>
+    <span style="color: orange"
+      >{{ result.data.medium|join:", " }}</span
+    >
+  </div>
+{% endif %}
+{% if result.data.low %}
+<div>
+  <strong>{% trans "Низкие:" %}</strong>
+  <span style="color: green">{{ result.data.low|join:", " }}</span>
+</div>
+{% endif %}

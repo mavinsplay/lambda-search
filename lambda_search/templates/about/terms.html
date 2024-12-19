@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+  {{ title }}
+{% endblock title %}
+
+{% block content %}
+  <div class="container text-center my-3">
+    <h1>{{ title }}</h1>
+  </div>
+  <div class="container-md">
+    {% include terms_file %}
+  </div>
+{% endblock %}

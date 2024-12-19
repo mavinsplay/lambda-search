@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+  {{ title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container-md mt-5">
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="card lambda-secondary rounded rounded-5 lambda-login lambda-margin-center">
+      <div class="card-body">
+        <div class="col">
+
+          <p class="text-center h2 mx-1 mt-4">{% trans "Login" %}</p>
+
+          <div class="mx-1 mx-md-4">
+          {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+          <p class="alert alert-danger">
+              {{ error }}
+          </p>
+          {% endfor %}
+          {% endif %}
+          </div>
+
+          <form method="post" class="mx-1 mx-md-4 mt-4">
+            {% csrf_token %}
+
+            <div class="d-flex flex-row align-items-center mb-4">
+              <i class="bi bi-person-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="text" id="id_username" name="username" class="form-control" placeholder="{% trans 'login_or_email_placeholder' %}" required>
+                {% for error in form.username.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center mb-2 position-relative">
+              <i class="bi bi-key-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="password" id="id_password" name="password" class="form-control" placeholder="{% trans 'password_placeholder' %}" required>
+                {% for error in form.password.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <button type="button" class="btn justify-content-end align-start-0 position-absolute end-0 top-0" onclick="togglePasswordVisibility('id_password', 'pwd_toggle')">
+                <i id="pwd_toggle" class="bi bi-eye"></i>
+              </button>
+            </div>
+
+            <div class="d-flex justify-content-center align-items-center mb-3 mt-3">
+              <a class="lambda-font-medium" href="{% url "users:password-reset" %}">{% trans "Forgot password?" %}</a>
+            </div>
+
+            <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+              <button type="submit" class="btn lambda-primary lambda-btn btn-lg">{% trans "Login_confirm" %}</button>
+            </div>
+          </form>
+
+          <div class="d-flex justify-content-center align-items-center">
+            <p class="lambda-font-medium"> {% trans "Don't have an account?" %} <a href="{% url 'users:signup' %}">{% trans "Sign up" %}</a></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function togglePasswordVisibility(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    const type = input.type === 'password' ? 'text' : 'password';
+    input.type = type;
+    icon.className = type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+  }
+</script>
+{% endblock %}
