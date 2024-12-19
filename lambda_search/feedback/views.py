@@ -39,8 +39,13 @@ class FeedbackView(View):
                 user_info=feedback,
             )
 
-            subject = 'Subject Here'
-            email = EmailMessage(subject, f'From {mail}\n' + text, settings.MAIL, [settings.MAIL])
+            subject = "Subject Here"
+            email = EmailMessage(
+                subject,
+                f"From {mail}\n" + text,
+                settings.MAIL,
+                [settings.MAIL],
+            )
 
             for file in file_form.cleaned_data.get("files"):
                 email.attach(file.name, file.read(), file.content_type)
@@ -48,8 +53,7 @@ class FeedbackView(View):
             try:
                 email.send()
                 success = True
-            except Exception as ex:
-                print(ex)
+            except Exception:
                 success = False
 
             StatusLog.objects.create(

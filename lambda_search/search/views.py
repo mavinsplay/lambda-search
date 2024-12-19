@@ -7,7 +7,6 @@ from search.encryptor import CellEncryptor
 from search.forms import SearchForm
 from search.models import Data
 
-
 __all__ = ()
 
 NORMALIZATION_MAP = {

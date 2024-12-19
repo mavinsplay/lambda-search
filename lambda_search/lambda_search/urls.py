@@ -13,8 +13,6 @@ urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("auth/", include("users.urls")),
     path("auth/", include("django.contrib.auth.urls")),
-    path("search/", include("search.urls")),
-    path("history/", include("history.urls")),
     path("captcha/", include("captcha.urls")),
 ]
 

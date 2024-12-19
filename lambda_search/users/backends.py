@@ -57,12 +57,14 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                     ),
                 )
 
-                Cell = search.encryptor.CellEncryptor(django.conf.settings.ENCRYPTION_KEY)
+                cell = search.encryptor.CellEncryptor(
+                    django.conf.settings.ENCRYPTION_KEY,
+                )
 
                 activation_path = django.urls.reverse(
                     "users:activate",
                     args=[
-                        Cell.encrypt(username),
+                        cell.encrypt(username),
                     ],
                 )
                 confirmation_link = (
@@ -78,7 +80,6 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                     [users.models.UserManager().normalize_email(user.email)],
                     fail_silently=False,
                 )
-                print(users.models.UserManager().normalize_email(user.email))
 
         return None
 

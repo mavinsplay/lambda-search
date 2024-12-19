@@ -15,16 +15,15 @@ from search.encryptor import CellEncryptor
 import users.forms
 from users.models import Profile
 
-
 __all__ = ()
 
 
 class ActivateUserView(View):
     def get(self, request, username):
-        Cell = CellEncryptor(settings.ENCRYPTION_KEY)
+        cell = CellEncryptor(settings.ENCRYPTION_KEY)
         user = get_object_or_404(
             User,
-            username=Cell.decrypt(username),
+            username=cell.decrypt(username),
         )
         now = timezone.now()
 
@@ -78,9 +77,9 @@ class SignupView(FormView):
 
     @staticmethod
     def send_activation_email(user):
-        Cell = CellEncryptor(settings.ENCRYPTION_KEY)
+        cell = CellEncryptor(settings.ENCRYPTION_KEY)
 
-        path = Cell.encrypt(user.username)
+        path = cell.encrypt(user.username)
 
         activation_link = f"{settings.SITE_URL}/auth/activate/{path}"
         send_mail(
@@ -125,8 +124,10 @@ class ProfileView(LoginRequiredMixin, View):
             if form.is_valid():
                 user_form = form.save(commit=False)
                 if form.cleaned_data["email"]:
-                    user_form.mail = users.models.UserManager().normalize_email(
-                        form.cleaned_data["email"],
+                    user_form.mail = (
+                        users.models.UserManager().normalize_email(
+                            form.cleaned_data["email"],
+                        )
                     )
 
                 user_form.save()
@@ -137,7 +138,7 @@ class ProfileView(LoginRequiredMixin, View):
                 )
                 return redirect("users:profile")
 
-        except Exception as ex:
+        except Exception:
             pass
 
         try:
@@ -146,16 +147,15 @@ class ProfileView(LoginRequiredMixin, View):
                 new_profile_form.image = profile_form.cleaned_data["image"]
 
                 new_profile_form.save()
-        
+
             messages.success(
                 request,
                 _("The form has been successfully submitted!"),
             )
             return redirect("users:profile")
-        
-        except Exception as ex:
-            pass
 
+        except Exception:
+            pass
 
         return render(
             request,
