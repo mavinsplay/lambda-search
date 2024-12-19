@@ -14,3 +14,7 @@ class TermsView(TemplateView):
         language_code = get_language()
         context["terms_file"] = f"includes/terms/terms_{language_code}.html"
         return context
+
+
+class AboutView(TemplateView):
+    template_name = "about/about.html"
