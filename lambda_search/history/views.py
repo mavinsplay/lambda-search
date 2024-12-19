@@ -6,6 +6,7 @@ from django.views.generic import DetailView, ListView
 
 from history.models import QueryHistory
 
+
 __all__ = ()
 
 

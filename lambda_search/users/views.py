@@ -32,6 +32,7 @@ class UserDetailView(DetailView):
     context_object_name = "user"
     pk_url_kwarg = "user_id"
 
+
 class ActivateUserView(View):
     def get(self, request, username):
         user = get_object_or_404(User, username=username)

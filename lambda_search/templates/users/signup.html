@@ -69,7 +69,7 @@
             <div class="form-check d-flex justify-content-center mb-4 ">
               <input class="form-check-input me-2" type="checkbox" id="terms" required>
               <label class="form-check-label lambda-font-medium" for="terms">
-                {% trans "I accept the terms of the" %} <a href="#">{% trans "user agreement" %}</a>
+                {% trans "I accept the terms of the" %} <a href="{% url "about:terms" %}">{% trans "user agreement" %}</a>
               </label>
             </div>
 
