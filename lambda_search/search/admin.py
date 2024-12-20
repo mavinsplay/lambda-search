@@ -97,6 +97,7 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
             [],
         )
 
+
 @admin.register(Data)
 class DataDatabaseAdmin(admin.ModelAdmin):
     list_display = (
