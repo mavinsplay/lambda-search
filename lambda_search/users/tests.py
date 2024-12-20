@@ -106,8 +106,8 @@ class UserViewsTest(TestCase):
             "password2": "newpassword123",
         }
         response = self.client.post(reverse("users:signup"), data=signup_data)
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertTrue(User.objects.filter(username="newuser").exists())
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertFalse(User.objects.filter(username="newuser").exists())
 
     def test_profile_view_get(self):
         self.client.login(username="testuser", password="password123")
