@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 16:19+0300\n"
+"POT-Creation-Date: 2024-12-20 23:44+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,35 +25,35 @@ msgstr "About"
 msgid "User Agreement"
 msgstr "User agreement"
 
-#: .\feedback\forms.py:45 .\feedback\forms.py:53
+#: .\feedback\forms.py:46 .\feedback\forms.py:54
 msgid "Напишите ваш отзыв"
 msgstr "Type your feedback"
 
-#: .\feedback\forms.py:48
+#: .\feedback\forms.py:49
 msgid "Отзыв"
 msgstr "Feedback"
 
-#: .\feedback\forms.py:62
+#: .\feedback\forms.py:63
 msgid "Файлы"
 msgstr "Files"
 
-#: .\feedback\forms.py:64
+#: .\feedback\forms.py:65
 msgid "Добавьте файл для лучшего понимания проблемы"
 msgstr "Add a file for better understanding the problem"
 
-#: .\feedback\forms.py:86
+#: .\feedback\forms.py:85
 msgid "Введите ваше имя"
 msgstr "Enter your name"
 
-#: .\feedback\forms.py:87
+#: .\feedback\forms.py:86
 msgid "Имя"
 msgstr "Name"
 
-#: .\feedback\forms.py:91
+#: .\feedback\forms.py:90
 msgid "Введите вашу почту"
 msgstr "Enter your email"
 
-#: .\feedback\forms.py:92
+#: .\feedback\forms.py:91
 msgid "Почта"
 msgstr "Email"
 
@@ -321,7 +321,7 @@ msgstr "I accept the terms of the"
 msgid "user agreement"
 msgstr "user agreement"
 
-#: .\templates\feedback\feedback.html:88
+#: .\templates\feedback\feedback.html:87
 msgid "Submit"
 msgstr "Submit"
 
@@ -553,7 +553,7 @@ msgid "Password Change"
 msgstr "Password change"
 
 #: .\templates\users\password_change.html:62
-#: .\templates\users\password_reset_confirm.html:62
+#: .\templates\users\password_reset_confirm.html:54
 msgid "Change Password"
 msgstr "Change password"
 
