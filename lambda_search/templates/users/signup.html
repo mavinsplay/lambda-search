@@ -19,6 +19,7 @@
             <form method="post" class="mx-1 mx-md-4">
               {% csrf_token %}
 
+<<<<<<< HEAD
               <div class="d-flex flex-row align-items-center mb-4">
                 <i class="bi bi-person-fill me-2"></i>
                 <div data-mdb-input-init class="form-outline flex-fill mb-0">
@@ -28,6 +29,65 @@
                   <input type="text" id="id_username" name="username" class="form-control" placeholder="{% trans 'login_placeholder' %}" value={{ form.username.value }}>
                   {% endif %}
                   {% for error in form.username.errors %}
+=======
+            <div class="d-flex flex-row align-items-center mb-4">
+              <i class="bi bi-person-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="text" id="id_username" name="username" class="form-control" placeholder="{% trans 'login_placeholder' %}">
+                {% for error in form.username.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center mb-4">
+              <i class="bi bi-envelope-at me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="email" id="id_email" name="email" class="form-control" placeholder="{% trans 'email_placeholder' %}">
+                {% for error in form.email.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="d-flex flex-row align-items-center mb-4 position-relative">
+              <i class="bi bi-key-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="password" id="id_password1" name="password1" class="form-control" placeholder="{% trans 'password_placeholder' %}">
+                {% for error in form.password1.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <button type="button" class="btn justify-content-end align-start-0 position-absolute end-0 top-0" onclick="togglePasswordVisibility('id_password1', 'pwd_toggle1')">
+                <i id="pwd_toggle1" class="bi bi-eye"></i>
+              </button>
+            </div>
+
+            <div class="d-flex flex-row align-items-center mb-4 position-relative">
+              <i class="bi bi-key-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                
+                <input type="password" id="id_password2" name="password2" class="form-control" placeholder="{% trans 'repeat_password_placeholder' %}">
+
+                {% for error in form.password2.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+              <button type="button" class="btn justify-content-end align-start-0 position-absolute end-0 top-0" onclick="togglePasswordVisibility('id_password2', 'pwd_toggle2')">
+                <i id="pwd_toggle2" class="bi bi-eye"></i>
+              </button>
+            </div>
+
+            <div class="form-check d-flex justify-content-center mb-4 ">
+              <input class="form-check-input me-2" type="checkbox" id="terms" required>
+              <label class="form-check-label lambda-font-medium" for="terms">
+                {% trans "I accept the terms of the" %} <a href="{% url "about:terms" %}">{% trans "user agreement" %}</a>
+              </label>
+            </div>
+              <div class="d-flex flex-row align-items-center justify-content-center mb-4">
+                {{ form.captcha }}
+                {% for error in form.captcha.errors %}
+>>>>>>> origin/fix_login
                     <div class="text-danger">{{ error }}</div>
                   {% endfor %}
                 </div>

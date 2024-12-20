@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 16:19+0300\n"
+"POT-Creation-Date: 2024-12-20 23:44+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,35 +25,35 @@ msgstr "О проекте"
 msgid "User Agreement"
 msgstr "пользовательского соглашения"
 
-#: .\feedback\forms.py:45 .\feedback\forms.py:53
+#: .\feedback\forms.py:46 .\feedback\forms.py:54
 msgid "Напишите ваш отзыв"
 msgstr "Напишите ваш отзыв"
 
-#: .\feedback\forms.py:48
+#: .\feedback\forms.py:49
 msgid "Отзыв"
 msgstr "Отзыв"
 
-#: .\feedback\forms.py:62
+#: .\feedback\forms.py:63
 msgid "Файлы"
 msgstr "Файлы"
 
-#: .\feedback\forms.py:64
+#: .\feedback\forms.py:65
 msgid "Добавьте файл для лучшего понимания проблемы"
 msgstr "Добавьте файл для лучшего понимания проблемы"
 
-#: .\feedback\forms.py:86
+#: .\feedback\forms.py:85
 msgid "Введите ваше имя"
 msgstr "Введите ваше имя"
 
-#: .\feedback\forms.py:87
+#: .\feedback\forms.py:86
 msgid "Имя"
 msgstr "Имя"
 
-#: .\feedback\forms.py:91
+#: .\feedback\forms.py:90
 msgid "Введите вашу почту"
 msgstr "Введите вашу почту"
 
-#: .\feedback\forms.py:92
+#: .\feedback\forms.py:91
 msgid "Почта"
 msgstr "Почта"
 
@@ -136,7 +136,7 @@ msgstr "Длина запроса должна быть от 8 до 100 симв
 
 #: .\search\forms.py:45
 msgid "Введите запрос..."
-msgstr "Введите новый пароль"
+msgstr "Введите запрос..."
 
 #: .\search\models.py:24 .\search\models.py:198
 msgid "Имя базы данных"
@@ -323,7 +323,7 @@ msgstr "Я принимаю условия"
 msgid "user agreement"
 msgstr "пользовательского соглашения"
 
-#: .\templates\feedback\feedback.html:88
+#: .\templates\feedback\feedback.html:87
 msgid "Submit"
 msgstr ""
 
@@ -555,7 +555,7 @@ msgid "Password Change"
 msgstr "Изменить пароль"
 
 #: .\templates\users\password_change.html:62
-#: .\templates\users\password_reset_confirm.html:62
+#: .\templates\users\password_reset_confirm.html:54
 msgid "Change Password"
 msgstr "Сменить пароль"
 

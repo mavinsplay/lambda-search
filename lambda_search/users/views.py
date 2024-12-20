@@ -164,9 +164,8 @@ class ProfileView(LoginRequiredMixin, View):
                     _("The form has been successfully submitted!"),
                 )
                 return redirect("users:profile")
-        
+
         except ValueError:
             if profile_form.is_valid():
                 profile_form.save()
                 return redirect("users:profile")
-

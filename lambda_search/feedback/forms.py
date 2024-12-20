@@ -28,6 +28,9 @@ class FeedbackForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
         for field in self.visible_fields():
+            if field.name == "captcha":
+                continue
+
             field.field.widget.attrs["class"] = "form-control"
 
     captcha = CaptchaField()
