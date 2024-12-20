@@ -151,49 +151,22 @@ class ProfileView(LoginRequiredMixin, View):
             request.FILES,
             instance=request.user.profile,
         )
-
         try:
             if form.is_valid():
-                user = form.save(commit=False)
-
-                if form.cleaned_data.get("email"):
-                    user.email = users.models.UserManager().normalize_email(
-                        form.cleaned_data["email"],
-                    )
-
-                if form.cleaned_data.get("first_name"):
-                    user.first_name = form.cleaned_data.get("first_name")
-
-                if form.cleaned_data.get("last_name"):
-                    user.last_name = form.cleaned_data.get("last_name")
-
-                user.save()
-
+                user_form = form.save(commit=False)
+                user_form.mail = users.models.UserManager().normalize_email(
+                    form.cleaned_data["email"],
+                )
+                user_form.save()
+                profile_form.save()
                 messages.success(
                     request,
                     _("The form has been successfully submitted!"),
                 )
-
-        except Exception as ex:
-            logger.debug(ex)
-
-        try:
+                return redirect("users:profile")
+        
+        except ValueError:
             if profile_form.is_valid():
-                new_profile_form = profile_form.save(commit=False)
-                new_profile_form.image = profile_form.cleaned_data["image"]
+                profile_form.save()
+                return redirect("users:profile")
 
-                new_profile_form.save()
-
-            messages.success(
-                request,
-                _("The form has been successfully submitted!"),
-            )
-
-        except Exception as ex:
-            logger.debug(ex)
-
-        return render(
-            request,
-            "users/profile.html",
-            {"form": form, "profile_form": profile_form},
-        )
