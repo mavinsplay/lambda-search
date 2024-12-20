@@ -27,7 +27,8 @@ class UserChangeForm(BootstrapForm):
         model = User
         fields = (
             model.email.field.name,
-            model.username.field.name,
+            model.first_name.field.name,
+            model.last_name.field.name,
         )
 
 

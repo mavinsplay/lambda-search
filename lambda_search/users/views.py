@@ -1,3 +1,4 @@
+import logging
 from django.conf import settings
 from django.contrib import messages
 import django.contrib.auth
@@ -18,6 +19,7 @@ from users.models import Profile
 
 
 __all__ = ()
+logger = logging.getLogger(__name__)
 
 
 class CustomLoginView(LoginView):
@@ -121,6 +123,7 @@ class ProfileView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = users.forms.UserChangeForm(request.POST, instance=request.user)
+
         try:
             request.user.profile
         except Exception:
@@ -134,22 +137,26 @@ class ProfileView(LoginRequiredMixin, View):
 
         try:
             if form.is_valid():
-                user_form = form.save(commit=False)
-                if form.cleaned_data["email"]:
-                    user_form.mail = users.models.UserManager().normalize_email(
-                        form.cleaned_data["email"],
-                    )
+                user = form.save(commit=False)
 
-                user_form.save()
+                if form.cleaned_data.get("email"):
+                    user.email = users.models.UserManager().normalize_email(form.cleaned_data["email"])
+
+                if form.cleaned_data.get("first_name"):
+                    user.first_name = form.cleaned_data.get("first_name")
+
+                if form.cleaned_data.get("last_name"):
+                    user.last_name = form.cleaned_data.get("last_name")
+
+                user.save()
 
                 messages.success(
                     request,
                     _("The form has been successfully submitted!"),
                 )
-                return redirect("users:profile")
 
-        except Exception:
-            pass
+        except Exception as ex:
+            logger.debug(ex)
 
         try:
             if profile_form.is_valid():
@@ -162,11 +169,9 @@ class ProfileView(LoginRequiredMixin, View):
                 request,
                 _("The form has been successfully submitted!"),
             )
-            return redirect("users:profile")
         
         except Exception:
-            pass
-
+            logger.debug(ex)
 
         return render(
             request,
