@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -94,7 +96,7 @@ class UserViewsTest(TestCase):
             reverse("users:login"),
             data={"username": self.user.username, "password": "password123"},
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_signup_view(self):
         signup_data = {
@@ -104,14 +106,14 @@ class UserViewsTest(TestCase):
             "password2": "newpassword123",
         }
         response = self.client.post(reverse("users:signup"), data=signup_data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertTrue(User.objects.filter(username="newuser").exists())
 
     def test_profile_view_get(self):
         self.client.login(username="testuser", password="password123")
         response = self.client.get(reverse("users:profile"))
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, "users/profile.html")
 
     def test_profile_view_post(self):
@@ -127,7 +129,7 @@ class UserViewsTest(TestCase):
 
         self.user.refresh_from_db()
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertEqual(self.user.first_name, "NewFirstName")
         self.assertEqual(self.user.email, "newemail@example.com")
 
@@ -141,4 +143,4 @@ class UserViewsTest(TestCase):
 
         response = self.client.post(reverse("users:signup"), data=invalid_data)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
