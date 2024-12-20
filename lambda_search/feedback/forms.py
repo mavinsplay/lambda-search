@@ -1,4 +1,6 @@
+from captcha.fields import CaptchaField
 from django import forms
+from django.utils.translation import gettext as _
 
 from feedback.models import Feedback, FeedbackFile, UserInfo
 
@@ -26,9 +28,9 @@ class FeedbackForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
         for field in self.visible_fields():
-            field.field.widget.attrs["class"] = (
-                "form-control bg-black text-white"
-            )
+            field.field.widget.attrs["class"] = "form-control"
+
+    captcha = CaptchaField()
 
     class Meta:
         model = Feedback
@@ -38,15 +40,15 @@ class FeedbackForm(forms.ModelForm):
             Feedback.author.field.name,
         )
         help_texts = {
-            "text": "Напишите ваш отзыв",
+            "text": _("Напишите ваш отзыв"),
         }
         labels = {
-            "text": "Отзыв",
+            "text": _("Отзыв"),
         }
         widgets = {
             "text": forms.Textarea(
                 attrs={
-                    "placeholder": "Напишите ваш отзыв",
+                    "placeholder": _("Напишите ваш отзыв"),
                     "rows": 10,
                 },
             ),
@@ -55,17 +57,15 @@ class FeedbackForm(forms.ModelForm):
 
 class FilesForm(forms.ModelForm):
     files = MultipleFileField(
-        label="Файлы",
+        label=_("Файлы"),
         required=False,
-        help_text="Добавьте файл для лучшего понимания проблемы",
+        help_text=_("Добавьте файл для лучшего понимания проблемы"),
     )
 
     def __init__(self, *args, **kwargs):
         super(FilesForm, self).__init__(*args, **kwargs)
         for field in self.visible_fields():
-            field.field.widget.attrs["class"] = (
-                "form-control bg-black text-white"
-            )
+            field.field.widget.attrs["class"] = "form-control"
 
     class Meta:
         model = FeedbackFile
@@ -79,21 +79,19 @@ class UserForm(forms.ModelForm):
     name = forms.CharField(
         max_length=100,
         required=False,
-        help_text="Введите ваше имя",
-        label="Имя",
+        help_text=_("Введите ваше имя"),
+        label=_("Имя"),
     )
     mail = forms.EmailField(
         required=True,
-        help_text="Введите вашу почту",
-        label="Почта",
+        help_text=_("Введите вашу почту"),
+        label=_("Почта"),
     )
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         for field in self.visible_fields():
-            field.field.widget.attrs["class"] = (
-                "form-control bg-black text-white"
-            )
+            field.field.widget.attrs["class"] = "form-control"
 
     class Meta:
         model = UserInfo

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 02:30+0300\n"
+"POT-Creation-Date: 2024-12-20 16:19+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,42 @@ msgstr "О проекте"
 #: .\about\views.py:13
 msgid "User Agreement"
 msgstr "пользовательского соглашения"
+
+#: .\feedback\forms.py:45 .\feedback\forms.py:53
+msgid "Напишите ваш отзыв"
+msgstr "Напишите ваш отзыв"
+
+#: .\feedback\forms.py:48
+msgid "Отзыв"
+msgstr "Отзыв"
+
+#: .\feedback\forms.py:62
+msgid "Файлы"
+msgstr "Файлы"
+
+#: .\feedback\forms.py:64
+msgid "Добавьте файл для лучшего понимания проблемы"
+msgstr "Добавьте файл для лучшего понимания проблемы"
+
+#: .\feedback\forms.py:86
+msgid "Введите ваше имя"
+msgstr "Введите ваше имя"
+
+#: .\feedback\forms.py:87
+msgid "Имя"
+msgstr "Имя"
+
+#: .\feedback\forms.py:91
+msgid "Введите вашу почту"
+msgstr "Введите вашу почту"
+
+#: .\feedback\forms.py:92
+msgid "Почта"
+msgstr "Почта"
+
+#: .\feedback\models.py:108 .\users\models.py:77
+msgid "Файл слишком большой, максимум 50 МБ"
+msgstr "Файл слишком большой, максимум 50 МБ"
 
 #: .\history\apps.py:10 .\search\models.py:36
 msgid "История"
@@ -64,7 +100,7 @@ msgstr "История запросов"
 
 #: .\history\views.py:93
 msgid "Запрос успешно удалён."
-msgstr "Пароль успешно изменён"
+msgstr "Запрос успешно удалён."
 
 #: .\homepage\apps.py:10
 msgid "Домашняя страница"
@@ -155,7 +191,7 @@ msgid "Значение"
 msgstr "Значение"
 
 #: .\search\models.py:214 .\search\models.py:215
-#: .\templates\includes\table.html:7 .\templates\search\search.html:39
+#: .\templates\includes\table.html:7 .\templates\search\search.html:43
 msgid "Данные"
 msgstr "Данные"
 
@@ -267,13 +303,29 @@ msgstr "Таблица:"
 msgid "В базе данных нет таблиц или данные не могут быть загружены."
 msgstr "В базе данных нет таблиц или данные не могут быть загружены."
 
-#: .\templates\feedback\feedback.html:14 .\templates\users\signup.html:72
+#: .\templates\feedback\feedback.html:16
+msgid "Feedback Form"
+msgstr "Обратная связь"
+
+#: .\templates\feedback\feedback.html:54
+msgid "Your Feedback"
+msgstr "Обратная связь"
+
+#: .\templates\feedback\feedback.html:63
+msgid "Upload Files"
+msgstr "Загрузить файлы"
+
+#: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "I accept the terms of the"
 msgstr "Я принимаю условия"
 
-#: .\templates\feedback\feedback.html:14 .\templates\users\signup.html:72
+#: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "user agreement"
 msgstr "пользовательского соглашения"
+
+#: .\templates\feedback\feedback.html:88
+msgid "Submit"
+msgstr ""
 
 #: .\templates\history\history.html:28
 msgid "Навигация по страницам"
@@ -453,15 +505,15 @@ msgstr "Средние:"
 msgid "Низкие:"
 msgstr "Низкие:"
 
-#: .\templates\includes\table.html:5 .\templates\search\search.html:37
+#: .\templates\includes\table.html:5 .\templates\search\search.html:41
 msgid "Ресурс"
 msgstr "Ресурс"
 
-#: .\templates\includes\table.html:6 .\templates\search\search.html:38
+#: .\templates\includes\table.html:6 .\templates\search\search.html:42
 msgid "История утечки"
 msgstr "История утечки"
 
-#: .\templates\search\search.html:23
+#: .\templates\search\search.html:25
 msgid "Найти"
 msgstr "Найти"
 
@@ -628,10 +680,6 @@ msgstr "Введите логин"
 msgid "Choose your picture"
 msgstr "Выберите аватар"
 
-#: .\users\models.py:77
-msgid "Файл слишком большой, максимум 50 МБ"
-msgstr "Файл слишком большой, максимум 50 МБ"
-
 #: .\users\views.py:45
 msgid "User successfully activated"
 msgstr "Пользователь успешно активирован"
@@ -668,9 +716,6 @@ msgstr "Форма успешно отправлена!"
 
 #~ msgid "Город"
 #~ msgstr "Город"
-
-#~ msgid "Имя"
-#~ msgstr "Имя"
 
 #~ msgid "Список пользователей"
 #~ msgstr "Список пользователей"
@@ -722,9 +767,6 @@ msgstr "Форма успешно отправлена!"
 
 #~ msgid "All rights reserved"
 #~ msgstr "Все права защищены"
-
-#~ msgid "Введите логин"
-#~ msgstr "Введите логин"
 
 #~ msgid "Выберите себе картинку"
 #~ msgstr "Выберите себе картинку"

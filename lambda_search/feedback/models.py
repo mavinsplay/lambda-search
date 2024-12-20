@@ -1,5 +1,7 @@
 from django.conf import settings
+import django.core.exceptions
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 __all__ = ()
 
@@ -99,6 +101,14 @@ class StatusLog(models.Model):
         )
 
 
+def file_size(value):
+    limit = 50 * 1024 * 1024
+    if value.size > limit:
+        raise django.core.exceptions.ValidationError(
+            _("Файл слишком большой, максимум 50 МБ"),
+        )
+
+
 class FeedbackFile(models.Model):
     def upload_to_path(self, filename):
         return f"uploads/{self.feedback_id}/{filename}"
@@ -109,7 +119,11 @@ class FeedbackFile(models.Model):
         related_name="files",
         verbose_name="Обратная связь",
     )
-    file = models.FileField("файл", upload_to=upload_to_path)
+    file = models.FileField(
+        "файл",
+        upload_to=upload_to_path,
+        validators=[file_size],
+    )
 
     class Meta:
         verbose_name = "Файл обратной связи"
