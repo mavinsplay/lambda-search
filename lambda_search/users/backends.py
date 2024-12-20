@@ -10,7 +10,7 @@ import django.utils.timezone
 from django.utils.translation import gettext_lazy as _
 
 import search.encryptor
-import users
+import users.models
 
 __all__ = ()
 logger = logging.getLogger(__name__)
@@ -74,7 +74,7 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                 confirmation_link = _(
                     "Suspicious account activity has been detected."
                     " To activate your account, click on the link below:"
-                    f"http://127.0.0.1:8000{activation_path}",
+                    f"{django.conf.settings.SITE_URL}{activation_path}",
                 )
                 try:
 
