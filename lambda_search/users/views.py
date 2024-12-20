@@ -88,14 +88,9 @@ class SignupView(FormView):
         Profile.objects.create(user=user)
         self.send_activation_email(user)
 
-        return render(
-            self.request,
-            "users/profile.html",
-            {"form": form},
-        )
+        return redirect(reverse("users:login"))
 
-    @staticmethod
-    def send_activation_email(user):
+    def send_activation_email(self, user):
         cell = CellEncryptor(settings.ENCRYPTION_KEY)
 
         path = cell.encrypt(user.username)
@@ -116,6 +111,10 @@ class SignupView(FormView):
                 ),
                 settings.MAIL,
                 [users.models.UserManager().normalize_email(user.email)],
+            )
+            messages.success(
+                self.request,
+                _("The activation link has been sent to your email!"),
             )
         except Exception as ex:
             logger.debug(ex)

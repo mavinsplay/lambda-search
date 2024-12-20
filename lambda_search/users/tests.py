@@ -127,7 +127,7 @@ class UserViewsTest(TestCase):
 
         self.user.refresh_from_db()
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(self.user.first_name, "NewFirstName")
         self.assertEqual(self.user.email, "newemail@example.com")
 
