@@ -9,7 +9,7 @@
 {% block content %}
 <div class="container-md mt-5">
   <div class="d-flex justify-content-center align-items-center">
-    <div class="card lambda-secondary rounded rounded-5 lambda-login lambda-margin-center">
+    <div class="card lambda-secondary rounded rounded-5 lambda-login mt-5">
       <div class="card-body">
         <div class="col">
 
@@ -24,6 +24,15 @@
           {% endfor %}
           {% endif %}
           </div>
+          {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} message text-center" role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
 
           <form method="post" class="mx-1 mx-md-4 mt-4">
             {% csrf_token %}

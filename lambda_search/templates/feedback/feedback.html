@@ -75,12 +75,11 @@
               </label>
             </div>
 
-            <div class="row justify-content-center mb-3">
-              <div class="col-4 justify-content-center">{{ form.captcha }}
-                {% for error in form.captcha.errors %}
-                    <div class="text-danger">{{ error }}</div>
-                {% endfor %}
-              </div>
+            <div class="d-flex flex-row align-items-center justify-content-center mb-4">
+              {{ form.captcha }}
+              {% for error in form.captcha.errors %}
+                  <div class="text-danger">{{ error }}</div>
+              {% endfor %}
             </div>
 
             <!-- Submit Button -->
@@ -93,7 +92,7 @@
           {% if messages %}
             <div class="messages">
               {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} text-white bg-black border-white message text-center" role="alert">
+                <div class="alert alert-{{ message.tags }} message text-center" role="alert">
                   {{ message }}
                 </div>
               {% endfor %}

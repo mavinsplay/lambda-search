@@ -2,6 +2,8 @@ from pathlib import Path
 import sqlite3
 
 from django.contrib import admin
+from django.contrib.admin.utils import NestedObjects
+from django.db import router
 from django.shortcuts import render
 from django.urls import path
 from django.utils.html import format_html
@@ -82,6 +84,18 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
                 "admin/error.html",
                 {"error_message": _(f"Ошибка при открытии базы: {str(e)}")},
             )
+
+    def get_deleted_objects(self, objs, request):
+        """для предотвращения отображения связанных объектов"""
+        collector = NestedObjects(using=router.db_for_write(self.model))
+        collector.collect(objs)
+        related_objects_count = sum(len(v) for v in collector.data.values())
+        return (
+            [],
+            {_("Количество связанных объектов"): related_objects_count},
+            set(),
+            [],
+        )
 
 
 @admin.register(Data)

@@ -1,6 +1,6 @@
 from captcha.fields import CaptchaField
 from django import forms
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from feedback.models import Feedback, FeedbackFile, UserInfo
 
@@ -28,6 +28,9 @@ class FeedbackForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
         for field in self.visible_fields():
+            if field.name == "captcha":
+                continue
+
             field.field.widget.attrs["class"] = "form-control"
 
     captcha = CaptchaField()

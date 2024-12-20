@@ -24,12 +24,12 @@
       
       <button type="submit" class="col-2 btn lambda-btn lambda-primary rounded-start-0">{% trans "Найти" %}</button>
     </div>
-      <div class="d-flex flex-row align-items-center mb-4 mt-2">
-        {{ form.captcha }}
-        {% for error in form.captcha.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
-      </div>
+    <div class="d-flex flex-row align-items-center justify-content-center mb-4 mt-2">
+      {{ form.captcha }}
+      {% for error in form.captcha.errors %}
+          <div class="text-danger">{{ error }}</div>
+      {% endfor %}
+    </div>
     </form>
     </div>
 
@@ -55,7 +55,8 @@
           {% endfor %}
         </tbody>
       </table>
-      
+      {% else %}
+        <h1 class="text-center">{% trans "Данные не найдены" %}</h1>
     {% endif %}
   </div>
 </div>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 16:19+0300\n"
+"POT-Creation-Date: 2024-12-21 00:40+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,41 +25,93 @@ msgstr "О проекте"
 msgid "User Agreement"
 msgstr "пользовательского соглашения"
 
-#: .\feedback\forms.py:45 .\feedback\forms.py:53
+#: .\feedback\apps.py:10 .\feedback\models.py:37 .\feedback\models.py:72
+#: .\feedback\models.py:114
+msgid "Обратная связь"
+msgstr "Обратная связь"
+
+#: .\feedback\forms.py:46 .\feedback\forms.py:54
 msgid "Напишите ваш отзыв"
 msgstr "Напишите ваш отзыв"
 
-#: .\feedback\forms.py:48
+#: .\feedback\forms.py:49
 msgid "Отзыв"
 msgstr "Отзыв"
 
-#: .\feedback\forms.py:62
+#: .\feedback\forms.py:63
 msgid "Файлы"
 msgstr "Файлы"
 
-#: .\feedback\forms.py:64
+#: .\feedback\forms.py:65
 msgid "Добавьте файл для лучшего понимания проблемы"
 msgstr "Добавьте файл для лучшего понимания проблемы"
 
-#: .\feedback\forms.py:86
+#: .\feedback\forms.py:85
 msgid "Введите ваше имя"
 msgstr "Введите ваше имя"
 
-#: .\feedback\forms.py:87
+#: .\feedback\forms.py:86 .\feedback\models.py:42
 msgid "Имя"
 msgstr "Имя"
 
-#: .\feedback\forms.py:91
+#: .\feedback\forms.py:90
 msgid "Введите вашу почту"
 msgstr "Введите вашу почту"
 
-#: .\feedback\forms.py:92
+#: .\feedback\forms.py:91 .\feedback\models.py:43
 msgid "Почта"
 msgstr "Почта"
 
-#: .\feedback\models.py:108 .\users\models.py:77
-msgid "Файл слишком большой, максимум 50 МБ"
-msgstr "Файл слишком большой, максимум 50 МБ"
+#: .\feedback\models.py:18 .\feedback\models.py:79
+msgid "Создано в"
+msgstr "Создано в"
+
+#: .\feedback\models.py:23
+msgid "Статус обработки"
+msgstr "Статус обработки"
+
+#: .\feedback\models.py:38
+msgid "Обратные связи"
+msgstr "Обратные связи"
+
+#: .\feedback\models.py:56 .\feedback\models.py:60
+#: .\templates\users\user_detail.html:10
+msgid "Информация о пользователе"
+msgstr "Информация о пользователе"
+
+#: .\feedback\models.py:61
+#, fuzzy
+#| msgid "Информация о пользователе"
+msgid "Информация о пользователях"
+msgstr "Информация о пользователе"
+
+#: .\feedback\models.py:64
+msgid "Аноним"
+msgstr "Аноним"
+
+#: .\feedback\models.py:81
+msgid "Из"
+msgstr "из"
+
+#: .\feedback\models.py:87
+msgid "В"
+msgstr "В"
+
+#: .\feedback\models.py:94
+msgid "Лог изменения статуса"
+msgstr "Лог изменения статуса"
+
+#: .\feedback\models.py:95
+msgid "Логи изменения статусов"
+msgstr "Логи изменения статусов"
+
+#: .\feedback\models.py:119
+msgid "Файл обратной связи"
+msgstr "Файл обратной связи"
+
+#: .\feedback\models.py:120
+msgid "Файлы обратной связи"
+msgstr "Файлы обратной связи"
 
 #: .\history\apps.py:10 .\search\models.py:36
 msgid "История"
@@ -110,21 +162,25 @@ msgstr "Домашняя страница"
 msgid "Lambda Search"
 msgstr "Lambda Search"
 
-#: .\lambda_search\settings.py:157
+#: .\lambda_search\settings.py:164
 msgid "English"
 msgstr "Английский"
 
-#: .\lambda_search\settings.py:158
+#: .\lambda_search\settings.py:165
 msgid "Russian"
 msgstr "Русский"
 
-#: .\search\admin.py:62
+#: .\search\admin.py:64
 msgid "Содержимое"
 msgstr "Содержимое базы данных:"
 
-#: .\search\admin.py:83
+#: .\search\admin.py:85
 msgid "Ошибка при открытии базы: {str(e)}"
 msgstr "Ошибка при открытии базы: {str(e)}"
+
+#: .\search\admin.py:95
+msgid "Количество связанных объектов"
+msgstr "Количество связанных объектов"
 
 #: .\search\apps.py:10
 msgid "Поиск"
@@ -136,7 +192,7 @@ msgstr "Длина запроса должна быть от 8 до 100 симв
 
 #: .\search\forms.py:45
 msgid "Введите запрос..."
-msgstr "Введите новый пароль"
+msgstr "Введите запрос..."
 
 #: .\search\models.py:24 .\search\models.py:198
 msgid "Имя базы данных"
@@ -323,7 +379,7 @@ msgstr "Я принимаю условия"
 msgid "user agreement"
 msgstr "пользовательского соглашения"
 
-#: .\templates\feedback\feedback.html:88
+#: .\templates\feedback\feedback.html:87
 msgid "Submit"
 msgstr ""
 
@@ -517,27 +573,31 @@ msgstr "История утечки"
 msgid "Найти"
 msgstr "Найти"
 
-#: .\templates\users\login.html:34
+#: .\templates\search\search.html:59
+msgid "Данные не найдены"
+msgstr "Данные не найдены"
+
+#: .\templates\users\login.html:43
 msgid "login_or_email_placeholder"
 msgstr "Логин или email"
 
-#: .\templates\users\login.html:44 .\templates\users\signup.html:44
+#: .\templates\users\login.html:53 .\templates\users\signup.html:44
 msgid "password_placeholder"
 msgstr "Пароль"
 
-#: .\templates\users\login.html:55
+#: .\templates\users\login.html:64
 msgid "Forgot password?"
 msgstr "Забыли пароль?"
 
-#: .\templates\users\login.html:59 .\templates\users\signup.html:86
+#: .\templates\users\login.html:68 .\templates\users\signup.html:86
 msgid "Login_confirm"
 msgstr "Войти"
 
-#: .\templates\users\login.html:64
+#: .\templates\users\login.html:73
 msgid "Don't have an account?"
 msgstr "Нет аккаунта?"
 
-#: .\templates\users\login.html:64
+#: .\templates\users\login.html:73
 msgid "Sign up"
 msgstr "Зарегистрироваться"
 
@@ -555,7 +615,7 @@ msgid "Password Change"
 msgstr "Изменить пароль"
 
 #: .\templates\users\password_change.html:62
-#: .\templates\users\password_reset_confirm.html:62
+#: .\templates\users\password_reset_confirm.html:54
 msgid "Change Password"
 msgstr "Сменить пароль"
 
@@ -656,10 +716,6 @@ msgstr "Зарегистрироваться"
 msgid "Already have an account?"
 msgstr "Уже есть аккаунт?"
 
-#: .\templates\users\user_detail.html:10
-msgid "Информация о пользователе"
-msgstr "Информация о пользователе"
-
 #: .\templates\users\user_detail.html:11
 msgid "Почта:"
 msgstr "Почта:"
@@ -672,27 +728,77 @@ msgstr "Имя:"
 msgid "Фамилия:"
 msgstr "Фамилия:"
 
-#: .\users\forms.py:47
+#: .\users\admin.py:38
+msgid "Profile picture"
+msgstr "Аватар"
+
+#: .\users\apps.py:10
+#, fuzzy
+#| msgid "Пользователь"
+msgid "Пользователи"
+msgstr "Пользователь"
+
+#: .\users\backends.py:57
+msgid ""
+"You have exceeded the limitnumber of login attempts. Please activate your "
+"account.You should receive an activation email."
+msgstr ""
+
+#: .\users\backends.py:75
+msgid ""
+"Suspicious account activity has been detected. To activate your account, "
+"click on the link below:"
+msgstr ""
+
+#: .\users\forms.py:45
 msgid "Enter your login"
 msgstr "Введите логин"
 
-#: .\users\forms.py:63
+#: .\users\forms.py:61
 msgid "Choose your picture"
 msgstr "Выберите аватар"
 
-#: .\users\views.py:45
+#: .\users\models.py:77
+msgid "Файл слишком большой, максимум 50 МБ"
+msgstr "Файл слишком большой, максимум 50 МБ"
+
+#: .\users\models.py:86 .\users\models.py:123
+msgid "профиль"
+msgstr "профиль"
+
+#: .\users\models.py:91
+msgid "Upload a profile picture"
+msgstr "Загрузить аватар"
+
+#: .\users\models.py:124
+msgid "профили"
+msgstr "профили"
+
+#: .\users\views.py:32
+msgid "Account Error"
+msgstr "Ошибка аккаунта"
+
+#: .\users\views.py:59
 msgid "User successfully activated"
 msgstr "Пользователь успешно активирован"
 
-#: .\users\views.py:53
+#: .\users\views.py:67
 msgid "Profile activation was available for"
 msgstr "Активация была доступна в течение"
 
-#: .\users\views.py:58
+#: .\users\views.py:72
 msgid "User is already activated"
 msgstr "Пользователь уже активирован"
 
-#: .\users\views.py:137 .\users\views.py:153
+#: .\users\views.py:106
+msgid "Activate your account"
+msgstr "Активируй свой аккаунт"
+
+#: .\users\views.py:121
+msgid "The activation link has been sent to your email!"
+msgstr "Ссылка на активацию отправлена на вашу почту!"
+
+#: .\users\views.py:167
 msgid "The form has been successfully submitted!"
 msgstr "Форма успешно отправлена!"
 
@@ -758,9 +864,6 @@ msgstr "Форма успешно отправлена!"
 
 #~ msgid "Сохранить новый пароль"
 #~ msgstr "Сохранить новый пароль"
-
-#~ msgid "Account Error"
-#~ msgstr "Ошибка аккаунта"
 
 #~ msgid "Файл базы данных"
 #~ msgstr "Файл базы данных"

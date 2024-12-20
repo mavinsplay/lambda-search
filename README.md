@@ -12,7 +12,14 @@ Lambda Search — это инструмент, созданный для про�
 - python 3.12.1
 - PostgreSQL (установка: [PostgreSQL Official Docs](https://www.postgresql.org/download/))
 
-## Инструкция по запуску проекта
+## Запуск проекта доступен двух видов:
+
+   1. Нативно по [инструкции](#инструкция-по-нативному-запуску-проекта)
+
+   2. Через Docker контейнер по [инструкции](#запуск-через-docker-в-prod-режиме)
+
+
+## Инструкция по нативному запуску проекта
 
 1. **Клонируйте репозиторий:**
 
@@ -71,33 +78,6 @@ Lambda Search — это инструмент, созданный для про�
    cp .env.template .env
    ```
 
-   Пример файла `.env`:
-
-   ```plaintext
-   # Django project settings
-   DJANGO_DEBUG=False
-   DJANGO_SECRET_KEY=your_secret_key
-   DJANGO_ALLOWED_HOSTS=*
-   DJANGO_SITE_URL="https://lambda-search.ru"
-   DJANGO_ENCRYPTION_KEY="dsEa3e6lF983WPH88NsSS9A0HGCIK5xA"
-
-   # Superuser settings
-   LAMBDA_SUPERUSER_NAME=admin
-   LAMBDA_SUPERUSER_EMAIL=lambda-search@yandex.ru
-   LAMBDA_SUPERUSER_PASSWORD=4pNWn03s!6zKka7Bhed574H
-
-   # PostgreSQL database settings
-   DJANGO_POSTGRESQL_NAME=lambda_db
-   DJANGO_POSTGRESQL_USER=lambda_user
-   DJANGO_POSTGRESQL_PASSWORD=your_password
-   DJANGO_POSTGRESQL_HOST=localhost
-   DJANGO_POSTGRESQL_PORT=5432
-
-   # Let's Encrypt settings for nginx
-   LAMBDA_CERTBOT_DEBUG=1
-   LAMBDA_CERTBOT_STAGING=1
-   LAMBDA_CERTBOT_EMAIL=lambda-search@yandex.ru
-   ```
 
 5. **Выполните локализации**
 
@@ -124,18 +104,25 @@ Lambda Search — это инструмент, созданный для про�
    Перед запуском необходимо скомпилировать локализации
 
    ```bash
-   cd lyceum
+   cd lambda_search
    django-admin compilemessages
    ```
 
-6. **Примените миграции:**
+6. **Настройте PostgreSQL:**
+
+   [Настройка для Windows](https://winitpro.ru/index.php/2019/10/25/ustanovka-nastrojka-postgresql-v-windows/)
+
+   [Настройка для Linux](https://www.postgresql.org/docs/current/tutorial-install.html)
+
+
+7. **Примените миграции:**
 
    ```bash
    python3 manage.py makemigrations
    python3 manage.py migrate
    ```
 
-7. **Запустите сервер:**
+8. **Запустите сервер:**
 
    ```bash
    python3 manage.py runserver
@@ -157,6 +144,19 @@ python3 manage.py createsuperuser
 ```bash
 python3 manage.py test
 ```
+
+## Запуск через Docker в prod-режиме:
+
+   1. Скачайте и установите [Docker](https://www.docker.com/)
+
+   2. Настройте окружение
+
+   3. Запустите контейнер, перед этим остановив существующие:
+
+   ```bash
+   docker compose down
+   docker compose --profile prod up --build -d
+   ```
 
 ## ER-диаграмма БД
 

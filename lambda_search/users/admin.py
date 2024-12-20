@@ -1,6 +1,7 @@
 from django.contrib import admin, auth
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail import get_thumbnail
 
 from users.models import Profile
@@ -34,7 +35,7 @@ class UserAdmin(BaseUserAdmin):
 
         return ""
 
-    main_image_thumbnail.short_description = "Profile picture"
+    main_image_thumbnail.short_description = _("Profile picture")
 
 
 admin.site.unregister(user)
