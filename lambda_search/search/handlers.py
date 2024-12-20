@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod
 import csv
-from pathlib import Path
 import sqlite3
+from abc import ABC, abstractmethod
+from pathlib import Path
 
 __all__ = ()
 

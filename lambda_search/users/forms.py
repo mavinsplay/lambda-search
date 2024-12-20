@@ -11,10 +11,6 @@ __all__ = ()
 class BootstrapForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.visible_fields():
-            field.field.widget.attrs["class"] = (
-                "form-control bg-black text-white"
-            )
 
 
 class UserChangeForm(BootstrapForm):
@@ -42,7 +38,7 @@ class SignUpForm(UserCreationForm):
         )
         labels = {
             UserChangeForm.Meta.model.username.field.name: _(
-                "Enter your login",
+                _("Enter your login"),
             ),
         }
 

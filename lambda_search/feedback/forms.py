@@ -25,10 +25,6 @@ class MultipleFileField(forms.FileField):
 class FeedbackForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
-        for field in self.visible_fields():
-            field.field.widget.attrs["class"] = (
-                "form-control bg-black text-white"
-            )
 
     class Meta:
         model = Feedback
@@ -62,10 +58,6 @@ class FilesForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(FilesForm, self).__init__(*args, **kwargs)
-        for field in self.visible_fields():
-            field.field.widget.attrs["class"] = (
-                "form-control bg-black text-white"
-            )
 
     class Meta:
         model = FeedbackFile
@@ -90,10 +82,6 @@ class UserForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
-        for field in self.visible_fields():
-            field.field.widget.attrs["class"] = (
-                "form-control bg-black text-white"
-            )
 
     class Meta:
         model = UserInfo

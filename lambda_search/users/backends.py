@@ -1,3 +1,5 @@
+import logging
+
 import django.conf
 import django.contrib.auth.backends
 import django.contrib.auth.models
@@ -5,11 +7,13 @@ import django.contrib.messages
 import django.shortcuts
 import django.urls
 import django.utils.timezone
+from django.utils.translation import gettext_lazy as _
 
 import search.encryptor
 import users
 
 __all__ = ()
+logger = logging.getLogger(__name__)
 
 
 class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
@@ -49,7 +53,7 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
 
                 django.contrib.messages.error(
                     request,
-                    (
+                    _(
                         "You have exceeded the limit"
                         "number of login attempts. Please "
                         "activate your account."
@@ -57,7 +61,9 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                     ),
                 )
 
-                Cell = search.encryptor.CellEncryptor(django.conf.settings.ENCRYPTION_KEY)
+                Cell = search.encryptor.CellEncryptor(
+                    django.conf.settings.ENCRYPTION_KEY,
+                )
 
                 activation_path = django.urls.reverse(
                     "users:activate",
@@ -65,20 +71,26 @@ class EmailOrUsernameModelBackend(django.contrib.auth.backends.BaseBackend):
                         Cell.encrypt(username),
                     ],
                 )
-                confirmation_link = (
+                confirmation_link = _(
                     "Suspicious account activity has been detected."
                     " To activate your account, click on the link below:"
                     f"http://127.0.0.1:8000{activation_path}"
                 )
+                try:
 
-                django.core.mail.send_mail(
-                    "Account activation",
-                    confirmation_link,
-                    django.conf.settings.MAIL,
-                    [users.models.UserManager().normalize_email(user.email)],
-                    fail_silently=False,
-                )
-                print(users.models.UserManager().normalize_email(user.email))
+                    django.core.mail.send_mail(
+                        "Account activation",
+                        confirmation_link,
+                        django.conf.settings.MAIL,
+                        [
+                            users.models.UserManager().normalize_email(
+                                user.email,
+                            ),
+                        ],
+                        fail_silently=False,
+                    )
+                except Exception as ex:
+                    logger.debug(ex)
 
         return None
 

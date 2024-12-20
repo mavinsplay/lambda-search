@@ -1,4 +1,5 @@
 import logging
+
 from django.conf import settings
 from django.contrib import messages
 import django.contrib.auth
@@ -17,7 +18,6 @@ from search.encryptor import CellEncryptor
 import users.forms
 from users.models import Profile
 
-
 __all__ = ()
 logger = logging.getLogger(__name__)
 
@@ -34,10 +34,10 @@ class CustomLoginView(LoginView):
 
 class ActivateUserView(View):
     def get(self, request, username):
-        Cell = CellEncryptor(settings.ENCRYPTION_KEY)
+        cell = CellEncryptor(settings.ENCRYPTION_KEY)
         user = get_object_or_404(
             User,
-            username=Cell.decrypt(username),
+            username=cell.decrypt(username),
         )
         now = timezone.now()
 
@@ -87,21 +87,32 @@ class SignupView(FormView):
         user.save()
         Profile.objects.create(user=user)
         self.send_activation_email(user)
-        return redirect("users:login")
+
+        return render(
+            self.request,
+            "users/profile.html",
+            {"form": form},
+        )
 
     @staticmethod
     def send_activation_email(user):
-        Cell = CellEncryptor(settings.ENCRYPTION_KEY)
+        cell = CellEncryptor(settings.ENCRYPTION_KEY)
 
-        path = Cell.encrypt(user.username)
+        path = cell.encrypt(user.username)
 
         activation_link = f"{settings.SITE_URL}/auth/activate/{path}"
-        send_mail(
-            "Activate your account",
-            ("Follow the link to activate" f" account: {activation_link}"),
-            settings.MAIL,
-            [users.models.UserManager().normalize_email(user.email)],
-        )
+
+        try:
+            send_mail(
+                _("Activate your account"),
+                _(
+                    f"Hello {user.username},\n\nThank you for signing up! Please activate your account by clicking the link below:\n\n{activation_link}\n\nBest regards,\nYour lambda-search team",
+                ),
+                settings.MAIL,
+                [users.models.UserManager().normalize_email(user.email)],
+            )
+        except Exception as ex:
+            logger.debug(ex)
 
 
 class ProfileView(LoginRequiredMixin, View):
@@ -140,7 +151,9 @@ class ProfileView(LoginRequiredMixin, View):
                 user = form.save(commit=False)
 
                 if form.cleaned_data.get("email"):
-                    user.email = users.models.UserManager().normalize_email(form.cleaned_data["email"])
+                    user.email = users.models.UserManager().normalize_email(
+                        form.cleaned_data["email"],
+                    )
 
                 if form.cleaned_data.get("first_name"):
                     user.first_name = form.cleaned_data.get("first_name")
@@ -164,13 +177,13 @@ class ProfileView(LoginRequiredMixin, View):
                 new_profile_form.image = profile_form.cleaned_data["image"]
 
                 new_profile_form.save()
-        
+
             messages.success(
                 request,
                 _("The form has been successfully submitted!"),
             )
-        
-        except Exception:
+
+        except Exception as ex:
             logger.debug(ex)
 
         return render(

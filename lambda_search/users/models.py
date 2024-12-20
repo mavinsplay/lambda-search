@@ -4,6 +4,7 @@ import re
 import django.conf
 import django.contrib.auth.models
 import django.db
+from django.utils.translation import gettext_lazy as _
 
 __all__ = ()
 
@@ -61,13 +62,13 @@ class Profile(django.db.models.Model):
     user = django.db.models.OneToOneField(
         django.conf.settings.AUTH_USER_MODEL,
         on_delete=django.db.models.CASCADE,
-        related_name="profile",
-        verbose_name="профиль",
+        related_name=_("profile"),
+        verbose_name=_("профиль"),
     )
     image = django.db.models.ImageField(
-        "путь к изображению профиля",
+        _("путь к изображению профиля"),
         upload_to="users/images/",
-        help_text="Upload a profile picture",
+        help_text=_("Upload a profile picture"),
         null=True,
         blank=True,
     )
@@ -78,5 +79,5 @@ class Profile(django.db.models.Model):
     date_last_active = django.db.models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "профиль"
-        verbose_name_plural = "профили"
+        verbose_name = _("профиль")
+        verbose_name_plural = _("профили")

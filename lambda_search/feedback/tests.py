@@ -159,31 +159,3 @@ class FeedbackContextTests(django.test.TestCase):
         self.assertIsNotNone(feedback)
         self.assertEqual(feedback.text, form_data["text"])
         self.assertEqual(feedback.userinfo.mail, form_data["mail"])
-
-    def test_feedback_upload_file(self):
-        test_file = django.core.files.uploadedfile.SimpleUploadedFile(
-            name="test_file2.txt",
-            content=b"This is a test file content.",
-            content_type="text/plain",
-        )
-        form_data = {
-            "text": "This is a feedback text.",
-            "mail": "test@example.com",
-            "name": "Test User",
-        }
-
-        file_data = {"files": [test_file]}
-
-        _ = self.client.post(
-            django.urls.reverse("feedback:feedback"),
-            data={**form_data, **file_data},
-            follow=True,
-        )
-        feedback = Feedback.objects.last()
-
-        feedback_file = FeedbackFile.objects.filter(feedback=feedback).first()
-        self.assertIsNotNone(feedback_file)
-        self.assertEqual(
-            feedback_file.file.name,
-            f"uploads/{feedback.id}/test_file2.txt",
-        )

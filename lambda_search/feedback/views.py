@@ -39,8 +39,13 @@ class FeedbackView(View):
                 user_info=feedback,
             )
 
-            subject = 'Subject Here'
-            email = EmailMessage(subject, f'From {mail}\n' + text, settings.MAIL, [settings.MAIL])
+            subject = "Subject Here"
+            email = EmailMessage(
+                subject,
+                f"From {mail}\n" + text,
+                settings.MAIL,
+                [settings.MAIL],
+            )
 
             for file in file_form.cleaned_data.get("files"):
                 email.attach(file.name, file.read(), file.content_type)

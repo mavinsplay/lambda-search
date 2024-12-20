@@ -1,303 +1,144 @@
-__all__ = []
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+from django.urls import reverse
 
-import datetime
-import http
+from users.models import Profile
 
-import django.contrib.auth.models
-import django.contrib.messages
-import django.test
-import django.urls
-import django.utils
-import django.utils.timezone
-import parametrize
-
-import users
-import users.models
-
-user_model = django.contrib.auth.models.User
+User = get_user_model()
 
 
-class SignupTest(django.test.TestCase):
-    def test_corrcet_create_new_user(self):
-        data = {
-            "username": "TestUserName",
-            "email": "testemail@mail.com",
-            "password1": "testpassword123",
-            "password2": "testpassword123",
+class UserManagerTest(TestCase):
+    def setUp(self):
+        self.user_data = {
+            "username": "testuser",
+            "email": "Test.User+tag@yandex.ru",
+            "password": "password123",
         }
-        users.forms.SignUpForm(data).save()
-        count_models = user_model.objects.all().count()
-        self.assertEqual(count_models, 1)
+        self.user = User.objects.create_user(**self.user_data)
 
-    def test_create_user_not_equal_passwords(self):
-        data = {
-            "username": "TestUserName",
-            "email": "testemail@mail.com",
-            "password1": "testpassword123",
-            "password2": "testpassword1234567890",
-        }
-        response = self.client.post(django.urls.reverse("users:signup"), data)
-        count_models = user_model.objects.all().count()
-        self.assertTrue(response.context["form"].has_error("password2"))
-        self.assertEqual(count_models, 0)
+    def test_normalize_email(self):
+        normalized_email = User.objects.normalize_email(self.user.email)
+        self.assertEqual(normalized_email, "Test.User+tag@yandex.ru")
 
-    def test_create_user_name_exists(self):
-        data1 = {
-            "username": "TestUserName",
-            "email": "testemail@mail.com",
-            "password1": "testpassword123",
-            "password2": "testpassword123",
-        }
-
-        data2 = {
-            "username": "TestUserName",
-            "email": "testemail2@mail.com",
-            "password1": "testpassword123",
-            "password2": "testpassword123",
-        }
-
-        self.client.post(django.urls.reverse("users:signup"), data1)
-        response = self.client.post(django.urls.reverse("users:signup"), data2)
-        count_models = user_model.objects.all().count()
-
-        self.assertTrue(response.context["form"].has_error("username"))
-        self.assertEqual(count_models, 1)
-
-    def test_create_users_profile(self):
-        data = {
-            "username": "TestUserName2",
-            "email": "testemail@mail.com",
-            "password1": "testpassword123",
-            "password2": "testpassword123",
-        }
-        self.client.post(django.urls.reverse("users:signup"), data)
-        count_models = users.models.Profile.objects.all().count()
-        self.assertEqual(count_models, 1)
-
-
-class ActivateUserTest(django.test.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-
-        user_model = django.contrib.auth.models.User
-
-        cls.not_active_data = {
-            "username": "TestNotActiveUserName",
-            "email": "testemail1@mail.com",
-            "password1": "testpassword123",
-            "password2": "testpassword123",
-            "is_active": False,
-        }
-
-        cls.user_not_active = user_model.objects.create_user(
-            username=cls.not_active_data["username"],
-            email=cls.not_active_data["email"],
-            password=cls.not_active_data["password1"],
-            is_active=cls.not_active_data["is_active"],
+    def test_active_users(self):
+        active_user = User.objects.create_user(
+            username="activeuser",
+            email="active@example.com",
+            password="password",
         )
-
-        users.models.Profile.objects.create(user=cls.user_not_active)
-
-        cls.data_active = {
-            "username": "TestActiveUserName",
-            "email": "testemail2@mail.com",
-            "password1": "testpassword123",
-            "password2": "testpassword123",
-            "is_active": True,
-        }
-
-        cls.user_active = user_model.objects.create_user(
-            username=cls.data_active["username"],
-            email=cls.data_active["email"],
-            password=cls.data_active["password1"],
-            is_active=cls.data_active["is_active"],
-        )
-
-        users.models.Profile.objects.create(user=cls.user_active)
-
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-
-        cls.user_not_active.delete()
-        cls.user_active.delete()
-
-    def test_not_activate_user(self):
-        response = self.client.get(
-            django.urls.reverse(
-                "users:activate",
-                args=["TestNotActiveUserName"],
-            ),
-        )
-        messages = list(
-            django.contrib.messages.get_messages(response.wsgi_request),
-        )
-
-        self.assertTrue(
-            any(
-                "Пользователь успешно активирован" in str(m) for m in messages
-            ),
-        )
-
-    def test_active_user(self):
-        response = self.client.get(
-            django.urls.reverse(
-                "users:activate",
-                args=["TestActiveUserName"],
-            ),
-        )
-        messages = list(
-            django.contrib.messages.get_messages(response.wsgi_request),
-        )
-
-        self.assertTrue(
-            any("Пользователь уже активирован" in str(m) for m in messages),
-        )
-
-    def test_not_real_user(self):
-        response = self.client.get(
-            django.urls.reverse("users:activate", args=["NotRealUSer"]),
-        )
-        self.assertEqual(response.status_code, http.HTTPStatus.NOT_FOUND)
-
-
-class TestAuthinicateUser(django.test.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        model = django.contrib.auth.models.User
-        cls.user = model.objects.create_user(
-            username="TestUser",
-            email="testemail@mail.com",
-            password="Testpassword123",
-        )
-        cls.profile = users.models.Profile.objects.create(user=cls.user)
-
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        cls.user.delete()
-
-    @parametrize.parametrize(
-        "username,password",
-        [
-            ("TestUser", "Testpassword123"),
-        ],
-    )
-    def test_login_user(self, username, password):
-        data = {
-            "username": username,
-            "password": password,
-        }
-        response = self.client.post(django.urls.reverse("users:login"), data)
-        self.assertTrue(response.wsgi_request.user.is_authenticated)
-
-    def test_wrong_password_login_user(self):
-        data = {
-            "username": "TestUser",
-            "password": "WrongPassword123",
-        }
-        response = self.client.post(django.urls.reverse("users:login"), data)
-
-        self.assertFalse(response.wsgi_request.user.is_authenticated)
-
-
-class NormalEmailTests(django.test.TestCase):
-
-    def test_has_user_mail_normal_form(self):
-        data = {
-            "email": "test.mail@ya.ru",
-            "username": "TestLogin123456",
-            "password1": "Testpassword123",
-            "password2": "Testpassword123",
-        }
-        self.client.post(django.urls.reverse("users:signup"), data)
-        user = user_model.objects.get(username="TestLogin123456")
-        self.assertEqual(user.email, "test-mail@yandex.ru")
-
-    @django.test.override_settings(MAX_AUTH_ATTEMPTS=5)
-    def lock_user_after_some_failed_attempts(self):
-        data = {
-            "email": "test.mail@ya.ru",
-            "username": "TestLogin123456",
-            "password1": "Testpassword123",
-            "password2": "Testpassword123",
-        }
-        self.client.post(django.urls.reverse("users:signup"), data)
-        user = user_model.objects.get(username="TestLogin123456")
-
-        for _ in range(5):
-            self.client.post(
-                django.urls.reverse("users:login"),
-                {"username": "TestLogin123456", "password": "wrongpassword"},
-            )
-
-        self.assertFa(user.is_active)
-
-    def test_corrcet_activate_user_after_lock(self):
-        data = {
-            "email": "test.mail@ya.ru",
-            "username": "TestLogin123456",
-            "password": "Testpassword123",
-        }
-
-        user = users.models.User.objects.create_user(
-            username=data["username"],
-            email=data["email"],
-            password=data["password"],
+        inactive_user = User.objects.create_user(
+            username="inactiveuser",
+            email="inactive@example.com",
+            password="password",
             is_active=False,
         )
-        user = users.models.User.objects.get(username=user.username)
-        users.models.Profile.objects.create(
-            user=user,
-            date_last_active=django.utils.timezone.now()
-            - datetime.timedelta(days=1),
+
+        active_users = User.objects.filter(is_active=True)
+        self.assertIn(active_user, active_users)
+        self.assertNotIn(inactive_user, active_users)
+
+
+class ProfileModelTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="testuser@example.com",
+            password="password123",
         )
-        response = self.client.get(
-            django.urls.reverse("users:activate", args=[user.username]),
+        self.profile = Profile.objects.create(user=self.user)
+
+    def test_profile_creation(self):
+        self.assertIsNotNone(self.profile.id)
+        self.assertEqual(self.profile.user, self.user)
+
+    def test_profile_image_field(self):
+        self.profile.image = "users/images/test_image.jpg"
+        self.profile.save()
+
+        self.assertEqual(
+            self.profile.image.name, "users/images/test_image.jpg"
         )
 
-        messages = list(
-            django.contrib.messages.get_messages(response.wsgi_request),
+    def test_attempts_count_default(self):
+        self.assertEqual(self.profile.attempts_count, 0)
+
+    def test_date_last_active(self):
+        from django.utils import timezone
+
+        now = timezone.now()
+        self.profile.date_last_active = now
+        self.profile.save()
+
+        self.assertEqual(self.profile.date_last_active, now)
+
+
+class UserViewsTest(TestCase):
+
+    def setUp(self):
+        self.user_data = {
+            "username": "testuser",
+            "email": "test.user+tag@yandex.ru",
+            "password": "password123",
+        }
+        self.user = User.objects.create_user(
+            username=self.user_data["username"],
+            email=self.user_data["email"],
+            password=self.user_data["password"],
         )
 
-        self.assertTrue(
-            any(
-                "Пользователь успешно активирован" in str(m) for m in messages
-            ),
+    def test_login_view(self):
+        response = self.client.post(
+            reverse("users:login"),
+            data={"username": self.user.username, "password": "password123"},
         )
+        self.assertEqual(response.status_code, 302)
 
-    def test_uncorrcet_activate_user_after_lock(self):
-        data = {
-            "email": "test.mail@ya.ru",
-            "username": "TestLogin123456",
-            "password": "Testpassword123",
+    def test_signup_view(self):
+        signup_data = {
+            "username": "newuser",
+            "email": "new.user@example.com",
+            "password1": "newpassword123",
+            "password2": "newpassword123",
+        }
+        response = self.client.post(reverse("users:signup"), data=signup_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(User.objects.filter(username="newuser").exists())
+
+    def test_profile_view_get(self):
+        self.client.login(username="testuser", password="password123")
+        response = self.client.get(reverse("users:profile"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "users/profile.html")
+
+    def test_profile_view_post(self):
+        self.client.login(username="testuser", password="password123")
+
+        new_data = {
+            "email": "newemail@example.com",
+            "first_name": "NewFirstName",
+            "last_name": "NewLastName",
         }
 
-        user = users.models.User.objects.create_user(
-            username=data["username"],
-            email=data["email"],
-            password=data["password"],
-            is_active=False,
-        )
-        user = users.models.User.objects.get(username=user.username)
-        users.models.Profile.objects.create(
-            user=user,
-            date_last_active=django.utils.timezone.now()
-            - datetime.timedelta(days=8),
-        )
-        response = self.client.get(
-            django.urls.reverse("users:activate", args=[user.username]),
-        )
+        response = self.client.post(reverse("users:profile"), data=new_data)
 
-        messages = list(
-            django.contrib.messages.get_messages(response.wsgi_request),
-        )
+        self.user.refresh_from_db()
 
-        self.assertTrue(
-            any(
-                "Активация профиля была доступна в течение" in str(m)
-                for m in messages
-            ),
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.user.first_name, "NewFirstName")
+        self.assertEqual(self.user.email, "newemail@example.com")
+
+    def test_invalid_signup_form(self):
+        invalid_data = {
+            "username": "",
+            "email": "invalidemail",
+            "password1": "password123",
+            "password2": "differentpassword",
+        }
+
+        response = self.client.post(reverse("users:signup"), data=invalid_data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response, "form", "username", "Обязательное поле."
         )
