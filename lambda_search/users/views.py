@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views import View
-from django.views.generic import DetailView, FormView, ListView
+from django.views.generic import FormView
 
 from search.encryptor import CellEncryptor
 import users.forms
@@ -148,7 +148,7 @@ class ProfileView(LoginRequiredMixin, View):
                 )
                 return redirect("users:profile")
 
-        except Exception as ex:
+        except Exception:
             pass
 
         try:
@@ -164,7 +164,7 @@ class ProfileView(LoginRequiredMixin, View):
             )
             return redirect("users:profile")
         
-        except Exception as ex:
+        except Exception:
             pass
 
 
