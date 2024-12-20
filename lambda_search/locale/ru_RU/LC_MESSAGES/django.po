@@ -470,7 +470,7 @@ msgstr ""
 
 #: .\templates\homepage\main.html:43
 msgid "Проверить свои данные"
-msgstr "Повторить запрос"
+msgstr "Проверить свои данные"
 
 #: .\templates\includes\header.html:22
 msgid "Go feedback"
