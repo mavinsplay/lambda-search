@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-20 02:30+0300\n"
+"POT-Creation-Date: 2024-12-20 16:19+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,42 @@ msgstr "About"
 #: .\about\views.py:13
 msgid "User Agreement"
 msgstr "User agreement"
+
+#: .\feedback\forms.py:45 .\feedback\forms.py:53
+msgid "Напишите ваш отзыв"
+msgstr "Type your feedback"
+
+#: .\feedback\forms.py:48
+msgid "Отзыв"
+msgstr "Feedback"
+
+#: .\feedback\forms.py:62
+msgid "Файлы"
+msgstr "Files"
+
+#: .\feedback\forms.py:64
+msgid "Добавьте файл для лучшего понимания проблемы"
+msgstr "Add a file for better understanding the problem"
+
+#: .\feedback\forms.py:86
+msgid "Введите ваше имя"
+msgstr "Enter your name"
+
+#: .\feedback\forms.py:87
+msgid "Имя"
+msgstr "Name"
+
+#: .\feedback\forms.py:91
+msgid "Введите вашу почту"
+msgstr "Enter your email"
+
+#: .\feedback\forms.py:92
+msgid "Почта"
+msgstr "Email"
+
+#: .\feedback\models.py:108 .\users\models.py:77
+msgid "Файл слишком большой, максимум 50 МБ"
+msgstr "File is too large, maximum 50 MB"
 
 #: .\history\apps.py:10 .\search\models.py:36
 msgid "История"
@@ -64,7 +100,7 @@ msgstr "Request history"
 
 #: .\history\views.py:93
 msgid "Запрос успешно удалён."
-msgstr "Your password was successfully changed"
+msgstr "Request successfully deleted."
 
 #: .\homepage\apps.py:10
 msgid "Домашняя страница"
@@ -84,7 +120,7 @@ msgstr "Russian"
 
 #: .\search\admin.py:62
 msgid "Содержимое"
-msgstr "Database content:"
+msgstr "Content"
 
 #: .\search\admin.py:83
 msgid "Ошибка при открытии базы: {str(e)}"
@@ -100,7 +136,7 @@ msgstr "The length of the request must be between 8 and 100 characters."
 
 #: .\search\forms.py:45
 msgid "Введите запрос..."
-msgstr "Enter new password"
+msgstr "Enter request..."
 
 #: .\search\models.py:24 .\search\models.py:198
 msgid "Имя базы данных"
@@ -155,7 +191,7 @@ msgid "Значение"
 msgstr "Value"
 
 #: .\search\models.py:214 .\search\models.py:215
-#: .\templates\includes\table.html:7 .\templates\search\search.html:39
+#: .\templates\includes\table.html:7 .\templates\search\search.html:43
 msgid "Данные"
 msgstr "Data"
 
@@ -265,13 +301,29 @@ msgstr "Table:"
 msgid "В базе данных нет таблиц или данные не могут быть загружены."
 msgstr "There are no tables in the database or the data cannot be loaded."
 
-#: .\templates\feedback\feedback.html:14 .\templates\users\signup.html:72
+#: .\templates\feedback\feedback.html:16
+msgid "Feedback Form"
+msgstr "Feedback"
+
+#: .\templates\feedback\feedback.html:54
+msgid "Your Feedback"
+msgstr "Feedback"
+
+#: .\templates\feedback\feedback.html:63
+msgid "Upload Files"
+msgstr "Upload Files"
+
+#: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "I accept the terms of the"
 msgstr "I accept the terms of the"
 
-#: .\templates\feedback\feedback.html:14 .\templates\users\signup.html:72
+#: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "user agreement"
 msgstr "user agreement"
+
+#: .\templates\feedback\feedback.html:88
+msgid "Submit"
+msgstr "Submit"
 
 #: .\templates\history\history.html:28
 msgid "Навигация по страницам"
@@ -279,11 +331,11 @@ msgstr "Homepage"
 
 #: .\templates\history\history.html:32
 msgid "Первая"
-msgstr "first"
+msgstr "First"
 
 #: .\templates\history\history.html:37 .\templates\history\history.html:44
 msgid "Предыдущая"
-msgstr "before"
+msgstr "Before"
 
 #: .\templates\history\history.html:50
 msgid "из"
@@ -291,11 +343,11 @@ msgstr "of"
 
 #: .\templates\history\history.html:56 .\templates\history\history.html:65
 msgid "Следующая"
-msgstr "next"
+msgstr "Next"
 
 #: .\templates\history\history.html:59
 msgid "Последняя"
-msgstr "last"
+msgstr "Last"
 
 #: .\templates\history\history_detail.html:6
 #: .\templates\history\history_detail.html:10
@@ -348,7 +400,7 @@ msgstr ""
 
 #: .\templates\homepage\main.html:34
 msgid "Шифрование"
-msgstr "Encrypted"
+msgstr "Encrypt"
 
 #: .\templates\homepage\main.html:36
 msgid ""
@@ -360,7 +412,7 @@ msgstr ""
 
 #: .\templates\homepage\main.html:43
 msgid "Проверить свои данные"
-msgstr "Repeat request"
+msgstr "Check your data"
 
 #: .\templates\includes\header.html:22
 msgid "Go feedback"
@@ -451,15 +503,15 @@ msgstr "Medium:"
 msgid "Низкие:"
 msgstr "Low:"
 
-#: .\templates\includes\table.html:5 .\templates\search\search.html:37
+#: .\templates\includes\table.html:5 .\templates\search\search.html:41
 msgid "Ресурс"
 msgstr "Resource"
 
-#: .\templates\includes\table.html:6 .\templates\search\search.html:38
+#: .\templates\includes\table.html:6 .\templates\search\search.html:42
 msgid "История утечки"
 msgstr "Leak history"
 
-#: .\templates\search\search.html:23
+#: .\templates\search\search.html:25
 msgid "Найти"
 msgstr "Find"
 
@@ -624,10 +676,6 @@ msgstr "Enter your login"
 msgid "Choose your picture"
 msgstr "Choose your picture"
 
-#: .\users\models.py:77
-msgid "Файл слишком большой, максимум 50 МБ"
-msgstr "File is too large, maximum 50 MB"
-
 #: .\users\views.py:45
 msgid "User successfully activated"
 msgstr "User successfully activated"
@@ -664,9 +712,6 @@ msgstr "The form has been successfully submitted!"
 
 #~ msgid "Город"
 #~ msgstr "City"
-
-#~ msgid "Имя"
-#~ msgstr "Name"
 
 #~ msgid "Список пользователей"
 #~ msgstr "User list"

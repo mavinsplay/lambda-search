@@ -1,29 +1,108 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+
+{% block title %}
+  {{ title }}
+{% endblock title %}
+
 {% block content %}
-<form method="POST" class="feedback_form" enctype="multipart/form-data">
-    {% csrf_token %}
-    <ul class="lambda-font-medium">
-        {{ user_form.as_ul }}
-        {{ form.as_ul }}
-        {{ file_form.as_ul }}
-        <div class="form-check d-flex justify-content-center mb-5">
-            <input class="form-check-input me-2" type="checkbox" id="terms" required>
-            <label class="form-check-label" for="terms">
-              {% trans "I accept the terms of the" %} <a href="#">{% trans "user agreement" %}</a>
-            </label>
+<div class="container-md mt-5">
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="card lambda-secondary rounded-5 lambda-feedback-form">
+      <div class="card-body">
+        <div class="col">
+
+          <p class="text-center h2 mx-1 mt-4">{% trans "Feedback Form" %}</p>
+
+          <div class="mx-1 mx-md-4">
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <p class="alert alert-danger">
+                  {{ error }}
+                </p>
+              {% endfor %}
+            {% endif %}
           </div>
-    </ul>
-    <input type="submit" value="Отправить" class="btn text-white bg-black border-white">
-</form>
-{% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} text-white bg-black border-white message text-center" role="alert">
-                {{ message }}
+
+          <form method="POST" class="mx-1 mx-md-4 mt-4" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- User Form Fields -->
+            <div class="d-flex flex-row align-items-center mb-4">
+              <i class="bi bi-person-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                {{ user_form.name }}
+                {% for error in user_form.name.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
             </div>
-        {% endfor %}
+
+            <div class="d-flex flex-row align-items-center mb-4">
+              <i class="bi bi-envelope-fill me-2"></i>
+              <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                {{ user_form.mail }}
+                {% for error in user_form.mail.errors %}
+                  <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Feedback Form Fields -->
+            <div class="form-group mb-4">
+              <label for="id_text">{% trans "Your Feedback" %}</label>
+              {{ form.text }}
+              {% for error in form.text.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <!-- File Upload Fields -->
+            <div class="form-group mb-4">
+              <label for="id_files">{% trans "Upload Files" %}</label>
+              {{ file_form.files }}
+              {% for error in file_form.files.errors %}
+                <div class="text-danger">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <!-- Terms & Conditions Checkbox -->
+            <div class="form-check d-flex justify-content-center mb-2">
+              <input class="form-check-input me-2" type="checkbox" id="terms" required>
+              <label class="form-check-label" for="terms">
+                {% trans "I accept the terms of the" %} <a href="{% url "about:terms" %}">{% trans "user agreement" %}</a>
+              </label>
+            </div>
+
+            <div class="row justify-content-center mb-3">
+              <div class="col-4 justify-content-center">{{ form.captcha }}
+                {% for error in form.captcha.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-center mx-4 mb-3">
+              <button type="submit" class="btn lambda-primary lambda-btn btn-lg">{% trans "Submit" %}</button>
+            </div>
+            
+          </form>
+
+          {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-white bg-black border-white message text-center" role="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
-{% endif %}
+  </div>
+</div>
+
 {% endblock content %}

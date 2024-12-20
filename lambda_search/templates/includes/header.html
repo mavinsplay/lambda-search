@@ -54,7 +54,7 @@
               <form action="{% url 'set_language' %}" method="post" id="{{language.code}}_form">
                 {% csrf_token %}
                 <input type="hidden" name="language" value="{{ language.code }}">
-                <button type="button" class="dropdown-item lambda-btn {% if language.code == current_language.code %}lambda-primary{% endif %}"
+                <button type="button" class="dropdown-item lambda-btn lambda-font-medium {% if language.code == current_language.code %}lambda-primary{% endif %}"
                 aria-pressed="{% if language.code == current_language.code %}true{% else %}false{% endif %}"
                 onclick="document.getElementById('{{ language.code }}_form').submit();">
                 {{ language.name_local }}
@@ -71,14 +71,14 @@
           {% trans "theme_button" %}
         </button>
         <ul class="dropdown-menu lambda-secondary">
-          <li><a class="dropdown-item lambda-btn" data-bs-theme-value="light" href="">{% trans "light_theme" %}</a></li>
-          <li><a class="dropdown-item lambda-btn" data-bs-theme-value="dark" href="">{% trans "dark_theme" %}</a></li>
-          <li><a class="dropdown-item lambda-btn" data-bs-theme-value="auto" href="">{% trans "auto_theme" %}</a></li>
+          <li><a class="dropdown-item lambda-btn " data-bs-theme-value="light" href="javascript:void(0);">{% trans "light_theme" %}</a></li>
+          <li><a class="dropdown-item lambda-btn" data-bs-theme-value="dark" href="javascript:void(0);">{% trans "dark_theme" %}</a></li>
+          <li><a class="dropdown-item lambda-btn" data-bs-theme-value="auto" href="javascript:void(0);">{% trans "auto_theme" %}</a></li>
         </ul>
       </div>
 
       {% if request.user.is_authenticated %}
-        <div class="dropdown my-auto mx-1">
+        <div class="dropdown my-auto mx-1 lambda-font-medium">
           <button class="btn dropdown-toggle bg-transparent d-flex align-items-center border-1 lambda-border" type="button" data-bs-toggle="dropdown"
           aria-expanded="false">
             {% if request.user.profile.get_small_avatar %}
@@ -92,10 +92,10 @@
           </button>
           
           <ul class="dropdown-menu lambda-secondary">
-            <li><a class="dropdown-item lambda-btn" href="{% url "users:profile" %}">{% trans "Profile" %}</a></li>
-            <li><a class="dropdown-item lambda-btn" href="{% url 'history:history' %}">{% trans "History" %}</a></li>
+            <li><a class="dropdown-item lambda-btn {% if view_name == 'users:profile' %} lambda-primary{% endif %}" href="{% url "users:profile" %}">{% trans "Profile" %}</a></li>
+            <li><a class="dropdown-item lambda-btn {% if view_name == 'history:history' %} lambda-primary{% endif %}" href="{% url 'history:history' %}">{% trans "History" %}</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item lambda-btn" href="{% url "users:logout" %}">{% trans "Logout" %}</a></li>
+            <li><a class="dropdown-item lambda-btn {% if view_name == 'users:logout' %} lambda-primary{% endif %}" href="{% url "users:logout" %}">{% trans "Logout" %}</a></li>
           </ul>
         </div>
       {% else %}
