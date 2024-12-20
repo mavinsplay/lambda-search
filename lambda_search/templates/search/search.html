@@ -55,7 +55,8 @@
           {% endfor %}
         </tbody>
       </table>
-      
+      {% else %}
+        <h1 class="text-center">{% trans "Данные не найдены" %}</h1>
     {% endif %}
   </div>
 </div>

@@ -1,7 +1,7 @@
 from django.conf import settings
-import django.core.exceptions
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 
 __all__ = ()
 
@@ -15,12 +15,12 @@ class Feedback(models.Model):
 
     text = models.CharField("Текст", max_length=100)
     created_on = models.DateTimeField(
-        "Создано в",
+        _("Создано в"),
         auto_now_add=True,
         null=True,
     )
     status = models.CharField(
-        "Статус обработки",
+        _("Статус обработки"),
         max_length=20,
         choices=STATUS_CHOICES,
         default="received",
@@ -34,13 +34,13 @@ class Feedback(models.Model):
     )
 
     class Meta:
-        verbose_name = "Обратная связь"
-        verbose_name_plural = "Обратные связи"
+        verbose_name = _("Обратная связь")
+        verbose_name_plural = _("Обратные связи")
 
 
 class UserInfo(models.Model):
-    name = models.CharField("Имя", max_length=100, null=True, blank=True)
-    mail = models.EmailField("Почта")
+    name = models.CharField(_("Имя"), max_length=100, null=True, blank=True)
+    mail = models.EmailField(_("Почта"))
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -53,15 +53,15 @@ class UserInfo(models.Model):
         related_name="userinfo",
         null=True,
         blank=True,
-        verbose_name="Информация о пользователе",
+        verbose_name=_("Информация о пользователе"),
     )
 
     class Meta:
-        verbose_name = "Информация о пользователе"
-        verbose_name_plural = "Информация о пользователях"
+        verbose_name = _("Информация о пользователе")
+        verbose_name_plural = _("Информация о пользователях")
 
     def __str__(self):
-        return self.name or "Аноним"
+        return self.name or _("Аноним")
 
 
 class StatusLog(models.Model):
@@ -69,43 +69,37 @@ class StatusLog(models.Model):
         Feedback,
         on_delete=models.CASCADE,
         related_name="status_logs",
-        verbose_name="Обратная связь",
+        verbose_name=_("Обратная связь"),
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
     )
-    timestamp = models.DateTimeField("Создано в", auto_now_add=True)
+    timestamp = models.DateTimeField(_("Создано в"), auto_now_add=True)
     from_status = models.CharField(
-        "Из",
+        _("Из"),
         max_length=20,
         choices=Feedback.STATUS_CHOICES,
         db_column="from",
     )
     to = models.CharField(
-        "В",
+        _("В"),
         max_length=20,
         choices=Feedback.STATUS_CHOICES,
         db_column="to",
     )
 
     class Meta:
-        verbose_name = "Лог изменения статуса"
-        verbose_name_plural = "Логи изменения статусов"
+        verbose_name = _("Лог изменения статуса")
+        verbose_name_plural = _("Логи изменения статусов")
 
     def __str__(self):
-        return (
-            f"Статус изменен с {self.from_status} н"
-            f"а {self.to} пользователем {self.user}"
-        )
-
-
-def file_size(value):
-    limit = 50 * 1024 * 1024
-    if value.size > limit:
-        raise django.core.exceptions.ValidationError(
-            _("Файл слишком большой, максимум 50 МБ"),
+        return _(
+            (
+                f"Статус изменен с {self.from_status} н"
+                f"а {self.to} пользователем {self.user}"
+            ),
         )
 
 
@@ -117,14 +111,10 @@ class FeedbackFile(models.Model):
         Feedback,
         on_delete=models.CASCADE,
         related_name="files",
-        verbose_name="Обратная связь",
+        verbose_name=_("Обратная связь"),
     )
-    file = models.FileField(
-        "файл",
-        upload_to=upload_to_path,
-        validators=[file_size],
-    )
+    file = models.FileField("файл", upload_to=upload_to_path)
 
     class Meta:
-        verbose_name = "Файл обратной связи"
-        verbose_name_plural = "Файлы обратной связи"
+        verbose_name = _("Файл обратной связи")
+        verbose_name_plural = _("Файлы обратной связи")

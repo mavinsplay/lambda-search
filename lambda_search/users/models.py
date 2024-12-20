@@ -4,7 +4,7 @@ import re
 import django.conf
 import django.contrib.auth.models
 import django.db
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 import sorl.thumbnail
 
 __all__ = ()
@@ -83,12 +83,12 @@ class Profile(django.db.models.Model):
         django.conf.settings.AUTH_USER_MODEL,
         on_delete=django.db.models.CASCADE,
         related_name="profile",
-        verbose_name="профиль",
+        verbose_name=_("профиль"),
     )
     image = django.db.models.ImageField(
         "путь к изображению профиля",
         upload_to="users/images/",
-        help_text="Upload a profile picture",
+        help_text=_("Upload a profile picture"),
         null=True,
         blank=True,
         validators=[file_size],
@@ -120,5 +120,5 @@ class Profile(django.db.models.Model):
         return None
 
     class Meta:
-        verbose_name = "профиль"
-        verbose_name_plural = "профили"
+        verbose_name = _("профиль")
+        verbose_name_plural = _("профили")

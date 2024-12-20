@@ -37,6 +37,13 @@ DEFAULT_USER_IS_ACTIVE = env_validator(
 
 MAIL = "lambda-search@yandex.ru"
 
+EMAIL_HOST = os.getenv("DJANGO_EMAIL_HOST", "smtp.yandex.ru")
+EMAIL_HOST_PASSWORD = os.getenv(
+    "DJANGO_EMAIL_HOST_PASSWORD",
+    "fxzxpenjgrrxjrtk",
+)
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SITE_URL = os.getenv("DJANGO_SITE_URL", "http://127.0.0.1:8000")
@@ -166,12 +173,10 @@ LOCALE_PATHS = (BASE_DIR / "locale",)
 ITEMS_PER_PAGE = 5
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = MAIL
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = MAIL
-EMAIL_HOST_PASSWORD = "fxzxpenjgrrxjrtk"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 if DEBUG:
