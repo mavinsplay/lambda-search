@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_cleanup.apps.CleanupConfig",
+    "captcha",
     "about.apps.AboutConfig",
     "feedback.apps.FeedbackConfig",
     "history.apps.HistoryConfig",
@@ -64,7 +65,6 @@ INSTALLED_APPS = [
     "search.apps.SearchConfig",
     "users.apps.UsersConfig",
     "sorl.thumbnail",
-    "captcha",
 ]
 
 MIDDLEWARE = [
@@ -122,6 +122,10 @@ DATABASES = {
 LAMBDA_DBS_DIR = BASE_DIR / "lambda-dbs"
 
 AUTH_PWD_MODULE = "django.contrib.auth.password_validation."
+
+AUTHENTICATION_BACKENDS = [
+    "users.backends.EmailOrUsernameModelBackend",
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
