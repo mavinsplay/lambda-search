@@ -47,11 +47,6 @@ jobs:
           DJANGO_POSTGRESQL_PASSWORD: root
           DJANGO_POSTGRESQL_HOST: postgres
           DJANGO_POSTGRESQL_PORT: 5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -59,17 +54,14 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.12
-      - name: Install dependencies
-        run: |
-          pip install -r requirements/test.txt
       - name: Run Django migrations and tests
-        env:
-          DATABASE_URL: postgres://$DJANGO_POSTGRESQL_USER:$DJANGO_POSTGRESQL_PASSWORD@$DJANGO_POSTGRESQL_HOST:$DJANGO_POSTGRESQL_PORT/$DJANGO_POSTGRESQL_NAME
         run: |
-          cd lambda_search
-          python3 manage.py makemigrations
-          python3 manage.py migrate
-          python3 manage.py test
+          - export DATABASE_URL=postgres://$DJANGO_POSTGRESQL_USER:$DJANGO_POSTGRESQL_PASSWORD@$DJANGO_POSTGRESQL_HOST:$DJANGO_POSTGRESQL_PORT/$DJANGO_POSTGRESQL_NAME
+          - pip install -r requirements/test.txt
+          - cd lambda_search
+          - python3 manage.py makemigrations
+          - python3 manage.py migrate
+          - python3 manage.py test
 
   prod-deploy:
     name: Deploy to Production
