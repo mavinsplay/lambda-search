@@ -61,9 +61,6 @@ jobs:
           python-version: 3.12
       - name: Install dependencies
         run: |
-          apt-get update -qy
-          apt-get install -y libpq-dev
-          python -m pip install --upgrade pip
           pip install -r requirements/test.txt
       - name: Run Django migrations and tests
         env:
