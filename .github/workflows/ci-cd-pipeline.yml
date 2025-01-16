@@ -1,0 +1,90 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  flake8-check:
+    name: Flake8 Lint Check
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.com/pipeline-components/flake8:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run Flake8
+        run: flake8 --verbose .
+
+  black-check:
+    name: Black Code Format Check
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.com/pipeline-components/black:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run Black
+        run: black --check .
+
+  django-tests:
+    name: Run Django Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: root
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements/test.txt
+      - name: Run Django migrations and tests
+        env:
+          DATABASE_URL: postgres://postgres:root@localhost:5432/test_db
+        run: |
+          cd lambda_search
+          python manage.py makemigrations
+          python manage.py migrate
+          python manage.py test
+
+  prod-deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - flake8-check
+      - black-check
+      - django-tests
+    steps:
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Deploy application
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
+            cd lambda_search
+            docker compose down
+            git reset --hard origin/main
+            git pull origin main
+            docker compose --profile prod up --build -d
+          EOF
