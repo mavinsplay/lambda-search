@@ -1,6 +1,5 @@
 # Lambda Search
 
-![Pipeline Status](https://gitlab.crja72.ru/django/2024/autumn/course/projects/team-3/badges/main/pipeline.svg)
 
 Проект доступен по адресу https://lambda-search.ru
 
@@ -9,7 +8,7 @@ Lambda Search — это инструмент, созданный для про�
 
 ## Требования
 
-- python 3.12.1
+- Python 3.12.1
 - PostgreSQL (установка: [PostgreSQL Official Docs](https://www.postgresql.org/download/))
 
 ## Запуск проекта доступен двух видов:
