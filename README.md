@@ -23,7 +23,7 @@ Lambda Search — это инструмент, созданный для про�
 1. **Клонируйте репозиторий:**
 
    ```bash
-   git clone https://gitlab.crja72.ru/django/2024/autumn/course/projects/team-3.git
+   git clone https://https://github.com/mavinsplay/lambda-search.git
    cd lambda_search
    ```
 
