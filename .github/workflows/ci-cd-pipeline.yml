@@ -52,6 +52,7 @@ jobs:
 
       - name: Run Django migrations and tests
         run: |
+          cd lambda_search
           python3 manage.py makemigrations
           python3 manage.py migrate
           python3 manage.py test
