@@ -59,7 +59,7 @@ jobs:
           DJANGO_POSTGRESQL_NAME: postgres
           DJANGO_POSTGRESQL_USER: postgres
           DJANGO_POSTGRESQL_PASSWORD: postgres
-          DJANGO_POSTGRESQL_HOST: postgres
+          DJANGO_POSTGRESQL_HOST: localhost
       
 
   prod-deploy:
