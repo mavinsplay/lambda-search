@@ -36,10 +36,10 @@ jobs:
           POSTGRES_DB: lambda_search
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: root
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: postgres
           POSTGRES_PORT: 5432
     env:
-      DATABASE_URL: postgres://postgres:root@localhost:5432/lambda_search
+      DATABASE_URL: postgres://postgres:root@postgres:5432/lambda_search
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
