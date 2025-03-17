@@ -15,7 +15,7 @@ def env_validator(env: str):
 
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY",
-    "django-insecure-g^_9#0r_apxp3u27(sbh$-67hmm6mu1u5x0%eto309@091)!b-",
+    "4f7Z7JU2q8dXOiAgR2fW1niOZTLGUexLGo3E4LL0oSi8mg1p",
 )
 
 ENCRYPTION_KEY = os.getenv(
@@ -108,7 +108,6 @@ DB_PASSWORD = os.getenv("DJANGO_POSTGRESQL_PASSWORD", "root")
 DB_HOST = os.getenv("DJANGO_POSTGRESQL_HOST", "localhost")
 DB_PORT = int(os.getenv("DJANGO_POSTGRESQL_PORT", "5432"))
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -122,6 +121,8 @@ DATABASES = {
 LAMBDA_DBS_DIR = BASE_DIR / "lambda-dbs"
 
 AUTH_PWD_MODULE = "django.contrib.auth.password_validation."
+
+MAX_AUTH_ATTEMPTS = int(os.getenv("DJANGO_MAX_AUTH_ATTEMPTS", "5"))
 
 AUTHENTICATION_BACKENDS = [
     "users.backends.EmailOrUsernameModelBackend",

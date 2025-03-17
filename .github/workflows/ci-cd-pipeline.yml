@@ -1,12 +1,6 @@
 name: CI/CD Pipeline
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - '**'
+on: [push, pull_request]
 
 jobs:
   flake8-check:
@@ -33,55 +27,55 @@ jobs:
 
   django-tests:
     name: Run Django Tests
+    needs: [flake8-check, black-check]
     runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:17
         env:
-          POSTGRES_DB: test_db
+          POSTGRES_DB: lambda_search
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: root
-          POSTGRES_HOST: postgres
-          DJANGO_POSTGRESQL_NAME: test_db
-          DJANGO_POSTGRESQL_USER: postgres
-          DJANGO_POSTGRESQL_PASSWORD: root
-          DJANGO_POSTGRESQL_HOST: postgres
-          DJANGO_POSTGRESQL_PORT: 5432
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+    env:
+      DATABASE_URL: postgres://postgres:root@localhost:5432/lambda_search
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.12
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: pip install -r requirements/test.txt
+
       - name: Run Django migrations and tests
         run: |
-          - export DATABASE_URL=postgres://$DJANGO_POSTGRESQL_USER:$DJANGO_POSTGRESQL_PASSWORD@$DJANGO_POSTGRESQL_HOST:$DJANGO_POSTGRESQL_PORT/$DJANGO_POSTGRESQL_NAME
-          - pip install -r requirements/test.txt
-          - cd lambda_search
-          - python3 manage.py makemigrations
-          - python3 manage.py migrate
-          - python3 manage.py test
+          python3 manage.py makemigrations
+          python3 manage.py migrate
+          python3 manage.py test
+      
 
   prod-deploy:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs:
-      - flake8-check
-      - black-check
-      - django-tests
+    needs: [flake8-check, black-check, django-tests]
+    runs-on: ubuntu-latest
     steps:
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Deploy application
-        run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
-            cd lambda_search
-            docker compose down
-            git reset --hard origin/main
-            git pull origin main
-            docker compose --profile prod up --build -d
-          EOF
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd ~/lambda_search
+          docker compose down
+          git reset --hard origin/main  
+          git pull origin main
+          docker compose --profile prod up --build -d

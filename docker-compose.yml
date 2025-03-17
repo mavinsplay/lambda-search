@@ -1,9 +1,9 @@
 name: "lambda_search"
 
 services:
-  postgres:
+  postgres_lambda:
     image: postgres:17
-    container_name: postgres
+    container_name: postgres_lambda
     environment:
       POSTGRES_DB: ${DJANGO_POSTGRESQL_NAME}
       POSTGRES_USER: ${DJANGO_POSTGRESQL_USER}
@@ -14,6 +14,8 @@ services:
     profiles:
       - prod
       - dev
+    networks:
+      - lambda_net
 
   django:
     build: .
@@ -26,10 +28,12 @@ services:
       - ./for_docker/media:/lambda_search/media
       - ./for_docker/logs:/lambda_search/logs
     depends_on:
-      - postgres
+      - postgres_lambda
     profiles:
       - prod
       - dev
+    networks:
+      - lambda_net
 
   nginx-prod:
     image: jonasal/nginx-certbot:latest
@@ -47,7 +51,17 @@ services:
       - ./for_docker/nginx_certificates:/etc/letsencrypt
       - ./for_docker/static:/lambda_search/static
       - ./for_docker/media:/lambda_search/media
+      - ~/DJANGO_CTF/for_docker/static:/DJANGO_CTF/static
+      - ~/DJANGO_CTF/for_docker/media:/DJANGO_CTF/media
     depends_on:
       - django
     profiles:
       - prod
+    networks:
+      - lambda_net
+
+networks:
+  lambda_net:
+    name: lambda_search
+    driver: bridge
+    
