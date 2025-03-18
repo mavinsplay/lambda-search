@@ -1,27 +1,26 @@
-from django.db import models
+import django.db.models
 
-import search.models
+from search import models
 
 
 __all__ = ()
 
 
-class DataMagager(models.Manager):
+class DataMagager(django.db.models.Manager):
     def _active(self):
         return (
             self.get_queryset()
             .filter(
                 **{
-                    f"{search.models.Data.database.field.name}__"
-                    f"{search.models.ManagedDatabase.active.field.name}": True,
-                    f"{search.models.Data.database.field.name}__"
-                    f"{search.models.ManagedDatabase.is_encrypted.field.name}":
-                    True,
+                    f"{models.Data.database.field.name}__"
+                    f"{models.ManagedDatabase.active.field.name}": True,
+                    f"{models.Data.database.field.name}__"
+                    f"{models.ManagedDatabase.is_encrypted.field.name}": True,
                 },
             )
             .order_by(
-                f"{search.models.Data.database.field.name}__"
-                f"{search.models.ManagedDatabase.name.field.name}",
+                f"{models.Data.database.field.name}__"
+                f"{models.ManagedDatabase.name.field.name}",
             )
         )
 
@@ -30,13 +29,12 @@ class DataMagager(models.Manager):
             self._active()
             .filter(
                 **{
-                    f"{search.models.Data.value.field.name}__iexact":
-                    input_data,
+                    f"{models.Data.value.field.name}__iexact": input_data,
                 },
             )
             .values(
-                search.models.Data.database.field.name,
-                search.models.Data.user_index.field.name,
+                models.Data.database.field.name,
+                models.Data.user_index.field.name,
             )
             .distinct()
         )
@@ -46,11 +44,11 @@ class DataMagager(models.Manager):
         for index in indexes:
             query |= models.Q(
                 **{
-                    search.models.Data.database.field.name: index[
-                        search.models.Data.database.field.name
+                    models.Data.database.field.name: index[
+                        models.Data.database.field.name
                     ],
-                    search.models.Data.user_index.field.name: index[
-                        search.models.Data.user_index.field.name
+                    models.Data.user_index.field.name: index[
+                        models.Data.user_index.field.name
                     ],
                 },
             )
@@ -62,9 +60,9 @@ class DataMagager(models.Manager):
             self._active()
             .filter(query)
             .order_by(
-                f"{search.models.Data.database.field.name}__"
-                f"{search.models.ManagedDatabase.name.field.name}",
-                search.models.Data.user_index.field.name,
+                f"{models.Data.database.field.name}__"
+                f"{models.ManagedDatabase.name.field.name}",
+                models.Data.user_index.field.name,
             )
         )
 
@@ -76,15 +74,15 @@ class DataMagager(models.Manager):
 
         return (
             self._search(indexes)
-            .select_related(search.models.Data.database.field.name)
+            .select_related(models.Data.database.field.name)
             .only(
-                f"{search.models.Data.database.field.name}__"
-                f"{search.models.ManagedDatabase.name.field.name}",
-                f"{search.models.Data.database.field.name}__"
-                f"{search.models.ManagedDatabase.history.field.name}",
-                search.models.Data.database.field.name,
-                search.models.Data.user_index.field.name,
-                search.models.Data.column_name.field.name,
-                search.models.Data.value.field.name,
+                f"{models.Data.database.field.name}__"
+                f"{models.ManagedDatabase.name.field.name}",
+                f"{models.Data.database.field.name}__"
+                f"{models.ManagedDatabase.history.field.name}",
+                models.Data.database.field.name,
+                models.Data.user_index.field.name,
+                models.Data.column_name.field.name,
+                models.Data.value.field.name,
             )
         )
