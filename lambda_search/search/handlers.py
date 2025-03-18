@@ -18,35 +18,28 @@ def filter_system_tables(all_tables: list) -> list:
 
 
 class DatabaseHandler(ABC):
-    """Абстрактный класс для обработки баз данных."""
-
     def __init__(self, encryptor):
         self.encryptor = encryptor
 
     @abstractmethod
     def validate(self):
-        """Валидирует файл базы данных."""
         pass
 
     @abstractmethod
     def read_data(self):
-        """Читает содержимое базы данных SQLite без расшифровки."""
         pass
 
     def encrypt(self):
-        """Шифрует содержимое базы данных."""
         pass
 
 
 class SQLiteHandler(DatabaseHandler):
-    """Класс для обработки SQLite баз данных."""
 
     def __init__(self, db_path: Path, encryptor=None):
         super().__init__(encryptor)
         self.db_path = db_path
 
     def validate(self):
-        """Проверяет, является ли файл SQLite базой данных."""
         try:
             conn = sqlite3.connect(self.db_path)
             conn.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -59,7 +52,6 @@ class SQLiteHandler(DatabaseHandler):
     def encrypt(self):
         from search.models import Data, ManagedDatabase
 
-        """Шифрует содержимое базы данных и записывает в таблицу Data."""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
@@ -105,7 +97,6 @@ class SQLiteHandler(DatabaseHandler):
         conn.close()
 
     def read_data(self, n):
-        """Читает содержимое базы данных SQLite без расшифровки."""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
@@ -127,14 +118,11 @@ class SQLiteHandler(DatabaseHandler):
 
 
 class CSVHandler(DatabaseHandler):
-    """Класс для обработки CSV файлов."""
-
     def __init__(self, csv_path: Path, encryptor=None):
         super().__init__(encryptor)
         self.csv_path = csv_path
 
     def validate(self):
-        """Проверяет корректность CSV файла."""
         try:
             with self.csv_path.open("r", newline="", encoding="utf-8") as file:
                 csv.reader(file)
@@ -142,7 +130,6 @@ class CSVHandler(DatabaseHandler):
             raise ValueError("Файл не является корректным CSV: " + str(e))
 
     def encrypt(self):
-        """Шифрует содержимое CSV файла."""
         from search.models import Data, ManagedDatabase
 
         with self.csv_path.open("r", newline="", encoding="utf-8") as infile:
@@ -187,11 +174,9 @@ class CSVHandler(DatabaseHandler):
 
                 writer.writerow(encrypted_row)
 
-        # Используем bulk_create для массового создания объектов
         Data.objects.bulk_create(data_objects)
 
     def read_data(self, n):
-        """Читает первые n записей из CSV файла без расшифровки."""
         with self.csv_path.open("r", newline="", encoding="utf-8") as file:
             reader = csv.reader(file)
             rows = list(reader)

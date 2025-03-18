@@ -9,11 +9,6 @@ __all__ = ("SearchForm",)
 
 
 def normalize_search_query(value):
-    """
-    Нормализует значение search_query.
-    - Убирает лишние символы из номера телефона, приводя к формату 79111411123.
-    - Убирает теги и лишние символы из электронной почты.
-    """
     if re.fullmatch(r"[\+\(\)\-\d\s]+", value):
         normalized = re.sub(r"[\D]+", "", value)
         if normalized.startswith("8"):
@@ -28,7 +23,6 @@ def normalize_search_query(value):
 
 
 def validate_length(value):
-    """Проверка длины значения."""
     if not (8 <= len(value) <= 100):
         raise ValidationError(
             _("Длина запроса должна быть от 8 до 100 символов."),
@@ -52,6 +46,5 @@ class SearchForm(forms.Form):
     )
 
     def clean_search_query(self):
-        """Нормализация и очистка поля search_query."""
         data = self.cleaned_data["search_query"]
         return normalize_search_query(data)

@@ -9,14 +9,11 @@ __all__ = ()
 
 
 class CellEncryptor:
-    """Класс для шифрования и дешифрования ячеек."""
-
     def __init__(self, key: bytes):
         self.key = key
         self.iv = key[:16]
 
     def encrypt(self, data: str) -> str:
-        """Шифрует строку с фиксированным IV."""
         cipher = Cipher(
             algorithms.AES(self.key),
             modes.CBC(self.iv),
@@ -28,7 +25,6 @@ class CellEncryptor:
         return encrypted.hex()
 
     def decrypt(self, encrypted_data: str) -> str:
-        """Дешифрует строку с фиксированным IV."""
         cipher = Cipher(
             algorithms.AES(self.key),
             modes.CBC(self.iv),
@@ -51,8 +47,6 @@ class CellEncryptor:
 
 
 class BaseHandlerManager:
-    """Базовый класс для управления обработчиками файлов."""
-
     def __init__(self):
         self.handlers = {
             ".sqlite": SQLiteHandler,
@@ -61,7 +55,6 @@ class BaseHandlerManager:
         }
 
     def get_handler(self, file_path: Path, encryptor=None):
-        """Получает обработчик для указанного файла."""
         handler_class = self.handlers.get(file_path.suffix)
         if not handler_class:
             raise ValueError("Неподдерживаемый формат файла.")
@@ -74,27 +67,21 @@ class BaseHandlerManager:
 
 
 class UnifiedEncryptor(BaseHandlerManager):
-    """Обработчик для автоматической обработки SQLite и CSV."""
-
     def __init__(self, key: bytes):
         super().__init__()
         self.encryptor = CellEncryptor(key)
 
     def encrypt_database_cells(self, file_path: Path):
-        """Определяет тип базы данных и шифрует её содержимое."""
         handler = self.get_handler(file_path, self.encryptor)
         handler.validate()
         handler.encrypt()
 
 
 class DbsReader(BaseHandlerManager):
-    """Читает данные из базы данных без расшифровки."""
-
     def __init__(self):
         super().__init__()
 
     def read_data(self, file_path: Path, n: int):
-        """Читает содержимое базы данных."""
         handler = self.get_handler(file_path)
         handler.validate()
         return handler.read_data(n)

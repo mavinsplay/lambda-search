@@ -41,7 +41,6 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
     )
 
     def get_urls(self):
-        """Добавляем кастомный URL для просмотра содержимого базы."""
         urls = super().get_urls()
         custom_urls = [
             path(
@@ -53,7 +52,6 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def view_content_button(self, obj):
-        """Добавляет кнопку для просмотра содержимого базы."""
         return format_html(
             (
                 f"<a class='button' href='{obj.id}/view-content/'>"
@@ -65,7 +63,6 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
     view_content_button.allow_tags = True
 
     def view_database_content(self, request, db_id):
-        """Просмотр содержимого базы данных."""
         database = ManagedDatabase.objects.get(id=db_id)
         db_path = database.file.path
 
@@ -86,7 +83,6 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
             )
 
     def get_deleted_objects(self, objs, request):
-        """для предотвращения отображения связанных объектов"""
         collector = NestedObjects(using=router.db_for_write(self.model))
         collector.collect(objs)
         related_objects_count = sum(len(v) for v in collector.data.values())

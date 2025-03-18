@@ -6,10 +6,6 @@ __all__ = ()
 
 
 class QueryHistory(models.Model):
-    """
-    Модель для хранения истории запросов.
-    """
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

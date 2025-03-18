@@ -69,9 +69,6 @@ class SearchView(LoginRequiredMixin, FormView):
     encryptor = CellEncryptor(key)
 
     def get(self, request, *args, **kwargs):
-        """
-        Обработка GET-запроса для предзаполнения формы.
-        """
         req = request.GET.get("search_query", "")
         search_query = self.encryptor.decrypt(req) if req else ""
         form = self.form_class(initial={"search_query": search_query})
@@ -117,9 +114,6 @@ class SearchView(LoginRequiredMixin, FormView):
         return formatted_results
 
     def _merge_results_by_database(self, results):
-        """
-        Группирует результаты по базе данных и собирает соответствующие данные.
-        """
         grouped_data = {}
 
         for item in results:
@@ -136,9 +130,6 @@ class SearchView(LoginRequiredMixin, FormView):
         return grouped_data
 
     def _categorize_data(self, columns):
-        """
-        Классифицирует данные по уровням критичности (critical, medium, low).
-        """
         normalized_columns = self._normalize_column_names(columns)
 
         categorized_data = {"critical": [], "medium": [], "low": []}
@@ -161,9 +152,6 @@ class SearchView(LoginRequiredMixin, FormView):
         return categorized_data
 
     def _normalize_column_names(self, columns):
-        """
-        Приводит названия колонок к единообразному формату.
-        """
         return [
             NORMALIZATION_MAP.get(col.strip().lower(), col) for col in columns
         ]

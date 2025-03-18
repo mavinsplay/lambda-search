@@ -18,9 +18,6 @@ __all__ = ()
 
 
 class HistoryView(LoginRequiredMixin, ListView):
-    """
-    Представление для отображения истории запросов конкретного пользователя.
-    """
 
     model = QueryHistory
     template_name = "history/history.html"
@@ -43,9 +40,6 @@ class HistoryView(LoginRequiredMixin, ListView):
         return queryset
 
     def post(self, request, *args, **kwargs):
-        """
-        Повторение запроса.
-        """
         query_id = request.POST.get("query_id")
         if query_id:
             history = QueryHistory.objects.filter(
@@ -65,9 +59,6 @@ class HistoryView(LoginRequiredMixin, ListView):
 
 
 class HistoryDetailView(DetailView):
-    """
-    Детальное представление для истории запроса конкретного пользователя.
-    """
 
     key = settings.ENCRYPTION_KEY
     encryptor = CellEncryptor(key)
@@ -76,9 +67,6 @@ class HistoryDetailView(DetailView):
     context_object_name = "query"
 
     def get_queryset(self):
-        """
-        Ограничение доступа к записям только для текущего пользователя.
-        """
         return super().get_queryset().filter(user=self.request.user)
 
     def get_context_data(self, **kwargs):
