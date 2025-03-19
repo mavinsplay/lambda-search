@@ -1,5 +1,5 @@
-from captcha.fields import CaptchaField
 from django import forms
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from feedback.models import Feedback, FeedbackFile, UserInfo
@@ -28,12 +28,15 @@ class FeedbackForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
         for field in self.visible_fields():
-            if field.name == "captcha":
+            if field.name == "turnstile":
                 continue
 
             field.field.widget.attrs["class"] = "form-control"
 
-    captcha = CaptchaField()
+    if settings.CAPTCHA_ENABLED:
+        from turnstile.fields import TurnstileField
+
+        turnstile = TurnstileField()
 
     class Meta:
         model = Feedback

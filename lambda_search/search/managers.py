@@ -2,7 +2,6 @@ import django.db.models
 
 from search import models
 
-
 __all__ = ()
 
 

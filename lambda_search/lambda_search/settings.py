@@ -57,14 +57,16 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_cleanup.apps.CleanupConfig",
-    "captcha",
+    # Local apps
     "about.apps.AboutConfig",
     "feedback.apps.FeedbackConfig",
     "history.apps.HistoryConfig",
     "homepage.apps.HomepageConfig",
     "search.apps.SearchConfig",
     "users.apps.UsersConfig",
+    # Third-party apps
     "sorl.thumbnail",
+    "turnstile",
 ]
 
 MIDDLEWARE = [
@@ -183,6 +185,13 @@ DEFAULT_FROM_EMAIL = MAIL
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = MAIL
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CAPTCHA_ENABLED = env_validator(
+    os.getenv("DJANGO_CAPTCHA_ALLOW", str(not DEBUG)),
+)
+if CAPTCHA_ENABLED:
+    TURNSTILE_SITEKEY = os.getenv("DJANGO_CAPTCHA_SITE_KEY")
+    TURNSTILE_SECRET = os.getenv("DJANGO_CAPTCHA_SECRET_KEY")
 
 if DEBUG:
     MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")

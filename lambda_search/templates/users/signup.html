@@ -72,12 +72,14 @@
                 {% trans "I accept the terms of the" %} <a href="{% url "about:terms" %}">{% trans "user agreement" %}</a>
               </label>
             </div>
-              <div class="d-flex flex-row align-items-center justify-content-center mb-4">
-                {{ form.captcha }}
-                {% for error in form.captcha.errors %}
-                    <div class="text-danger">{{ error }}</div>
-                {% endfor %}
-              </div>
+              {% if form.turnstile %}
+                <div class="d-flex flex-row align-items-center justify-content-center mb-4">
+                  {{ form.turnstile }}
+                  {% for error in form.turnstile.errors %}
+                      <div class="text-danger">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
               <button type="submit" class="btn lambda-primary lambda-btn btn-lg">{% trans "Signup_confirm" %}</button>
             </div>

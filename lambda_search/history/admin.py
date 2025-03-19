@@ -28,24 +28,23 @@ class QueryHistoryAdmin(admin.ModelAdmin):
 
     result_summary.short_description = QueryHistory.result.field.name
 
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    QueryHistory.user.field.name,
-                    QueryHistory.query.field.name,
-                    QueryHistory.created_at.field.name,
-                ),
-            },
-        ),
-        (
-            "Results",
-            {
-                "fields": (QueryHistory.result.field.name,),
-                "classes": ("collapse",),
-            },
-        ),
+    part1 = (
+        None,
+        {
+            "fields": (
+                QueryHistory.user.field.name,
+                QueryHistory.query.field.name,
+                QueryHistory.created_at.field.name,
+            ),
+        },
     )
+    part2 = (
+        "Results",
+        {
+            "fields": (QueryHistory.result.field.name,),
+            "classes": ("collapse",),
+        },
+    )
+    fieldsets = (part1, part2)
 
     readonly_fields = (QueryHistory.created_at.field.name,)

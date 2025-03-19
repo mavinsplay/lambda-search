@@ -1,5 +1,5 @@
-from captcha.fields import CaptchaField
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
@@ -35,7 +35,10 @@ class UserChangeForm(BootstrapForm):
 
 class SignUpForm(UserCreationForm):
 
-    captcha = CaptchaField()
+    if settings.CAPTCHA_ENABLED:
+        from turnstile.fields import TurnstileField
+
+        turnstile = TurnstileField()
 
     class Meta(UserCreationForm.Meta):
         fields = (

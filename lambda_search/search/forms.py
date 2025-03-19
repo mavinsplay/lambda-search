@@ -1,7 +1,7 @@
 import re
 
-from captcha.fields import CaptchaField
 from django import forms
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -30,7 +30,11 @@ def validate_length(value):
 
 
 class SearchForm(forms.Form):
-    captcha = CaptchaField()
+    if settings.CAPTCHA_ENABLED:
+        from turnstile.fields import TurnstileField
+
+        turnstile = TurnstileField()
+
     search_query = forms.CharField(
         required=True,
         label="Поиск",
