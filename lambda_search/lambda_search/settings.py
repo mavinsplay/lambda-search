@@ -187,7 +187,7 @@ EMAIL_HOST_USER = MAIL
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CAPTCHA_ENABLED = env_validator(
-    os.getenv("DJANGO_CAPTCHA_ALLOW", str(not DEBUG)),
+    os.getenv("DJANGO_ALLOW_CAPTCHA", str(not DEBUG)),
 )
 if CAPTCHA_ENABLED:
     TURNSTILE_SITEKEY = os.getenv("DJANGO_CAPTCHA_SITE_KEY")
