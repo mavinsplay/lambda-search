@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-21 00:40+0300\n"
+"POT-Creation-Date: 2025-03-19 14:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,8 +80,6 @@ msgid "Информация о пользователе"
 msgstr "User information"
 
 #: .\feedback\models.py:61
-#, fuzzy
-#| msgid "Информация о пользователе"
 msgid "Информация о пользователях"
 msgstr "User information"
 
@@ -117,40 +115,40 @@ msgstr "Files of feedback"
 msgid "История"
 msgstr "History"
 
-#: .\history\models.py:17
+#: .\history\models.py:13
 msgid "Пользователь"
 msgstr "User"
 
-#: .\history\models.py:18
+#: .\history\models.py:14
 msgid "Пользователь, которому принадлежит эта история"
 msgstr "User who owns this history"
 
-#: .\history\models.py:21
+#: .\history\models.py:17
 msgid "Запрос"
 msgstr "Request"
 
-#: .\history\models.py:25
+#: .\history\models.py:21
 msgid "Дата запроса"
 msgstr "Date of request"
 
-#: .\history\models.py:29
+#: .\history\models.py:25
 msgid "Результаты"
 msgstr "Results"
 
-#: .\history\models.py:30
+#: .\history\models.py:26
 msgid "Результаты поиска в формате JSON"
 msgstr "Search results in JSON format"
 
-#: .\history\models.py:34
+#: .\history\models.py:30
 msgid "История запроса"
 msgstr "Request history"
 
-#: .\history\models.py:35 .\templates\history\history.html:6
+#: .\history\models.py:31 .\templates\history\history.html:6
 #: .\templates\history\history.html:11
 msgid "История запросов"
 msgstr "Request history"
 
-#: .\history\views.py:93
+#: .\history\views.py:81
 msgid "Запрос успешно удалён."
 msgstr "Request successfully deleted."
 
@@ -162,23 +160,23 @@ msgstr "Homepage"
 msgid "Lambda Search"
 msgstr "Lambda Search"
 
-#: .\lambda_search\settings.py:164
+#: .\lambda_search\settings.py:169
 msgid "English"
 msgstr "English"
 
-#: .\lambda_search\settings.py:165
+#: .\lambda_search\settings.py:170
 msgid "Russian"
 msgstr "Russian"
 
-#: .\search\admin.py:64
+#: .\search\admin.py:58
+msgid "Просмотреть содержимое"
+msgstr "Check your data"
+
+#: .\search\admin.py:62
 msgid "Содержимое"
 msgstr "Content"
 
-#: .\search\admin.py:85
-msgid "Ошибка при открытии базы: {str(e)}"
-msgstr "Error opening database: {str(e)}"
-
-#: .\search\admin.py:95
+#: .\search\admin.py:91
 msgid "Количество связанных объектов"
 msgstr "Count related objects"
 
@@ -186,15 +184,15 @@ msgstr "Count related objects"
 msgid "Поиск"
 msgstr "Search"
 
-#: .\search\forms.py:34
+#: .\search\forms.py:28
 msgid "Длина запроса должна быть от 8 до 100 символов."
 msgstr "The length of the request must be between 8 and 100 characters."
 
-#: .\search\forms.py:45
+#: .\search\forms.py:39
 msgid "Введите запрос..."
 msgstr "Enter request..."
 
-#: .\search\models.py:24 .\search\models.py:198
+#: .\search\models.py:24 .\search\models.py:105
 msgid "Имя базы данных"
 msgstr "Database name"
 
@@ -226,32 +224,32 @@ msgstr "Creation date"
 msgid "Дата обновления"
 msgstr "Date of update"
 
-#: .\search\models.py:95
+#: .\search\models.py:92
 msgid "База данных"
 msgstr "Database"
 
-#: .\search\models.py:96
+#: .\search\models.py:93
 msgid "Базы данных"
 msgstr "Databases"
 
-#: .\search\models.py:201
+#: .\search\models.py:108
 msgid "Индекс пользователя"
 msgstr "User index"
 
-#: .\search\models.py:204
+#: .\search\models.py:111
 msgid "Название колонки"
 msgstr "Column name"
 
-#: .\search\models.py:208
+#: .\search\models.py:115
 msgid "Значение"
 msgstr "Value"
 
-#: .\search\models.py:214 .\search\models.py:215
+#: .\search\models.py:121 .\search\models.py:122
 #: .\templates\includes\table.html:7 .\templates\search\search.html:43
 msgid "Данные"
 msgstr "Data"
 
-#: .\search\views.py:173 .\templates\includes\header.html:16
+#: .\search\views.py:161 .\templates\includes\header.html:16
 msgid "Search"
 msgstr "Search"
 
@@ -729,8 +727,6 @@ msgid "Profile picture"
 msgstr "Profile picture"
 
 #: .\users\apps.py:10
-#, fuzzy
-#| msgid "Пользователь"
 msgid "Пользователи"
 msgstr "User"
 
@@ -746,11 +742,11 @@ msgid ""
 "click on the link below:"
 msgstr ""
 
-#: .\users\forms.py:45
+#: .\users\forms.py:49
 msgid "Enter your login"
 msgstr "Enter your login"
 
-#: .\users\forms.py:61
+#: .\users\forms.py:65
 msgid "Choose your picture"
 msgstr "Choose your picture"
 
@@ -786,17 +782,20 @@ msgstr "Profile activation was available for"
 msgid "User is already activated"
 msgstr "User is already activated"
 
-#: .\users\views.py:106
+#: .\users\views.py:102
 msgid "Activate your account"
 msgstr "Activate your account"
 
-#: .\users\views.py:121
+#: .\users\views.py:117
 msgid "The activation link has been sent to your email!"
 msgstr "The activation link has been sent to your email!"
 
-#: .\users\views.py:167
+#: .\users\views.py:163
 msgid "The form has been successfully submitted!"
 msgstr "The form has been successfully submitted!"
+
+#~ msgid "Ошибка при открытии базы: {str(e)}"
+#~ msgstr "Error opening database: {str(e)}"
 
 #~ msgid "Email"
 #~ msgstr "Email"
