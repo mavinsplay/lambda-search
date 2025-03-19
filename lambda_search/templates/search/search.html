@@ -25,7 +25,7 @@
       <button type="submit" class="col-2 btn lambda-btn lambda-primary rounded-start-0">{% trans "Найти" %}</button>
     </div>
       {% if form.turnstile %}
-        <div class="d-flex flex-row align-items-center justify-content-center mb-4">
+        <div class="d-flex flex-row align-items-center justify-content-center my-2">
           {{ form.turnstile }}
           {% for error in form.turnstile.errors %}
               <div class="text-danger">{{ error }}</div>
