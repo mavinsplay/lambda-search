@@ -4,6 +4,7 @@ from django.views import View
 
 from feedback.forms import FeedbackForm, FilesForm, UserForm
 from feedback.models import StatusLog, UserInfo
+from users.models import User
 
 __all__ = ()
 
@@ -26,21 +27,41 @@ class FeedbackView(View):
 
         if form.is_valid() and user_form.is_valid() and file_form.is_valid():
             feedback = form.save(commit=False)
-            feedback.save()
-
             mail = user_form.cleaned_data.get("mail")
 
-            UserInfo.objects.create(
-                name=form.cleaned_data.get("name"),
+            if request.user.is_authenticated:
+                user = request.user
+            else:
+                feedback.save()
+                user = User.objects.create_user(
+                    username="anonymous_" + str(feedback.id),
+                    email=mail,
+                    password=None,
+                )
+
+            if not feedback.pk:
+                feedback.save()
+
+            user_info = UserInfo.objects.create(
+                name=user_form.cleaned_data.get("name"),
                 mail=mail,
                 user_info=feedback,
+                user=user,
             )
+            feedback.author = user_info
+            feedback.save()
 
             StatusLog.objects.create(
                 feedback=feedback,
                 from_status="",
                 to=feedback.status,
             )
+
+            if "files" in request.FILES:
+                feedback_file = file_form.save(commit=False)
+                feedback_file.feedback = feedback
+                feedback_file.file = request.FILES["files"]
+                feedback_file.save()
 
             messages.success(request, "Форма успешно отправлена!")
             return redirect("feedback:feedback")

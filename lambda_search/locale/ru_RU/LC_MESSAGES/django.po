@@ -366,8 +366,8 @@ msgid "Your Feedback"
 msgstr "Обратная связь"
 
 #: .\templates\feedback\feedback.html:63
-msgid "Upload Files"
-msgstr "Загрузить файлы"
+msgid "Upload File"
+msgstr "Загрузить файл"
 
 #: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "I accept the terms of the"
@@ -379,7 +379,7 @@ msgstr "пользовательского соглашения"
 
 #: .\templates\feedback\feedback.html:87
 msgid "Submit"
-msgstr ""
+msgstr "Отправить"
 
 #: .\templates\history\history.html:28
 msgid "Навигация по страницам"

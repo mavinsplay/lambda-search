@@ -1,5 +1,6 @@
 from django import forms
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from feedback.models import Feedback, FeedbackFile, UserInfo
@@ -22,6 +23,14 @@ class MultipleFileField(forms.FileField):
             return [single_file_clean(d, initial) for d in data]
 
         return [single_file_clean(data, initial)]
+
+
+def validate_file_size(value):
+    max_file_size = 20 * 1024 * 1024  # 20 MB
+    if value.size > max_file_size:
+        raise ValidationError(
+            _("Общий размер файлов не должен превышать 20 MB."),
+        )
 
 
 class FeedbackForm(forms.ModelForm):
@@ -65,7 +74,8 @@ class FilesForm(forms.ModelForm):
     files = MultipleFileField(
         label=_("Файлы"),
         required=False,
-        help_text=_("Добавьте файл для лучшего понимания проблемы"),
+        help_text=_("Добавьте файлы для лучшего понимания проблемы"),
+        validators=[validate_file_size],
     )
 
     def __init__(self, *args, **kwargs):
@@ -77,7 +87,6 @@ class FilesForm(forms.ModelForm):
         model = FeedbackFile
         exclude = (
             FeedbackFile.feedback.field.name,
-            FeedbackFile.file.field.name,
         )
 
 

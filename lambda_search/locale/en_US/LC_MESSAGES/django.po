@@ -364,8 +364,8 @@ msgid "Your Feedback"
 msgstr "Feedback"
 
 #: .\templates\feedback\feedback.html:63
-msgid "Upload Files"
-msgstr "Upload Files"
+msgid "Upload File"
+msgstr "Upload File"
 
 #: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "I accept the terms of the"
@@ -571,7 +571,7 @@ msgstr "Find"
 
 #: .\templates\search\search.html:59
 msgid "Данные не найдены"
-msgstr "Данные не найдены"
+msgstr "No data found"
 
 #: .\templates\users\login.html:43
 msgid "login_or_email_placeholder"
