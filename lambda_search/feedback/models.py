@@ -94,12 +94,14 @@ class StatusLog(models.Model):
         verbose_name_plural = _("Логи изменения статусов")
 
     def __str__(self):
-        return str(_(
-            (
-                f"Статус изменен с {self.from_status} н"
-                f"а {self.to} пользователем {self.user}"
+        return str(
+            _(
+                (
+                    f"Статус изменен с {self.from_status} н"
+                    f"а {self.to} пользователем {self.user}"
+                ),
             ),
-        ))
+        )
 
 
 class FeedbackFile(models.Model):
@@ -112,8 +114,12 @@ class FeedbackFile(models.Model):
         related_name="files",
         verbose_name=_("Обратная связь"),
     )
-    file = models.FileField("файл", upload_to=upload_to_path,
-                            blank=True, null=True)
+    file = models.FileField(
+        "файл",
+        upload_to=upload_to_path,
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = _("Файл обратной связи")

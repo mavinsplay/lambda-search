@@ -85,9 +85,7 @@ class FilesForm(forms.ModelForm):
 
     class Meta:
         model = FeedbackFile
-        exclude = (
-            FeedbackFile.feedback.field.name,
-        )
+        exclude = (FeedbackFile.feedback.field.name,)
 
 
 class UserForm(forms.ModelForm):
