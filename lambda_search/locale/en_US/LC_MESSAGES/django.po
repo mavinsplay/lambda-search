@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 14:33+0300\n"
+"POT-Creation-Date: 2025-03-22 14:19+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,89 +25,107 @@ msgstr "About"
 msgid "User Agreement"
 msgstr "User agreement"
 
-#: .\feedback\apps.py:10 .\feedback\models.py:37 .\feedback\models.py:72
-#: .\feedback\models.py:114
+#: .\feedback\apps.py:10 .\feedback\models.py:36 .\feedback\models.py:71
+#: .\feedback\models.py:115
 msgid "Обратная связь"
 msgstr "Feedback"
 
-#: .\feedback\forms.py:46 .\feedback\forms.py:54
+#: .\feedback\forms.py:25
+msgid "Можно загрузить максимум 10 файлов."
+msgstr "You can upload a maximum of 10 files."
+
+#: .\feedback\forms.py:31
+msgid "Общий размер файлов не должен превышать 20 MB."
+msgstr "The total size of the files should not exceed 20 MB."
+
+#: .\feedback\forms.py:59 .\feedback\forms.py:67
 msgid "Напишите ваш отзыв"
 msgstr "Type your feedback"
 
-#: .\feedback\forms.py:49
+#: .\feedback\forms.py:62
 msgid "Отзыв"
 msgstr "Feedback"
 
-#: .\feedback\forms.py:63
+#: .\feedback\forms.py:76
 msgid "Файлы"
 msgstr "Files"
 
-#: .\feedback\forms.py:65
-msgid "Добавьте файл для лучшего понимания проблемы"
+#: .\feedback\forms.py:78
+#, fuzzy
+#| msgid "Добавьте файл для лучшего понимания проблемы"
+msgid "Добавьте файлы для лучшего понимания проблемы"
 msgstr "Add a file for better understanding the problem"
 
-#: .\feedback\forms.py:85
+#: .\feedback\forms.py:95
 msgid "Введите ваше имя"
 msgstr "Enter your name"
 
-#: .\feedback\forms.py:86 .\feedback\models.py:42
+#: .\feedback\forms.py:96 .\feedback\models.py:41
 msgid "Имя"
 msgstr "Name"
 
-#: .\feedback\forms.py:90
+#: .\feedback\forms.py:97 .\templates\users\profile.html:65
+msgid "Введите имя"
+msgstr "Enter your name"
+
+#: .\feedback\forms.py:101
 msgid "Введите вашу почту"
 msgstr "Enter your email"
 
-#: .\feedback\forms.py:91 .\feedback\models.py:43
+#: .\feedback\forms.py:102 .\feedback\models.py:42
 msgid "Почта"
 msgstr "Email"
 
-#: .\feedback\models.py:18 .\feedback\models.py:79
+#: .\feedback\forms.py:103
+msgid "Введите почту"
+msgstr "Enter your email"
+
+#: .\feedback\models.py:17 .\feedback\models.py:78
 msgid "Создано в"
 msgstr "Created on"
 
-#: .\feedback\models.py:23
+#: .\feedback\models.py:22
 msgid "Статус обработки"
 msgstr "Status"
 
-#: .\feedback\models.py:38
+#: .\feedback\models.py:37
 msgid "Обратные связи"
 msgstr "Feedbacks"
 
-#: .\feedback\models.py:56 .\feedback\models.py:60
+#: .\feedback\models.py:55 .\feedback\models.py:59
 #: .\templates\users\user_detail.html:10
 msgid "Информация о пользователе"
 msgstr "User information"
 
-#: .\feedback\models.py:61
+#: .\feedback\models.py:60
 msgid "Информация о пользователях"
 msgstr "User information"
 
-#: .\feedback\models.py:64
+#: .\feedback\models.py:63
 msgid "Аноним"
 msgstr "Anonymous"
 
-#: .\feedback\models.py:81
+#: .\feedback\models.py:80
 msgid "Из"
 msgstr "from"
 
-#: .\feedback\models.py:87
+#: .\feedback\models.py:86
 msgid "В"
 msgstr "to"
 
-#: .\feedback\models.py:94
+#: .\feedback\models.py:93
 msgid "Лог изменения статуса"
 msgstr "Log of status change"
 
-#: .\feedback\models.py:95
+#: .\feedback\models.py:94
 msgid "Логи изменения статусов"
 msgstr "Logs of status changes"
 
-#: .\feedback\models.py:119
+#: .\feedback\models.py:125
 msgid "Файл обратной связи"
 msgstr "Feedback file"
 
-#: .\feedback\models.py:120
+#: .\feedback\models.py:126
 msgid "Файлы обратной связи"
 msgstr "Files of feedback"
 
@@ -160,21 +178,21 @@ msgstr "Homepage"
 msgid "Lambda Search"
 msgstr "Lambda Search"
 
-#: .\lambda_search\settings.py:169
+#: .\lambda_search\settings.py:171
 msgid "English"
 msgstr "English"
 
-#: .\lambda_search\settings.py:170
+#: .\lambda_search\settings.py:172
 msgid "Russian"
 msgstr "Russian"
-
-#: .\search\admin.py:58
-msgid "Просмотреть содержимое"
-msgstr "Check your data"
 
 #: .\search\admin.py:62
 msgid "Содержимое"
 msgstr "Content"
+
+#: .\search\admin.py:82
+msgid "Ошибка при открытии базы: {str(e)}"
+msgstr "Error opening database: {str(e)}"
 
 #: .\search\admin.py:91
 msgid "Количество связанных объектов"
@@ -188,7 +206,7 @@ msgstr "Search"
 msgid "Длина запроса должна быть от 8 до 100 символов."
 msgstr "The length of the request must be between 8 and 100 characters."
 
-#: .\search\forms.py:39
+#: .\search\forms.py:43
 msgid "Введите запрос..."
 msgstr "Enter request..."
 
@@ -245,7 +263,7 @@ msgid "Значение"
 msgstr "Value"
 
 #: .\search\models.py:121 .\search\models.py:122
-#: .\templates\includes\table.html:7 .\templates\search\search.html:43
+#: .\templates\includes\table.html:7 .\templates\search\search.html:45
 msgid "Данные"
 msgstr "Data"
 
@@ -364,8 +382,10 @@ msgid "Your Feedback"
 msgstr "Feedback"
 
 #: .\templates\feedback\feedback.html:63
+#, fuzzy
+#| msgid "Upload File"
 msgid "Upload Files"
-msgstr "Upload Files"
+msgstr "Upload File"
 
 #: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "I accept the terms of the"
@@ -375,7 +395,7 @@ msgstr "I accept the terms of the"
 msgid "user agreement"
 msgstr "user agreement"
 
-#: .\templates\feedback\feedback.html:87
+#: .\templates\feedback\feedback.html:89
 msgid "Submit"
 msgstr "Submit"
 
@@ -557,11 +577,11 @@ msgstr "Medium:"
 msgid "Низкие:"
 msgstr "Low:"
 
-#: .\templates\includes\table.html:5 .\templates\search\search.html:41
+#: .\templates\includes\table.html:5 .\templates\search\search.html:43
 msgid "Ресурс"
 msgstr "Resource"
 
-#: .\templates\includes\table.html:6 .\templates\search\search.html:42
+#: .\templates\includes\table.html:6 .\templates\search\search.html:44
 msgid "История утечки"
 msgstr "Leak history"
 
@@ -569,9 +589,9 @@ msgstr "Leak history"
 msgid "Найти"
 msgstr "Find"
 
-#: .\templates\search\search.html:59
+#: .\templates\search\search.html:61
 msgid "Данные не найдены"
-msgstr "Данные не найдены"
+msgstr "No data found"
 
 #: .\templates\users\login.html:43
 msgid "login_or_email_placeholder"
@@ -585,7 +605,7 @@ msgstr "Password"
 msgid "Forgot password?"
 msgstr "Forgot password?"
 
-#: .\templates\users\login.html:68 .\templates\users\signup.html:86
+#: .\templates\users\login.html:68 .\templates\users\signup.html:88
 msgid "Login_confirm"
 msgstr "Login"
 
@@ -674,9 +694,17 @@ msgstr "First name"
 msgid "last_name"
 msgstr "Last name"
 
+#: .\templates\users\profile.html:74
+msgid "Введите фамилию"
+msgstr "Enter your last name"
+
 #: .\templates\users\profile.html:81
 msgid "email"
 msgstr "Email"
+
+#: .\templates\users\profile.html:83
+msgid "Введите email"
+msgstr "Enter your mail"
 
 #: .\templates\users\profile.html:93
 msgid "Save"
@@ -702,11 +730,11 @@ msgstr "Email"
 msgid "repeat_password_placeholder"
 msgstr "Repeat password"
 
-#: .\templates\users\signup.html:82
+#: .\templates\users\signup.html:84
 msgid "Signup_confirm"
 msgstr "Sign up"
 
-#: .\templates\users\signup.html:86
+#: .\templates\users\signup.html:88
 msgid "Already have an account?"
 msgstr "Already have an account?"
 
@@ -742,11 +770,11 @@ msgid ""
 "click on the link below:"
 msgstr ""
 
-#: .\users\forms.py:49
+#: .\users\forms.py:52
 msgid "Enter your login"
 msgstr "Enter your login"
 
-#: .\users\forms.py:65
+#: .\users\forms.py:68
 msgid "Choose your picture"
 msgstr "Choose your picture"
 
@@ -794,8 +822,8 @@ msgstr "The activation link has been sent to your email!"
 msgid "The form has been successfully submitted!"
 msgstr "The form has been successfully submitted!"
 
-#~ msgid "Ошибка при открытии базы: {str(e)}"
-#~ msgstr "Error opening database: {str(e)}"
+#~ msgid "Просмотреть содержимое"
+#~ msgstr "Check your data"
 
 #~ msgid "Email"
 #~ msgstr "Email"
