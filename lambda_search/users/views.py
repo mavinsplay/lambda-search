@@ -6,8 +6,9 @@ import django.contrib.auth
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -93,30 +94,38 @@ class SignupView(FormView):
     def send_activation_email(self, user):
         cell = CellEncryptor(settings.ENCRYPTION_KEY)
 
-        path = cell.encrypt(user.username)
+        encr_username = cell.encrypt(user.username)
 
-        activation_link = f"{settings.SITE_URL}/auth/activate/{path}"
+        activation_link = f"{settings.SITE_URL}/auth/activate/{encr_username}"
 
         try:
-            send_mail(
-                _("Activate your account"),
-                _(
-                    (
-                        f"Hello {user.username},\n\nThank you for signing up! "
-                        "Please activate your account"
-                        " by clicking the link below"
-                        f":\n\n{activation_link}\n\nBest "
-                        "regards,\nYour lambda-search team"
-                    ),
-                ),
-                settings.MAIL,
-                [users.models.UserManager().normalize_email(user.email)],
+            html_content = render_to_string(
+                "mail/activation_email.html",
+                {
+                    "username": user.username,
+                    "activation_link": activation_link,
+                },
             )
+            email = EmailMessage(
+                subject=_("Activate your account"),
+                body=html_content,
+                from_email=settings.MAIL,
+                to=[users.models.UserManager().normalize_email(user.email)],
+            )
+            email.content_subtype = "html"
+            email.send()
             messages.success(
                 self.request,
                 _("The activation link has been sent to your email!"),
             )
         except Exception as ex:
+            messages.error(
+                self.request,
+                (
+                    "An error has occurred while activating"
+                    ", please try again or contact us in feedback page"
+                ),
+            )
             logger.debug(ex)
 
 

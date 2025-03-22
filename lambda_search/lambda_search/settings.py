@@ -35,14 +35,19 @@ DEFAULT_USER_IS_ACTIVE = env_validator(
     os.getenv("DJANGO_DEFAULT_USER_IS_ACTIVE", "true" if DEBUG else "false"),
 )
 
-MAIL = "lambda-search@yandex.ru"
+MAIL = os.getenv("DJANGO_MAIL", "example@mail.com")
 
-EMAIL_HOST = os.getenv("DJANGO_EMAIL_HOST", "smtp.yandex.ru")
+EMAIL_HOST = os.getenv("DJANGO_EMAIL_HOST", "smtp.gmail.com")
 EMAIL_HOST_PASSWORD = os.getenv(
     "DJANGO_EMAIL_HOST_PASSWORD",
-    "fxzxpenjgrrxjrtk",
+    "",
 )
-
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = MAIL
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = MAIL
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -178,13 +183,6 @@ USE_L10N = True
 LOCALE_PATHS = (BASE_DIR / "locale",)
 
 ITEMS_PER_PAGE = 5
-
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = MAIL
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = MAIL
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CAPTCHA_ENABLED = env_validator(
     os.getenv("DJANGO_ALLOW_CAPTCHA", str(not DEBUG)),
