@@ -176,6 +176,10 @@ msgstr "Проверить свои данные"
 msgid "Содержимое"
 msgstr "Содержимое базы данных:"
 
+#: .\search\admin.py:82
+msgid "Ошибка при открытии базы: {str(e)}"
+msgstr "Ошибка при открытии базы: {str(e)}"
+
 #: .\search\admin.py:91
 msgid "Количество связанных объектов"
 msgstr "Количество связанных объектов"
@@ -366,8 +370,8 @@ msgid "Your Feedback"
 msgstr "Обратная связь"
 
 #: .\templates\feedback\feedback.html:63
-msgid "Upload Files"
-msgstr "Загрузить файлы"
+msgid "Upload File"
+msgstr "Загрузить файл"
 
 #: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "I accept the terms of the"
@@ -379,7 +383,7 @@ msgstr "пользовательского соглашения"
 
 #: .\templates\feedback\feedback.html:87
 msgid "Submit"
-msgstr ""
+msgstr "Отправить"
 
 #: .\templates\history\history.html:28
 msgid "Навигация по страницам"
@@ -678,9 +682,17 @@ msgstr "Имя"
 msgid "last_name"
 msgstr "Фамилия"
 
+#: .\templates\users\profile.html:74
+msgid "Введите фамилию"
+msgstr "Введите фамилию"
+
 #: .\templates\users\profile.html:81
 msgid "email"
 msgstr "Электронная почта"
+
+#: .\templates\users\profile.html:83
+msgid "Введите email"
+msgstr "Введите email"
 
 #: .\templates\users\profile.html:93
 msgid "Save"
@@ -797,9 +809,6 @@ msgstr "Ссылка на активацию отправлена на вашу 
 #: .\users\views.py:163
 msgid "The form has been successfully submitted!"
 msgstr "Форма успешно отправлена!"
-
-#~ msgid "Ошибка при открытии базы: {str(e)}"
-#~ msgstr "Ошибка при открытии базы: {str(e)}"
 
 #~ msgid "Email"
 #~ msgstr "Электронная почта"
