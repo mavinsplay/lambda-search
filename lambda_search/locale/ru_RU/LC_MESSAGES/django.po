@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-22 12:40+0300\n"
+"POT-Creation-Date: 2025-03-19 14:33+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,105 +25,89 @@ msgstr "О проекте"
 msgid "User Agreement"
 msgstr "пользовательского соглашения"
 
-#: .\feedback\apps.py:10 .\feedback\models.py:36 .\feedback\models.py:71
-#: .\feedback\models.py:115
+#: .\feedback\apps.py:10 .\feedback\models.py:37 .\feedback\models.py:72
+#: .\feedback\models.py:114
 msgid "Обратная связь"
 msgstr "Обратная связь"
 
-#: .\feedback\forms.py:25
-msgid "Можно загрузить максимум 10 файлов."
-msgstr ""
-
-#: .\feedback\forms.py:31
-msgid "Общий размер файлов не должен превышать 20 MB."
-msgstr ""
-
-#: .\feedback\forms.py:58 .\feedback\forms.py:66
+#: .\feedback\forms.py:46 .\feedback\forms.py:54
 msgid "Напишите ваш отзыв"
 msgstr "Напишите ваш отзыв"
 
-#: .\feedback\forms.py:61
+#: .\feedback\forms.py:49
 msgid "Отзыв"
 msgstr "Отзыв"
 
-#: .\feedback\forms.py:75
+#: .\feedback\forms.py:63
 msgid "Файлы"
 msgstr "Файлы"
 
-#: .\feedback\forms.py:77
-msgid "Добавьте файлы для лучшего понимания проблемы"
+#: .\feedback\forms.py:65
+msgid "Добавьте файл для лучшего понимания проблемы"
 msgstr "Добавьте файл для лучшего понимания проблемы"
 
-#: .\feedback\forms.py:94
+#: .\feedback\forms.py:85
 msgid "Введите ваше имя"
 msgstr "Введите ваше имя"
 
-#: .\feedback\forms.py:95 .\feedback\models.py:41
+#: .\feedback\forms.py:86 .\feedback\models.py:42
 msgid "Имя"
 msgstr "Имя"
 
-#: .\feedback\forms.py:96 .\templates\users\profile.html:65
-msgid "Введите имя"
-msgstr "Введите имя"
-
-#: .\feedback\forms.py:100
+#: .\feedback\forms.py:90
 msgid "Введите вашу почту"
 msgstr "Введите вашу почту"
 
-#: .\feedback\forms.py:101 .\feedback\models.py:42
+#: .\feedback\forms.py:91 .\feedback\models.py:43
 msgid "Почта"
 msgstr "Почта"
 
-#: .\feedback\forms.py:102
-msgid "Введите почту"
-msgstr "Введите вашу почту"
-
-#: .\feedback\models.py:17 .\feedback\models.py:78
+#: .\feedback\models.py:18 .\feedback\models.py:79
 msgid "Создано в"
 msgstr "Создано в"
 
-#: .\feedback\models.py:22
+#: .\feedback\models.py:23
 msgid "Статус обработки"
 msgstr "Статус обработки"
 
-#: .\feedback\models.py:37
+#: .\feedback\models.py:38
 msgid "Обратные связи"
 msgstr "Обратные связи"
 
-#: .\feedback\models.py:55 .\feedback\models.py:59
+#: .\feedback\models.py:56 .\feedback\models.py:60
 #: .\templates\users\user_detail.html:10
 msgid "Информация о пользователе"
 msgstr "Информация о пользователе"
 
-#: .\feedback\models.py:60
+#: .\feedback\models.py:61
 msgid "Информация о пользователях"
 msgstr "Информация о пользователе"
 
-#: .\feedback\models.py:63
+#: .\feedback\models.py:64
 msgid "Аноним"
 msgstr "Аноним"
 
-#: .\feedback\models.py:80
+#: .\feedback\models.py:81
 msgid "Из"
 msgstr "из"
 
-#: .\feedback\models.py:86
+#: .\feedback\models.py:87
 msgid "В"
 msgstr "В"
 
-#: .\feedback\models.py:93
+#: .\feedback\models.py:94
 msgid "Лог изменения статуса"
 msgstr "Лог изменения статуса"
 
-#: .\feedback\models.py:94
+#: .\feedback\models.py:95
 msgid "Логи изменения статусов"
 msgstr "Логи изменения статусов"
 
-#: .\feedback\models.py:125
+#: .\feedback\models.py:119
 msgid "Файл обратной связи"
 msgstr "Файл обратной связи"
 
-#: .\feedback\models.py:126
+#: .\feedback\models.py:120
 msgid "Файлы обратной связи"
 msgstr "Файлы обратной связи"
 
@@ -176,13 +160,17 @@ msgstr "Домашняя страница"
 msgid "Lambda Search"
 msgstr "Lambda Search"
 
-#: .\lambda_search\settings.py:171
+#: .\lambda_search\settings.py:169
 msgid "English"
 msgstr "Английский"
 
-#: .\lambda_search\settings.py:172
+#: .\lambda_search\settings.py:170
 msgid "Russian"
 msgstr "Русский"
+
+#: .\search\admin.py:58
+msgid "Просмотреть содержимое"
+msgstr "Проверить свои данные"
 
 #: .\search\admin.py:62
 msgid "Содержимое"
@@ -204,7 +192,7 @@ msgstr "Поиск"
 msgid "Длина запроса должна быть от 8 до 100 символов."
 msgstr "Длина запроса должна быть от 8 до 100 символов."
 
-#: .\search\forms.py:43
+#: .\search\forms.py:39
 msgid "Введите запрос..."
 msgstr "Введите запрос..."
 
@@ -261,7 +249,7 @@ msgid "Значение"
 msgstr "Значение"
 
 #: .\search\models.py:121 .\search\models.py:122
-#: .\templates\includes\table.html:7 .\templates\search\search.html:45
+#: .\templates\includes\table.html:7 .\templates\search\search.html:43
 msgid "Данные"
 msgstr "Данные"
 
@@ -382,8 +370,8 @@ msgid "Your Feedback"
 msgstr "Обратная связь"
 
 #: .\templates\feedback\feedback.html:63
-msgid "Upload Files"
-msgstr "Загрузить файлы"
+msgid "Upload File"
+msgstr "Загрузить файл"
 
 #: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "I accept the terms of the"
@@ -393,7 +381,7 @@ msgstr "Я принимаю условия"
 msgid "user agreement"
 msgstr "пользовательского соглашения"
 
-#: .\templates\feedback\feedback.html:89
+#: .\templates\feedback\feedback.html:87
 msgid "Submit"
 msgstr "Отправить"
 
@@ -575,11 +563,11 @@ msgstr "Средние:"
 msgid "Низкие:"
 msgstr "Низкие:"
 
-#: .\templates\includes\table.html:5 .\templates\search\search.html:43
+#: .\templates\includes\table.html:5 .\templates\search\search.html:41
 msgid "Ресурс"
 msgstr "Ресурс"
 
-#: .\templates\includes\table.html:6 .\templates\search\search.html:44
+#: .\templates\includes\table.html:6 .\templates\search\search.html:42
 msgid "История утечки"
 msgstr "История утечки"
 
@@ -587,7 +575,7 @@ msgstr "История утечки"
 msgid "Найти"
 msgstr "Найти"
 
-#: .\templates\search\search.html:61
+#: .\templates\search\search.html:59
 msgid "Данные не найдены"
 msgstr "Данные не найдены"
 
@@ -603,7 +591,7 @@ msgstr "Пароль"
 msgid "Forgot password?"
 msgstr "Забыли пароль?"
 
-#: .\templates\users\login.html:68 .\templates\users\signup.html:88
+#: .\templates\users\login.html:68 .\templates\users\signup.html:86
 msgid "Login_confirm"
 msgstr "Войти"
 
@@ -730,11 +718,11 @@ msgstr "Электронная почта"
 msgid "repeat_password_placeholder"
 msgstr "Повторите пароль"
 
-#: .\templates\users\signup.html:84
+#: .\templates\users\signup.html:82
 msgid "Signup_confirm"
 msgstr "Зарегистрироваться"
 
-#: .\templates\users\signup.html:88
+#: .\templates\users\signup.html:86
 msgid "Already have an account?"
 msgstr "Уже есть аккаунт?"
 
@@ -770,11 +758,11 @@ msgid ""
 "click on the link below:"
 msgstr ""
 
-#: .\users\forms.py:52
+#: .\users\forms.py:49
 msgid "Enter your login"
 msgstr "Введите логин"
 
-#: .\users\forms.py:68
+#: .\users\forms.py:65
 msgid "Choose your picture"
 msgstr "Выберите аватар"
 
@@ -821,9 +809,6 @@ msgstr "Ссылка на активацию отправлена на вашу 
 #: .\users\views.py:163
 msgid "The form has been successfully submitted!"
 msgstr "Форма успешно отправлена!"
-
-#~ msgid "Просмотреть содержимое"
-#~ msgstr "Проверить свои данные"
 
 #~ msgid "Email"
 #~ msgstr "Электронная почта"

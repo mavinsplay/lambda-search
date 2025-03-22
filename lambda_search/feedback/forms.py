@@ -28,7 +28,8 @@ class MultipleFileField(forms.FileField):
         max_total_size = 20 * 1024 * 1024  # 20 MB
         if total_size > max_total_size:
             raise ValidationError(
-                _("Общий размер файлов не должен превышать 20 MB."))
+                _("Общий размер файлов не должен превышать 20 MB."),
+            )
 
         return data
 
