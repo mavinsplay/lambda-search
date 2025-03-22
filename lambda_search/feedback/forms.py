@@ -11,6 +11,9 @@ __all__ = ()
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
+    def value_from_datadict(self, data, files, name):
+        return files.getlist(name)
+
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
@@ -18,19 +21,16 @@ class MultipleFileField(forms.FileField):
         super().__init__(*args, **kwargs)
 
     def clean(self, data, initial=None):
-        single_file_clean = super().clean
-        if isinstance(data, (list, tuple)):
-            return [single_file_clean(d, initial) for d in data]
+        if len(data) > 10:
+            raise ValidationError(_("Можно загрузить максимум 10 файлов."))
 
-        return [single_file_clean(data, initial)]
+        total_size = sum(f.size for f in data)
+        max_total_size = 20 * 1024 * 1024  # 20 MB
+        if total_size > max_total_size:
+            raise ValidationError(
+                _("Общий размер файлов не должен превышать 20 MB."))
 
-
-def validate_file_size(value):
-    max_file_size = 20 * 1024 * 1024  # 20 MB
-    if value.size > max_file_size:
-        raise ValidationError(
-            _("Общий размер файлов не должен превышать 20 MB."),
-        )
+        return data
 
 
 class FeedbackForm(forms.ModelForm):
@@ -75,7 +75,6 @@ class FilesForm(forms.ModelForm):
         label=_("Файлы"),
         required=False,
         help_text=_("Добавьте файлы для лучшего понимания проблемы"),
-        validators=[validate_file_size],
     )
 
     def __init__(self, *args, **kwargs):
@@ -94,11 +93,13 @@ class UserForm(forms.ModelForm):
         required=False,
         help_text=_("Введите ваше имя"),
         label=_("Имя"),
+        widget=forms.TextInput(attrs={"placeholder": _("Введите имя")}),
     )
     mail = forms.EmailField(
         required=True,
         help_text=_("Введите вашу почту"),
         label=_("Почта"),
+        widget=forms.EmailInput(attrs={"placeholder": _("Введите почту")}),
     )
 
     def __init__(self, *args, **kwargs):

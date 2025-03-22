@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 
 from feedback.forms import FeedbackForm, FilesForm, UserForm
-from feedback.models import StatusLog, UserInfo
+from feedback.models import FeedbackFile, StatusLog, UserInfo
 from users.models import User
 
 __all__ = ()
@@ -57,11 +57,12 @@ class FeedbackView(View):
                 to=feedback.status,
             )
 
-            if "files" in request.FILES:
-                feedback_file = file_form.save(commit=False)
-                feedback_file.feedback = feedback
-                feedback_file.file = request.FILES["files"]
-                feedback_file.save()
+            if request.FILES.getlist("files"):
+                for f in request.FILES.getlist("files"):
+                    FeedbackFile.objects.create(
+                        feedback=feedback,
+                        file=f,
+                    )
 
             messages.success(request, "Форма успешно отправлена!")
             return redirect("feedback:feedback")

@@ -62,7 +62,7 @@
                           <div class="row mb-3">
                               <label for="first_name" class="col-sm-3 col-form-label">{% trans "first_name" %}</label>
                               <div class="col-sm-9">
-                                  <input type="text" id="first_name" name="first_name" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" name="first_name" placeholder="Введите имя" value="{{ request.user.first_name }}">
+                                  <input type="text" id="first_name" name="first_name" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}" name="first_name" placeholder={% trans "Введите имя" %} value="{{ request.user.first_name }}">
                                   {% for error in form.first_name.errors %}
                                       <div class="invalid-feedback">{{ error }}</div>
                                   {% endfor %}
@@ -71,7 +71,7 @@
                           <div class="row mb-3">
                               <label for="last_name" class="col-sm-3 col-form-label">{% trans "last_name" %}</label>
                               <div class="col-sm-9">
-                                  <input type="text" id="last_name" name="last_name" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" name="last_name" placeholder="Введите фамилию" value="{{ request.user.last_name }}">
+                                  <input type="text" id="last_name" name="last_name" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}" name="last_name" placeholder={% trans "Введите фамилию" %} value="{{ request.user.last_name }}">
                                   {% for error in form.last_name.errors %}
                                       <div class="invalid-feedback">{{ error }}</div>
                                   {% endfor %}
@@ -80,7 +80,7 @@
                           <div class="row mb-3">
                               <label for="email" class="col-sm-3 col-form-label">{% trans "email" %}</label>
                               <div class="col-sm-9">
-                                  <input type="email" id="email" name="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" name="email" placeholder="Введите email" value="{{ request.user.email }}">
+                                  <input type="email" id="email" name="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" name="email" placeholder={% trans "Введите email" %} value="{{ request.user.email }}">
                                   {% for error in form.email.errors %}
                                       <div class="invalid-feedback">{{ error }}</div>
                                   {% endfor %}
