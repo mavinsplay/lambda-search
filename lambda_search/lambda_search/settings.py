@@ -4,13 +4,11 @@ from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
+from lambda_search import utils
+
 __all__ = ()
 
 load_dotenv()
-
-
-def env_validator(env: str):
-    return env.lower() in ["true", "yes", "1", "y", "t"]
 
 
 SECRET_KEY = os.getenv(
@@ -23,7 +21,7 @@ ENCRYPTION_KEY = os.getenv(
     "dsEa3e6lF983WPH88NsSS9A0HGCIK5xA",
 ).encode()
 
-DEBUG = env_validator(os.getenv("DJANGO_DEBUG", "true"))
+DEBUG = utils.get_bool_env(os.getenv("DJANGO_DEBUG", "true"))
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "lamdba-search.ru").split(
     ",",
@@ -31,7 +29,7 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "lamdba-search.ru").split(
 
 CSRF_TRUSTED_ORIGINS = [f"https://{x}" for x in ALLOWED_HOSTS]
 
-DEFAULT_USER_IS_ACTIVE = env_validator(
+DEFAULT_USER_IS_ACTIVE = utils.get_bool_env(
     os.getenv("DJANGO_DEFAULT_USER_IS_ACTIVE", "true" if DEBUG else "false"),
 )
 
@@ -108,23 +106,38 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "lambda_search.wsgi.application"
 
+SELECTED_DATABASE = os.getenv(
+    "DJANGO_DATABASE_SELECT",
+    "postgresql" if not DEBUG else "sqlite3",
+)
 
-DB_NAME = os.getenv("DJANGO_POSTGRESQL_NAME", "lambda_search")
-DB_USER = os.getenv("DJANGO_POSTGRESQL_USER", "postgres")
-DB_PASSWORD = os.getenv("DJANGO_POSTGRESQL_PASSWORD", "root")
-DB_HOST = os.getenv("DJANGO_POSTGRESQL_HOST", "localhost")
-DB_PORT = int(os.getenv("DJANGO_POSTGRESQL_PORT", "5432"))
+if SELECTED_DATABASE == "postgresql":
+    DB_NAME = os.getenv("DJANGO_POSTGRESQL_NAME", "lambda_search")
+    DB_USER = os.getenv("DJANGO_POSTGRESQL_USER", "postgres")
+    DB_PASSWORD = os.getenv("DJANGO_POSTGRESQL_PASSWORD", "root")
+    DB_HOST = os.getenv("DJANGO_POSTGRESQL_HOST", "localhost")
+    DB_PORT = int(os.getenv("DJANGO_POSTGRESQL_PORT", "5432"))
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": DB_NAME,
-        "USER": DB_USER,
-        "PASSWORD": DB_PASSWORD,
-        "HOST": DB_HOST,
-        "PORT": DB_PORT,
-    },
-}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": DB_NAME,
+            "USER": DB_USER,
+            "PASSWORD": DB_PASSWORD,
+            "HOST": DB_HOST,
+            "PORT": DB_PORT,
+        },
+    }
+
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        },
+    }
+
+
 LAMBDA_DBS_DIR = BASE_DIR / "lambda-dbs"
 
 AUTH_PWD_MODULE = "django.contrib.auth.password_validation."
@@ -137,18 +150,30 @@ AUTHENTICATION_BACKENDS = [
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": f"{AUTH_PWD_MODULE}UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation"
+            ".UserAttributeSimilarityValidator"
+        ),
     },
     {
-        "NAME": f"{AUTH_PWD_MODULE}MinimumLengthValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.MinimumLengthValidator"
+        ),
     },
     {
-        "NAME": f"{AUTH_PWD_MODULE}CommonPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation"
+            ".CommonPasswordValidator"
+        ),
     },
     {
-        "NAME": f"{AUTH_PWD_MODULE}NumericPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation"
+            ".NumericPasswordValidator"
+        ),
     },
 ]
+
 
 TIME_ZONE = "UTC"
 
@@ -184,9 +209,10 @@ LOCALE_PATHS = (BASE_DIR / "locale",)
 
 ITEMS_PER_PAGE = 5
 
-CAPTCHA_ENABLED = env_validator(
+CAPTCHA_ENABLED = utils.get_bool_env(
     os.getenv("DJANGO_ALLOW_CAPTCHA", str(not DEBUG)),
 )
+
 if CAPTCHA_ENABLED:
     TURNSTILE_SITEKEY = os.getenv("DJANGO_CAPTCHA_SITE_KEY")
     TURNSTILE_SECRET = os.getenv("DJANGO_CAPTCHA_SECRET_KEY")
