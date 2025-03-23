@@ -1,15 +1,21 @@
 # Lambda Search
 
+![Pipeline](https://github.com/mavinsplay/lambda-search/actions/workflows/ci-cd-pipeline.yml/badge.svg)
+[![License](https://img.shields.io/github/license/mavinsplay/lambda-search)](./LICENSE)
+
+![python](https://img.shields.io/pypi/pyversions/Django)
+![black](https://img.shields.io/badge/code%20style-black-black.svg)
+
+![last commit](https://img.shields.io/github/last-commit/mavinsplay/lambda-search)
+![commit activity](https://img.shields.io/github/commit-activity/m/mavinsplay/lambda-search)
+![contributors](https://img.shields.io/github/contributors/mavinsplay/lambda-search)
+***
 
 Проект доступен по адресу https://lambda-search.ru
 
 ## О проекте
 Lambda Search — это инструмент, созданный для проверки, были ли ваши данные скомпрометированы в результате утечек. Мы ориентированы на российских пользователей и учитываем локальные риски и угрозы. Сервис предоставляет удобный интерфейс для анализа утечек, позволяя пользователям быстро реагировать на возможные угрозы.
 
-## Требования
-
-- Python 3.12.1
-- PostgreSQL (установка: [PostgreSQL Official Docs](https://www.postgresql.org/download/))
 
 ## Запуск проекта доступен двух видов:
 
@@ -51,19 +57,19 @@ Lambda Search — это инструмент, созданный для про�
 
 3. **Установите зависимости:**
 
-   1. Основные:
+   - Основные:
 
       ```bash
       pip3 install -r requirements/prod.txt
       ```
 
-   2. Для тестирования:
+   - Для тестирования:
 
       ```bash
       pip3 install -r requirements/test.txt
       ```
 
-   3. Для разработки:
+   - Для разработки:
 
       ```bash
       pip3 install -r requirements/dev.txt
@@ -71,12 +77,11 @@ Lambda Search — это инструмент, созданный для про�
 
 4. **Настройка окружения:**
 
-   Скопируйте шаблон файла настроек окружения и заполните его:
+   Скопируйте шаблон файла настроек окружения и настройте его:
 
    ```bash
    cp .env.template .env
    ```
-
 
 5. **Выполните локализации**
 
@@ -107,7 +112,10 @@ Lambda Search — это инструмент, созданный для про�
    django-admin compilemessages
    ```
 
-6. **Настройте PostgreSQL:**
+6. **Установите и настройте PostgreSQL:**
+   *Только если выбрали PostgreSQL в качестве базы данных в .env*
+
+   [**Установка PostgreSQL**](https://www.postgresql.org/download/)
 
    [Настройка для Windows](https://winitpro.ru/index.php/2019/10/25/ustanovka-nastrojka-postgresql-v-windows/)
 
@@ -148,7 +156,7 @@ python3 manage.py test
 
    1. Скачайте и установите [Docker](https://www.docker.com/)
 
-   2. Настройте окружение
+   2. Настройте окружение (.env)
 
    3. Запустите контейнер, перед этим остановив существующие:
 
