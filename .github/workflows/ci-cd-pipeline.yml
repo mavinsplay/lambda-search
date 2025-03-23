@@ -23,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Run Black
-        run: black --check .
+        run: black --check --verbose .
 
   django-tests:
     name: Run Django Tests
@@ -49,6 +49,7 @@ jobs:
           python3 manage.py test
         env:
           DJANGO_DATABASE_SELECT: sqlite3
+          DJANGO_ALLOW_CAPTCHA: 0
       
 
   prod-deploy:
