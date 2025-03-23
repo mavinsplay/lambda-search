@@ -370,8 +370,8 @@ msgid "Your Feedback"
 msgstr "Обратная связь"
 
 #: .\templates\feedback\feedback.html:63
-msgid "Upload File"
-msgstr "Загрузить файл"
+msgid "Upload Files"
+msgstr "Загрузить файлы"
 
 #: .\templates\feedback\feedback.html:74 .\templates\users\signup.html:72
 msgid "I accept the terms of the"
@@ -750,13 +750,16 @@ msgstr "Пользователь"
 msgid ""
 "You have exceeded the limitnumber of login attempts. Please activate your "
 "account.You should receive an activation email."
-msgstr ""
+msgstr "Вы превысили допустимое количество попыток входа в систему. "
+"Пожалуйста, активируйте свою учетную запись. "
+"Вы должны получить электронное письмо с уведомлением об активации."
 
 #: .\users\backends.py:75
 msgid ""
 "Suspicious account activity has been detected. To activate your account, "
 "click on the link below:"
-msgstr ""
+msgstr "Обнаружена подозрительная активность в учетной записи. Чтобы активировать свою учетную запись,"
+"нажмите на ссылку ниже:"
 
 #: .\users\forms.py:49
 msgid "Enter your login"
