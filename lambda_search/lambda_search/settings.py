@@ -210,7 +210,7 @@ LOCALE_PATHS = (BASE_DIR / "locale",)
 ITEMS_PER_PAGE = 5
 
 CAPTCHA_ENABLED = utils.get_bool_env(
-    os.getenv("DJANGO_ALLOW_CAPTCHA", str(not DEBUG)),
+    os.getenv("DJANGO_ALLOW_CAPTCHA", "False"),
 )
 
 if CAPTCHA_ENABLED:
