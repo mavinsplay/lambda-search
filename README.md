@@ -1,17 +1,19 @@
 # Lambda Search
 
-![Pipeline](https://github.com/mavinsplay/lambda-search/actions/workflows/ci-cd-pipeline.yml/badge.svg)
+[![Pipeline](https://github.com/mavinsplay/lambda-search/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://github.com/mavinsplay/lambda-search/actions/workflows/ci-cd-pipeline.yml?query=branch%3Amain)
 [![License](https://img.shields.io/github/license/mavinsplay/lambda-search)](./LICENSE)
 
 [![python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
 [![django](https://img.shields.io/badge/django-4.2-blue)](https://www.djangoproject.com/)
 
-![last commit](https://img.shields.io/github/last-commit/mavinsplay/lambda-search)
-![commit activity](https://img.shields.io/github/commit-activity/m/mavinsplay/lambda-search)
-![contributors](https://img.shields.io/github/contributors/mavinsplay/lambda-search)
+[![last commit](https://img.shields.io/github/last-commit/mavinsplay/lambda-search)](https://github.com/mavinsplay/lambda-search/commits/main/)
+[![commit activity](https://img.shields.io/github/commit-activity/m/mavinsplay/lambda-search)](https://github.com/mavinsplay/lambda-search/pulse)
+[![contributors](https://img.shields.io/github/contributors/mavinsplay/lambda-search)](https://github.com/mavinsplay/lambda-search/graphs/contributors)
 ***
 
-Проект доступен по адресу https://lambda-search.ru
+**Проект доступен по адресу https://lambda-search.ru**
+
+***
 
 ## О проекте
 Lambda Search — это инструмент, созданный для проверки, были ли ваши данные скомпрометированы в результате утечек. Мы ориентированы на российских пользователей и учитываем локальные риски и угрозы. Сервис предоставляет удобный интерфейс для анализа утечек, позволяя пользователям быстро реагировать на возможные угрозы.
