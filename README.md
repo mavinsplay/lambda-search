@@ -3,8 +3,8 @@
 ![Pipeline](https://github.com/mavinsplay/lambda-search/actions/workflows/ci-cd-pipeline.yml/badge.svg)
 [![License](https://img.shields.io/github/license/mavinsplay/lambda-search)](./LICENSE)
 
-![python](https://img.shields.io/pypi/pyversions/Django)
-![black](https://img.shields.io/badge/code%20style-black-black.svg)
+[![python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
+[![django](https://img.shields.io/badge/django-4.2-blue)](https://www.djangoproject.com/)
 
 ![last commit](https://img.shields.io/github/last-commit/mavinsplay/lambda-search)
 ![commit activity](https://img.shields.io/github/commit-activity/m/mavinsplay/lambda-search)
