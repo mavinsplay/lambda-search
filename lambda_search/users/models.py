@@ -103,7 +103,7 @@ class Profile(django.db.models.Model):
         if self.image:
             return sorl.thumbnail.get_thumbnail(
                 self.image,
-                "50x50",
+                "32x32",
                 crop="center",
             ).url
 
@@ -113,7 +113,7 @@ class Profile(django.db.models.Model):
         if self.image:
             return sorl.thumbnail.get_thumbnail(
                 self.image,
-                "150x150",
+                "120x120",
                 crop="center",
             ).url
 
