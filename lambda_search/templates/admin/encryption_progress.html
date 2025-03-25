@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block content %}
+  <h1>Прогресс шифрования базы "{{ database.name }}"</h1>
+  <div id="progress-wrapper" style="width: 100%; background: #eee; margin-bottom: 10px;">
+    <div id="progress-bar" style="width: 0%; height: 20px; background: #68a9ef;"></div>
+  </div>
+  <p id="progress-text">0 строк зашифровано (0%)</p>
+  
+  <script src="{% static 'js/celery_progress.js' %}"></script>
+{% endblock %}

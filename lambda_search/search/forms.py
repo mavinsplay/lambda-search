@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 __all__ = ("SearchForm",)
 
 
-def normalize_search_query(value):
+def normalize_search_query(value: str) -> str:
     if re.fullmatch(r"[\+\(\)\-\d\s]+", value):
         normalized = re.sub(r"[\D]+", "", value)
         if normalized.startswith("8"):
@@ -19,7 +19,7 @@ def normalize_search_query(value):
     if "@" in value:
         return re.sub(r"<[^>]*>", "", value)
 
-    return value
+    return value.lower()
 
 
 def validate_length(value):

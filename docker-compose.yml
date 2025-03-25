@@ -35,6 +35,37 @@ services:
     networks:
       - lambda_net
 
+  redis:
+    image: redis:latest
+    container_name: redis_lambda
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./for_docker/redis_data:/data
+    profiles:
+      - prod
+      - dev
+    networks:
+      - lambda_net
+
+  celery:
+    build: .
+    container_name: celery_lambda
+    command: celery -A lambda_search worker --loglevel=info
+    env_file:
+      - ./.env
+    volumes:
+      - ./for_docker/logs:/lambda_search/logs
+    depends_on:
+      - redis
+      - postgres_lambda
+    profiles:
+      - prod
+      - dev
+    networks:
+      - lambda_net
+
   nginx-prod:
     image: jonasal/nginx-certbot:latest
     container_name: nginx-prod
@@ -64,4 +95,4 @@ networks:
   lambda_net:
     name: lambda_search
     driver: bridge
-    
+

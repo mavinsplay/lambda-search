@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.admin.utils import NestedObjects
 from django.db import router
 from django.shortcuts import render
-from django.urls import path
+from django.urls import path, reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
@@ -30,6 +30,7 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
     readonly_fields = (
         ManagedDatabase.created_at.field.name,
         ManagedDatabase.updated_at.field.name,
+        ManagedDatabase.progress_task_id.field.name,
     )
     fields = (
         ManagedDatabase.name.field.name,
@@ -38,6 +39,7 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
         ManagedDatabase.history.field.name,
         ManagedDatabase.created_at.field.name,
         ManagedDatabase.updated_at.field.name,
+        ManagedDatabase.progress_task_id.field.name,
     )
 
     def get_urls(self):
@@ -47,6 +49,11 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
                 "<int:db_id>/view-content/",
                 self.admin_site.admin_view(self.view_database_content),
                 name="view_database_content",
+            ),
+            path(
+                "<int:db_id>/encryption-progress/",
+                self.admin_site.admin_view(self.view_encryption_progress),
+                name="encryption_progress",
             ),
         ]
         return custom_urls + urls
@@ -81,6 +88,18 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
                 "admin/error.html",
                 {"error_message": _(f"Ошибка при открытии базы: {str(e)}")},
             )
+
+    def view_encryption_progress(self, request, db_id):
+        database = ManagedDatabase.objects.get(id=db_id)
+        progress_url = reverse(
+            "celery_progress:task_status",
+            args=[database.progress_task_id],
+        )
+        context = {
+            "database": database,
+            "progress_url": progress_url,
+        }
+        return render(request, "admin/encryption_progress.html", context)
 
     def get_deleted_objects(self, objs, request):
         collector = NestedObjects(using=router.db_for_write(self.model))

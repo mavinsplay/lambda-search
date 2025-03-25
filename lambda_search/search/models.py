@@ -50,6 +50,12 @@ class ManagedDatabase(models.Model):
         _("Зашифрована"),
         default=False,
     )
+    progress_task_id = models.CharField(
+        _("ID задачи шифрования"),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
     created_at = models.DateTimeField(
         _("Дата создания"),
         auto_now_add=True,
@@ -69,16 +75,33 @@ class ManagedDatabase(models.Model):
 
             if file_changed:
                 self.is_encrypted = False
+                self.progress_task_id = None
 
+        # Сначала сохраняем объект
         super().save(*args, **kwargs)
 
-        if not self.is_encrypted:
-            self.encrypt_database()
+        # Затем проверяем необходимость шифрования
+        if not self.is_encrypted and self.file:
+            from search.tasks import encrypt_database_task
+
+            try:
+                from django.db import transaction
+
+                transaction.on_commit(
+                    lambda: encrypt_database_task.delay(self.pk),
+                )
+            except Exception as e:
+                # Логируем ошибку если что-то пошло не так
+                from django.core.exceptions import ValidationError
+
+                raise ValidationError(
+                    f"Ошибка при запуске задачи шифрования: {str(e)}",
+                )
 
     def encrypt_database(self):
         key = settings.ENCRYPTION_KEY
-        encryptor = UnifiedEncryptor(key)
-        encryptor.encrypt_database_cells(file_path=Path(self.file.path))
+        encryptor = UnifiedEncryptor(key, file_path=Path(self.file.path))
+        encryptor.encrypt_database_cells()
         self.is_encrypted = True
         super().save(update_fields=["is_encrypted"])
 
