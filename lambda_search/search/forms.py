@@ -9,8 +9,10 @@ __all__ = ("SearchForm",)
 
 
 def normalize_search_query(value: str) -> str:
-    if re.fullmatch(r"[\+\(\)\-\d\s]+", value):
-        normalized = re.sub(r"[\D]+", "", value)
+    phone_pattern = r"(?:\+?7|8)[-\s()]*\d(?:[-\s()]*\d){9}"
+
+    if re.match(phone_pattern, value):
+        normalized = re.sub(r"\D", "", value)
         if normalized.startswith("8"):
             return "7" + normalized[1:]
 

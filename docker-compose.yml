@@ -52,7 +52,7 @@ services:
   celery:
     build: .
     container_name: celery_lambda
-    command: celery -A lambda_search worker --loglevel=info
+    command: celery -A lambda_search worker --pool=solo --loglevel=info
     env_file:
       - ./.env
     volumes:

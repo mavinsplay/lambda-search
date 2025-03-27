@@ -92,13 +92,11 @@ class SQLiteHandler(DatabaseHandler):
 
             for row in rows:
                 row_id = row[0]
-                encrypted_row = []
                 for idx, value in enumerate(row[1:]):
                     if isinstance(value, str):
                         encrypted_value = self.encryptor.encrypt(
                             normalize_search_query(value),
                         )
-                        encrypted_row.append(encrypted_value)
                         batch.append(
                             Data(
                                 database=managed_database,
@@ -107,18 +105,11 @@ class SQLiteHandler(DatabaseHandler):
                                 value=encrypted_value[:255],
                             ),
                         )
-                    else:
-                        encrypted_row.append(value)
 
                 if len(batch) >= settings.BATCH_SIZE:
                     Data.objects.bulk_create(batch)
                     batch.clear()
 
-                set_clause = ", ".join([f"{column} = ?" for column in columns])
-                cursor.execute(
-                    f"UPDATE {table} SET {set_clause} WHERE rowid = ?",
-                    (*encrypted_row, row_id),
-                )
                 processed += 1
                 progress_callback(processed)
 
@@ -126,7 +117,6 @@ class SQLiteHandler(DatabaseHandler):
             Data.objects.bulk_create(batch)
             batch.clear()
 
-        conn.commit()
         conn.close()
 
     def read_data(self, n):
@@ -183,41 +173,31 @@ class CSVHandler(DatabaseHandler):
             file__endswith=self.csv_path.name,
         )
 
-        with self.csv_path.open("w", newline="", encoding="utf-8") as outfile:
-            writer = csv.writer(outfile)
-            if headers:
-                writer.writerow(headers)
-
-            for row_index, row in enumerate(rows[1:], start=1):
-                encrypted_row = []
-                for col_index, value in enumerate(row):
-                    if value:
-                        encrypted_value = self.encryptor.encrypt(
-                            normalize_search_query(value),
-                        )
-                        encrypted_row.append(encrypted_value)
-                        batch.append(
-                            Data(
-                                database=managed_database,
-                                user_index=row_index,
-                                column_name=(
-                                    headers[col_index]
-                                    if headers
-                                    else f"Column {col_index+1}"
-                                ),
-                                value=encrypted_value[:255],
+        for row_index, row in enumerate(rows[1:], start=1):
+            for col_index, value in enumerate(row):
+                if value:
+                    encrypted_value = self.encryptor.encrypt(
+                        normalize_search_query(value),
+                    )
+                    batch.append(
+                        Data(
+                            database=managed_database,
+                            user_index=row_index,
+                            column_name=(
+                                headers[col_index]
+                                if headers
+                                else f"Column {col_index+1}"
                             ),
-                        )
-                    else:
-                        encrypted_row.append(value)
+                            value=encrypted_value[:255],
+                        ),
+                    )
 
-                if len(batch) >= settings.BATCH_SIZE:
-                    Data.objects.bulk_create(batch)
-                    batch.clear()
+            if len(batch) >= settings.BATCH_SIZE:
+                Data.objects.bulk_create(batch)
+                batch.clear()
 
-                writer.writerow(encrypted_row)
-                processed += 1
-                progress_callback(processed)
+            processed += 1
+            progress_callback(processed)
 
         if batch:
             Data.objects.bulk_create(batch)

@@ -10,9 +10,8 @@ RUN rm -rf requirements
 COPY ./lambda_search /lambda_search/
 WORKDIR /lambda_search
 
-# Добавляем две команды запуска - для Django и для Celery
 CMD ["sh", "-c", "if [ \"$CONTAINER_TYPE\" = \"celery\" ]; then \
-    celery -A lambda_search worker --loglevel=info; \
+    celery -A lambda_search worker --pool=solo --loglevel=info; \
     else \
     python manage.py makemigrations && \
     python manage.py migrate && \

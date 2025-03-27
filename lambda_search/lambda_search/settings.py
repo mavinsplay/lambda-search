@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "sorl.thumbnail",
     "turnstile",
     "celery_progress",
+    "django_celery_results",
 ]
 
 MIDDLEWARE = [
@@ -208,20 +209,20 @@ USE_L10N = True
 
 LOCALE_PATHS = (BASE_DIR / "locale",)
 
-# Redis и Celery настройки
+# redis
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = os.getenv("REDIS_PORT", "6379")
 REDIS_DB = os.getenv("REDIS_DB", "0")
 
-# Настройка брокера Celery
+# celery
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
-CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_RESULT_EXTENDED = True
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Europe/Moscow"
-
-# Настройка кеша
+# cache
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -232,7 +233,7 @@ CACHES = {
     },
 }
 
-BATCH_SIZE = 5000  # количество строк для одной транзакции
+BATCH_SIZE = 5000  # Batch size for reading and writing data
 
 ITEMS_PER_PAGE = 5
 
