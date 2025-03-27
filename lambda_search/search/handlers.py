@@ -186,7 +186,7 @@ class CSVHandler(DatabaseHandler):
                             column_name=(
                                 headers[col_index]
                                 if headers
-                                else f"Column {col_index+1}"
+                                else f"Column {col_index + 1}"
                             ),
                             value=encrypted_value[:255],
                         ),
