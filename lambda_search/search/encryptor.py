@@ -67,14 +67,14 @@ class BaseHandlerManager:
 
 
 class UnifiedEncryptor(BaseHandlerManager):
-    def __init__(self, key: bytes):
+    def __init__(self, key: bytes, file_path: Path):
         super().__init__()
         self.encryptor = CellEncryptor(key)
+        self.handler = self.get_handler(file_path, self.encryptor)
 
-    def encrypt_database_cells(self, file_path: Path):
-        handler = self.get_handler(file_path, self.encryptor)
-        handler.validate()
-        handler.encrypt()
+    def encrypt_database_cells(self, progress_callback=None):
+        self.handler.validate()
+        self.handler.encrypt(progress_callback)
 
 
 class DbsReader(BaseHandlerManager):

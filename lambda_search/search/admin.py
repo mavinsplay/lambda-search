@@ -23,6 +23,7 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
         ManagedDatabase.file.field.name,
         ManagedDatabase.active.field.name,
         "view_content_button",
+        "progress_bar",
     )
     list_editable = (ManagedDatabase.active.field.name,)
     search_fields = (ManagedDatabase.name.field.name,)
@@ -81,6 +82,72 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
                 "admin/error.html",
                 {"error_message": _(f"Ошибка при открытии базы: {str(e)}")},
             )
+
+    def progress_bar(self, obj):
+        if not obj.progress_task_id:
+            return _("Не начато")
+
+        from django_celery_results.models import TaskResult
+
+        try:
+            task_result = TaskResult.objects.get(task_id=obj.progress_task_id)
+            result_data = task_result.result
+
+            if not result_data:
+                return _("Ожидание...")
+
+            progress_data = task_result.result
+            if isinstance(progress_data, str):
+                import json
+
+                progress_data = json.loads(progress_data)
+
+            progress = progress_data.get("percent", 0)
+            current = progress_data.get("current", 0)
+            total = progress_data.get("total", 0)
+            description = progress_data.get(
+                "description",
+                "",
+            )
+
+            color = (
+                "#28a745"
+                if progress == 100
+                else "#007bff" if progress > 0 else "#ffc107"
+            )
+
+            return format_html(
+                """
+                <div class="progress-container" data-task-id="{}">
+                    <div style="width: 300px; background-color: #f8f9fa; border-radius: 4px; height: 20px;">
+                        <div class="progress-bar-fill" style="width: {}%; background-color: {}; height: 100%; border-radius: 4px; 
+                        transition: width 0.3s ease-in-out;"></div>
+                    </div>
+                    <span class="progress-text">{}% ({}/{})</span>
+                    <span style="color: #666; margin-left: 10px;">{}</span>
+                </div>
+                """,  # noqa: E501, W291
+                obj.progress_task_id,
+                progress,
+                color,
+                progress,
+                current,
+                total,
+                description,
+            )
+        except TaskResult.DoesNotExist:
+            return _("Задача не найдена")
+        except (ValueError, KeyError, json.JSONDecodeError) as e:
+            return _("Ошибка данных") + str(e)
+
+    progress_bar.short_description = _("Прогресс")
+    progress_bar.allow_tags = True
+
+    class Media:
+        css = {
+            "all": ("css/progress.css",),
+        }
+        js = ("js/progress.js",)
 
     def get_deleted_objects(self, objs, request):
         collector = NestedObjects(using=router.db_for_write(self.model))

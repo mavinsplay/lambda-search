@@ -3,6 +3,10 @@ import csv
 from pathlib import Path
 import sqlite3
 
+from django.conf import settings
+
+from search.forms import normalize_search_query
+
 __all__ = ()
 
 
@@ -13,7 +17,6 @@ def filter_system_tables(all_tables: list) -> list:
         "sqlite_stat4",
         "sqlite_stat3",
     }
-
     return [table[0] for table in all_tables if table[0] not in system_tables]
 
 
@@ -26,15 +29,20 @@ class DatabaseHandler(ABC):
         pass
 
     @abstractmethod
-    def read_data(self):
+    def count_rows(self) -> int:
+        """Возвращает общее количество строк для обработки"""
         pass
 
-    def encrypt(self):
+    @abstractmethod
+    def encrypt(self, progress_callback):
+        """
+        Шифрует данные, вызывая progress_callback(processed_rows)
+        после обработки каждой строки.
+        """
         pass
 
 
 class SQLiteHandler(DatabaseHandler):
-
     def __init__(self, db_path: Path, encryptor=None):
         super().__init__(encryptor)
         self.db_path = db_path
@@ -49,51 +57,66 @@ class SQLiteHandler(DatabaseHandler):
                 "Файл не является корректной SQLite базой данных.",
             )
 
-    def encrypt(self):
+    def count_rows(self) -> int:
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = filter_system_tables(cursor.fetchall())
+        total = 0
+        for table in tables:
+            cursor.execute(f"SELECT COUNT(*) FROM {table}")
+            total += cursor.fetchone()[0]
+
+        conn.close()
+        return total
+
+    def encrypt(self, progress_callback):
         from search.models import Data, ManagedDatabase
 
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-        tables_to_encrypt = filter_system_tables(cursor.fetchall())
+        tables = filter_system_tables(cursor.fetchall())
+        processed = 0
 
         managed_database = ManagedDatabase.objects.get(
             file__endswith=self.db_path.name,
         )
+        batch = []
 
-        for table_name in tables_to_encrypt:
-            cursor.execute(f"PRAGMA table_info({table_name});")
-            columns = [column[1] for column in cursor.fetchall()]
-
-            cursor.execute(f"SELECT rowid, * FROM {table_name};")
+        for table in tables:
+            cursor.execute(f"PRAGMA table_info({table});")
+            columns = [col[1] for col in cursor.fetchall()]
+            cursor.execute(f"SELECT rowid, * FROM {table};")
             rows = cursor.fetchall()
 
             for row in rows:
                 row_id = row[0]
-                encrypted_row = []
                 for idx, value in enumerate(row[1:]):
                     if isinstance(value, str):
-                        encrypted_value = self.encryptor.encrypt(value)
-                        encrypted_row.append(encrypted_value)
-
-                        data_record = Data(
-                            database=managed_database,
-                            user_index=row_id,
-                            column_name=columns[idx],
-                            value=encrypted_value[:255],
+                        encrypted_value = self.encryptor.encrypt(
+                            normalize_search_query(value),
                         )
-                        data_record.save()
-                    else:
-                        encrypted_row.append(value)
+                        batch.append(
+                            Data(
+                                database=managed_database,
+                                user_index=row_id,
+                                column_name=columns[idx],
+                                value=encrypted_value[:255],
+                            ),
+                        )
 
-                set_clause = ", ".join([f"{column} = ?" for column in columns])
-                cursor.execute(
-                    f"UPDATE {table_name} SET {set_clause} WHERE rowid = ?",
-                    (*encrypted_row, row_id),
-                )
+                if len(batch) >= settings.BATCH_SIZE:
+                    Data.objects.bulk_create(batch)
+                    batch.clear()
 
-        conn.commit()
+                processed += 1
+                progress_callback(processed)
+
+        if batch:
+            Data.objects.bulk_create(batch)
+            batch.clear()
+
         conn.close()
 
     def read_data(self, n):
@@ -129,52 +152,56 @@ class CSVHandler(DatabaseHandler):
         except Exception as e:
             raise ValueError("Файл не является корректным CSV: " + str(e))
 
-    def encrypt(self):
+    def count_rows(self) -> int:
+        with self.csv_path.open("r", newline="", encoding="utf-8") as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+
+        return len(rows) - 1 if rows else 0
+
+    def encrypt(self, progress_callback):
         from search.models import Data, ManagedDatabase
 
         with self.csv_path.open("r", newline="", encoding="utf-8") as infile:
             reader = csv.reader(infile)
             rows = list(reader)
 
-        headers = rows[0] if rows else None
-
+        headers = rows[0] if rows else []
+        processed = 0
+        batch = []
         managed_database = ManagedDatabase.objects.get(
             file__endswith=self.csv_path.name,
         )
 
-        data_objects = []  # Список для хранения объектов Data
-        with self.csv_path.open("w", newline="", encoding="utf-8") as outfile:
-            writer = csv.writer(outfile)
-
-            if headers:
-                writer.writerow(headers)
-
-            for row_index, row in enumerate(rows[1:], start=1):
-                encrypted_row = []
-                for col_index, value in enumerate(row):
-                    if value:
-                        encrypted_value = self.encryptor.encrypt(value)
-                        encrypted_row.append(encrypted_value)
-
-                        # Создаем объект Data и добавляем его в список
-                        data_objects.append(
-                            Data(
-                                database=managed_database,
-                                user_index=row_index,
-                                column_name=(
-                                    headers[col_index]
-                                    if headers
-                                    else f"Column {col_index + 1}"
-                                ),
-                                value=encrypted_value[:255],
+        for row_index, row in enumerate(rows[1:], start=1):
+            for col_index, value in enumerate(row):
+                if value:
+                    encrypted_value = self.encryptor.encrypt(
+                        normalize_search_query(value),
+                    )
+                    batch.append(
+                        Data(
+                            database=managed_database,
+                            user_index=row_index,
+                            column_name=(
+                                headers[col_index]
+                                if headers
+                                else f"Column {col_index + 1}"
                             ),
-                        )
-                    else:
-                        encrypted_row.append(value)
+                            value=encrypted_value[:255],
+                        ),
+                    )
 
-                writer.writerow(encrypted_row)
+            if len(batch) >= settings.BATCH_SIZE:
+                Data.objects.bulk_create(batch)
+                batch.clear()
 
-        Data.objects.bulk_create(data_objects)
+            processed += 1
+            progress_callback(processed)
+
+        if batch:
+            Data.objects.bulk_create(batch)
+            batch.clear()
 
     def read_data(self, n):
         with self.csv_path.open("r", newline="", encoding="utf-8") as file:

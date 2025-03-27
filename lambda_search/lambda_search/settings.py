@@ -70,6 +70,8 @@ INSTALLED_APPS = [
     # Third-party apps
     "sorl.thumbnail",
     "turnstile",
+    "celery_progress",
+    "django_celery_results",
 ]
 
 MIDDLEWARE = [
@@ -206,6 +208,32 @@ USE_I18N = True
 USE_L10N = True
 
 LOCALE_PATHS = (BASE_DIR / "locale",)
+
+# redis
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = os.getenv("REDIS_PORT", "6379")
+REDIS_DB = os.getenv("REDIS_DB", "0")
+
+# celery
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_RESULT_EXTENDED = True
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "Europe/Moscow"
+# cache
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    },
+}
+
+BATCH_SIZE = 5000  # Batch size for reading and writing data
 
 ITEMS_PER_PAGE = 5
 

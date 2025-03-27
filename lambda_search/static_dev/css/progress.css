@@ -1,0 +1,17 @@
+.progress-bar-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.progress-bar {
+    margin: 5px 0;
+}
+
+.progress-bar-inner {
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+    font-size: 12px;
+    font-weight: normal;
+}

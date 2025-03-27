@@ -1,12 +1,19 @@
+import json
+
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse, JsonResponse
+from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
+from django.views import View
 from django.views.generic.edit import FormView
+from django_celery_results.models import TaskResult
 
 from history.models import QueryHistory
 from search.encryptor import CellEncryptor
 from search.forms import SearchForm
-from search.models import Data
+from search.models import Data, ManagedDatabase
 
 __all__ = ()
 
@@ -160,3 +167,42 @@ class SearchView(LoginRequiredMixin, FormView):
         context = super().get_context_data(**kwargs)
         context["title"] = _("Search")
         return context
+
+
+@method_decorator(staff_member_required, name="dispatch")
+class TaskProgressView(View):
+    """View for getting the progress of the task."""
+
+    def get(self, request):
+        task_id = request.GET.get("task_id")
+        if not task_id:
+            return JsonResponse(
+                {"error": "The issue ID is not specified"},
+                status=HttpResponse.status_code.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            database = ManagedDatabase.objects.filter(
+                progress_task_id=task_id,
+            ).first()
+            if not database:
+                return JsonResponse({"error": "Issue not found"}, status=404)
+
+            task_result = TaskResult.objects.get(task_id=task_id)
+            result_data = task_result.result
+
+            if isinstance(result_data, str):
+                result_data = json.loads(result_data)
+
+            return JsonResponse(result_data)
+
+        except TaskResult.DoesNotExist:
+            return JsonResponse(
+                {"error": "Issue result not found"},
+                status=HttpResponse.status_code.HTTP_404_NOT_FOUND,
+            )
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"error": "Incorrect result data"},
+                status=HttpResponse.status_code.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
