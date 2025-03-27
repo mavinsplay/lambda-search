@@ -1,10 +1,25 @@
 # Lambda Search
 
-Проект доступен по адресу <https://lambda-search.ru>
+[![Pipeline](https://github.com/mavinsplay/lambda-search/actions/workflows/ci-cd-pipeline.yml/badge.svg)](https://github.com/mavinsplay/lambda-search/actions/workflows/ci-cd-pipeline.yml?query=branch%3Amain)
+[![License](https://img.shields.io/github/license/mavinsplay/lambda-search)](./LICENSE)
+
+[![python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
+[![django](https://img.shields.io/badge/django-4.2-blue)](https://www.djangoproject.com/)
+
+[![last commit](https://img.shields.io/github/last-commit/mavinsplay/lambda-search)](https://github.com/mavinsplay/lambda-search/commits/main/)
+[![commit activity](https://img.shields.io/github/commit-activity/m/mavinsplay/lambda-search)](https://github.com/mavinsplay/lambda-search/pulse)
+[![contributors](https://img.shields.io/github/contributors/mavinsplay/lambda-search)](https://github.com/mavinsplay/lambda-search/graphs/contributors)
+***
+
+**Проект доступен по адресу https://lambda-search.ru**
+
+***
+
 
 ## О проекте
 
 Lambda Search — это инструмент, созданный для проверки, были ли ваши данные скомпрометированы в результате утечек. Мы ориентированы на российских пользователей и учитываем локальные риски и угрозы. Сервис предоставляет удобный интерфейс для анализа утечек, позволяя пользователям быстро реагировать на возможные угрозы.
+
 
 ## Требования
 
@@ -51,25 +66,27 @@ Lambda Search — это инструмент, созданный для про�
 
 3. **Установите зависимости:**
 
-    Основные:
+   - Основные:
 
     ```bash
     pip3 install -r requirements/prod.txt
     ```
 
-    Для тестирования:
+   - Для тестирования:
 
     ```bash
     pip3 install -r requirements/test.txt
     ```
 
-    Для разработки:
+   - Для разработки:
 
     ```bash
     pip3 install -r requirements/dev.txt
     ```
 
 4. **Настройка окружения:**
+5. 
+    Скопируйте шаблон файла настроек окружения и настройте его:
 
     ```bash
     cp .env.template .env
@@ -96,6 +113,7 @@ Lambda Search — это инструмент, созданный для про�
     celery -A lambda_search worker --pool=solo -l DEBUG
     pause
     ```
+
 
     **Linux:**
 
@@ -124,11 +142,20 @@ Lambda Search — это инструмент, созданный для про�
 
     Запуск Celery:
 
+
     ```bash
     celery -A lambda_search worker -l INFO
     ```
 
-6. **Выполните локализации:**
+
+6. **Установите и настройте PostgreSQL:**
+ 
+   *Только если выбрали PostgreSQL в качестве базы данных в .env*
+
+   [**Установка PostgreSQL**](https://www.postgresql.org/download/)
+
+
+7. **Выполните локализации:**
 
     Установка gettext:
 
@@ -143,14 +170,14 @@ Lambda Search — это инструмент, созданный для про�
     django-admin compilemessages
     ```
 
-7. **Примените миграции:**
+8. **Примените миграции:**
 
     ```bash
     python3 manage.py makemigrations
     python3 manage.py migrate
     ```
 
-8. **Запустите сервер:**
+9. **Запустите сервер:**
 
     ```bash
     python3 manage.py runserver
@@ -174,14 +201,16 @@ python3 manage.py test
 
 ## Запуск через Docker в prod-режиме
 
-1. Скачайте и установите [Docker](https://www.docker.com/)
-2. Настройте окружение
-3. Запустите контейнер:
+   1. Скачайте и установите [Docker](https://www.docker.com/)
 
-    ```bash
-    docker compose down
-    docker compose --profile prod up --build -d
-    ```
+   2. Настройте окружение (.env)
+
+   3. Запустите контейнер, перед этим остановив существующие:
+
+   ```bash
+   docker compose down
+   docker compose --profile prod up --build -d
+   ```
 
 ## ER-диаграмма БД
 
