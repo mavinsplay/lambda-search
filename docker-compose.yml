@@ -57,6 +57,7 @@ services:
       - ./.env
     volumes:
       - ./for_docker/logs:/lambda_search/logs
+      - ./for_docker/media:/lambda_search/media
     depends_on:
       - redis
       - postgres_lambda
