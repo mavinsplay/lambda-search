@@ -84,6 +84,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "users.middleware.ProxyUserMiddleware",
+    "search.middleware.ProtectedMediaMiddleware",
 ]
 
 ROOT_URLCONF = "lambda_search.urls"
@@ -139,8 +140,6 @@ else:
         },
     }
 
-
-LAMBDA_DBS_DIR = BASE_DIR / "lambda-dbs"
 
 AUTH_PWD_MODULE = "django.contrib.auth.password_validation."
 
@@ -234,6 +233,12 @@ CACHES = {
 }
 
 BATCH_SIZE = 5000  # Batch size for reading and writing data
+
+PROTECTED_MEDIA_ROOT = MEDIA_ROOT / "protected"
+TEMP_UPLOAD_DIR = PROTECTED_MEDIA_ROOT / "temp_uploads"
+
+PROTECTED_MEDIA_ROOT.mkdir(exist_ok=True)
+TEMP_UPLOAD_DIR.mkdir(exist_ok=True)
 
 ITEMS_PER_PAGE = 5
 

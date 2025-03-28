@@ -119,26 +119,6 @@ class SQLiteHandler(DatabaseHandler):
 
         conn.close()
 
-    def read_data(self, n):
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-        tables = filter_system_tables(cursor.fetchall())
-
-        data = {}
-        for table_name in tables:
-            cursor.execute(f"PRAGMA table_info({table_name});")
-            columns = [column[1] for column in cursor.fetchall()]
-
-            cursor.execute(f"SELECT * FROM {table_name} LIMIT ?;", (n,))
-            rows = cursor.fetchall()
-
-            data[table_name] = {"columns": columns, "rows": rows}
-
-        conn.close()
-        return data
-
 
 class CSVHandler(DatabaseHandler):
     def __init__(self, csv_path: Path, encryptor=None):
@@ -202,17 +182,3 @@ class CSVHandler(DatabaseHandler):
         if batch:
             Data.objects.bulk_create(batch)
             batch.clear()
-
-    def read_data(self, n):
-        with self.csv_path.open("r", newline="", encoding="utf-8") as file:
-            reader = csv.reader(file)
-            rows = list(reader)
-
-        headers = rows[0] if rows else []
-        limited_rows = rows[1 : n + 1]  # noqa
-        return {
-            f"{self.csv_path.name}": {
-                "columns": headers,
-                "rows": limited_rows,
-            },
-        }
