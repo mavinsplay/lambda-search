@@ -68,7 +68,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd ~/lambda_search
+          cd lambda_search/
           docker compose down
           git reset --hard origin/main  
           git pull origin main
