@@ -23,6 +23,8 @@ services:
     env_file:
       - ./.env
     restart: always
+    # ports:
+    #   - "8000:8000"
     volumes:
       - ./for_docker/static:/lambda_search/static
       - ./for_docker/media:/lambda_search/media
@@ -83,8 +85,8 @@ services:
       - ./for_docker/nginx_certificates:/etc/letsencrypt
       - ./for_docker/static:/lambda_search/static
       - ./for_docker/media:/lambda_search/media
-      - ~/DJANGO_CTF/for_docker/static:/DJANGO_CTF/static
-      - ~/DJANGO_CTF/for_docker/media:/DJANGO_CTF/media
+      # - ~/DJANGO_CTF/for_docker/static:/DJANGO_CTF/static
+      # - ~/DJANGO_CTF/for_docker/media:/DJANGO_CTF/media
     depends_on:
       - django
     profiles:

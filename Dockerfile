@@ -19,5 +19,6 @@ CMD python manage.py makemigrations \
     --timeout 1000 \
     --workers 2 \
     --bind 0.0.0.0:8000 \
+    --log-level debug \
     --access-logfile /lambda_search/logs/gunicorn_access.log \
     --error-logfile /lambda_search/logs/gunicorn_error.log
