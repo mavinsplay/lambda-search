@@ -15,7 +15,7 @@ DEFAULT_STRING_LIMIT = 50
 
 
 def database_upload_path(instance, filename):
-    return str(Path("lambda-dbs") / filename)
+    return str(Path(settings.TEMP_UPLOAD_DIR) / filename)
 
 
 class ManagedDatabase(models.Model):
@@ -50,6 +50,16 @@ class ManagedDatabase(models.Model):
         _("Зашифрована"),
         default=False,
     )
+    encryption_started = models.BooleanField(
+        _("шифрование запущено"),
+        default=False,
+    )
+    progress_task_id = models.CharField(
+        _("ID задачи шифрования"),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
     created_at = models.DateTimeField(
         _("Дата создания"),
         auto_now_add=True,
@@ -62,28 +72,36 @@ class ManagedDatabase(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        is_new = self.pk is None
-        if not is_new:
-            old_instance = ManagedDatabase.objects.get(pk=self.pk)
-            file_changed = old_instance.file != self.file
-
-            if file_changed:
-                self.is_encrypted = False
-
         super().save(*args, **kwargs)
+        if not self.is_encrypted and self.file and not self.encryption_started:
+            from search.tasks import encrypt_database_task
 
-        if not self.is_encrypted:
-            self.encrypt_database()
+            try:
+                from django.db import transaction
+
+                self.encryption_started = True
+                ManagedDatabase.objects.filter(pk=self.pk).update(
+                    encryption_started=True,
+                )
+                transaction.on_commit(
+                    lambda: encrypt_database_task.delay(self.pk),
+                )
+            except Exception as e:
+                from django.core.exceptions import ValidationError
+
+                raise ValidationError(
+                    f"Ошибка при обработке базы данных: {str(e)}",
+                )
 
     def encrypt_database(self):
         key = settings.ENCRYPTION_KEY
-        encryptor = UnifiedEncryptor(key)
-        encryptor.encrypt_database_cells(file_path=Path(self.file.path))
+        encryptor = UnifiedEncryptor(key, file_path=Path(self.file.path))
+        encryptor.encrypt_database_cells()
         self.is_encrypted = True
         super().save(update_fields=["is_encrypted"])
 
     def delete(self, *args, **kwargs):
-        if Path(self.file.path).exists():
+        if self.file and Path(self.file.path).exists():
             Path(self.file.path).unlink()
 
         super().delete(*args, **kwargs)

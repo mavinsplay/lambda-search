@@ -8,9 +8,11 @@ from django.utils.translation import gettext_lazy as _
 __all__ = ("SearchForm",)
 
 
-def normalize_search_query(value):
-    if re.fullmatch(r"[\+\(\)\-\d\s]+", value):
-        normalized = re.sub(r"[\D]+", "", value)
+def normalize_search_query(value: str) -> str:
+    phone_pattern = r"(?:\+?7|8)[-\s()]*\d(?:[-\s()]*\d){9}"
+
+    if re.match(phone_pattern, value):
+        normalized = re.sub(r"\D", "", value)
         if normalized.startswith("8"):
             return "7" + normalized[1:]
 
@@ -19,7 +21,7 @@ def normalize_search_query(value):
     if "@" in value:
         return re.sub(r"<[^>]*>", "", value)
 
-    return value
+    return value.lower()
 
 
 def validate_length(value):

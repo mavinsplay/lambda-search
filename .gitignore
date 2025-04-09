@@ -175,3 +175,8 @@ cython_debug/
 
 # Django_media
 media/
+
+# docker stuff
+*for_docker/postgres_data/
+*for_docker/redis_data/
+*for_docker/static/

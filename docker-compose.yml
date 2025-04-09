@@ -23,11 +23,45 @@ services:
     env_file:
       - ./.env
     restart: always
+    # ports:
+    #   - "8000:8000"
     volumes:
       - ./for_docker/static:/lambda_search/static
       - ./for_docker/media:/lambda_search/media
       - ./for_docker/logs:/lambda_search/logs
     depends_on:
+      - postgres_lambda
+    profiles:
+      - prod
+      - dev
+    networks:
+      - lambda_net
+
+  redis:
+    image: redis:latest
+    container_name: redis_lambda
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./for_docker/redis_data:/data
+    profiles:
+      - prod
+      - dev
+    networks:
+      - lambda_net
+
+  celery:
+    build: .
+    container_name: celery_lambda
+    command: celery -A lambda_search worker --pool=solo --loglevel=info
+    env_file:
+      - ./.env
+    volumes:
+      - ./for_docker/logs:/lambda_search/logs
+      - ./for_docker/media:/lambda_search/media
+    depends_on:
+      - redis
       - postgres_lambda
     profiles:
       - prod
@@ -51,8 +85,8 @@ services:
       - ./for_docker/nginx_certificates:/etc/letsencrypt
       - ./for_docker/static:/lambda_search/static
       - ./for_docker/media:/lambda_search/media
-      - ~/DJANGO_CTF/for_docker/static:/DJANGO_CTF/static
-      - ~/DJANGO_CTF/for_docker/media:/DJANGO_CTF/media
+      # - ~/DJANGO_CTF/for_docker/static:/DJANGO_CTF/static
+      # - ~/DJANGO_CTF/for_docker/media:/DJANGO_CTF/media
     depends_on:
       - django
     profiles:
@@ -64,4 +98,4 @@ networks:
   lambda_net:
     name: lambda_search
     driver: bridge
-    
+
