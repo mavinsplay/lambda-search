@@ -73,9 +73,10 @@ services:
     image: jonasal/nginx-certbot:latest
     container_name: nginx-prod
     environment:
-      DEBUG: ${LAMBDA_CERTBOT_DEBUG}
-      STAGING: ${LAMBDA_CERTBOT_STAGING}
-      CERTBOT_EMAIL: ${LAMBDA_CERTBOT_EMAIL}
+      - DEBUG=${LAMBDA_CERTBOT_DEBUG}
+      - STAGING=${LAMBDA_CERTBOT_STAGING}
+      - CERTBOT_EMAIL=${LAMBDA_CERTBOT_EMAIL}
+      - NGINX_MAX_BODY_SIZE=10G
     restart: always
     ports:
       - "80:80"
@@ -91,6 +92,25 @@ services:
       - django
     profiles:
       - prod
+    networks:
+      - lambda_net
+
+  nginx-dev:
+    image: nginx:latest
+    container_name: nginx-dev
+    environment:
+      - NGINX_MAX_BODY_SIZE=10G
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./for_docker/nginx-confs/lambda_search_dev.conf:/etc/nginx/conf.d/default.conf
+      - ./for_docker/static:/lambda_search/static
+      - ./for_docker/media:/lambda_search/media
+    depends_on:
+      - django
+    profiles:
+      - dev
     networks:
       - lambda_net
 

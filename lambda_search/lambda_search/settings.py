@@ -237,6 +237,10 @@ BATCH_SIZE = 5000  # Batch size for reading and writing data
 PROTECTED_MEDIA_ROOT = MEDIA_ROOT / "protected"
 TEMP_UPLOAD_DIR = PROTECTED_MEDIA_ROOT / "temp_uploads"
 
+# Maximum file upload size (10GB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024 * 1024
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024 * 1024
+
 ITEMS_PER_PAGE = 5
 
 CAPTCHA_ENABLED = utils.get_bool_env(

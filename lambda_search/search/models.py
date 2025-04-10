@@ -3,6 +3,7 @@ from pathlib import Path
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from search.encryptor import UnifiedEncryptor
@@ -15,7 +16,12 @@ DEFAULT_STRING_LIMIT = 50
 
 
 def database_upload_path(instance, filename):
-    return str(Path(settings.TEMP_UPLOAD_DIR) / filename)
+    """
+    Генерирует безопасный путь для загрузки файла базы данных
+    """
+    ext = Path(filename).suffix
+    safe_name = slugify(instance.name)
+    return f"protected/databases/{safe_name}{ext}"
 
 
 class ManagedDatabase(models.Model):
