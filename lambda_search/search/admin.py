@@ -2,16 +2,33 @@ from django.contrib import admin
 from django.contrib.admin.utils import NestedObjects
 from django.db import router
 from django.db.models import Count
+from django.http import JsonResponse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from search.models import Data, ManagedDatabase
+from search.models import Data, ManagedDatabase, models
+from search.widgets import ProgressBarFileInput
 
 __all__ = ()
 
 
 @admin.register(ManagedDatabase)
 class ManagedDatabaseAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.FileField: {"widget": ProgressBarFileInput},
+    }
+
+    class Media:
+        css = {
+            "all": (
+                "css/progress.css",
+                "css/file_upload_progress.css",
+            ),
+        }
+        js = (
+            "js/progress.js",
+            "js/file_upload_progress.js",
+        )
 
     list_display = (
         ManagedDatabase.name.field.name,
@@ -108,12 +125,6 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         return qs.annotate(data__count=Count("data"))
 
-    class Media:
-        css = {
-            "all": ("css/progress.css",),
-        }
-        js = ("js/progress.js",)
-
     def get_deleted_objects(self, objs, request):
         collector = NestedObjects(using=router.db_for_write(self.model))
         collector.collect(objs)
@@ -124,6 +135,20 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
             set(),
             [],
         )
+
+    def response_add(self, request, obj, post_url_continue=None):
+        """Переопределяем метод для возврата JSON при AJAX запросе"""
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"status": "success"})
+
+        return super().response_add(request, obj, post_url_continue)
+
+    def response_change(self, request, obj):
+        """Переопределяем метод для возврата JSON при AJAX запросе"""
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"status": "success"})
+
+        return super().response_change(request, obj)
 
 
 @admin.register(Data)

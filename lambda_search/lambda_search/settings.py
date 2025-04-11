@@ -54,6 +54,7 @@ SITE_URL = os.getenv("DJANGO_SITE_URL", "http://127.0.0.1:8000")
 INSTALLED_APPS = [
     # Django apps
     "django.contrib.admin",
+    "django.forms",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -106,6 +107,8 @@ TEMPLATES = [
         },
     },
 ]
+
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 WSGI_APPLICATION = "lambda_search.wsgi.application"
 
