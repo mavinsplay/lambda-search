@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.utils import NestedObjects
+from django.core.cache import cache
 from django.db import router
 from django.db.models import Count
 from django.http import JsonResponse
@@ -28,6 +29,7 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
         js = (
             "js/progress.js",
             "js/file_upload_progress.js",
+            "admin/js/jquery.init.js",  # Добавляем jQuery
         )
 
     list_display = (
@@ -139,16 +141,72 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
     def response_add(self, request, obj, post_url_continue=None):
         """Переопределяем метод для возврата JSON при AJAX запросе"""
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
-            return JsonResponse({"status": "success"})
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "redirect_url": request.path.rsplit("/", 2)[0] + "/",
+                    "message": "База данных успешно загружена",
+                },
+            )
 
         return super().response_add(request, obj, post_url_continue)
 
     def response_change(self, request, obj):
         """Переопределяем метод для возврата JSON при AJAX запросе"""
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
-            return JsonResponse({"status": "success"})
+            return JsonResponse(
+                {
+                    "status": "success",
+                    "redirect_url": request.path.rsplit("/", 2)[0] + "/",
+                    "message": "База данных успешно обновлена",
+                },
+            )
 
         return super().response_change(request, obj)
+
+    def get_upload_progress(self, request):
+        """Метод для получения прогресса загрузки через Redis"""
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            try:
+                key = request.GET.get("X-Progress-ID")
+                if key:
+                    cache_key = f"upload_progress_{key}"
+                    data = cache.get(cache_key)
+                    if data:
+                        return JsonResponse(data)
+
+                    return JsonResponse(
+                        {
+                            "status": "unknown",
+                            "message": "Данные о прогрессе не найдены",
+                        },
+                    )
+
+            except Exception as e:
+                return JsonResponse(
+                    {
+                        "status": "error",
+                        "message": f"Ошибка получения прогресса: {str(e)}",
+                    },
+                )
+
+        return JsonResponse(
+            {"status": "error", "message": "Недопустимый запрос"},
+        )
+
+    def save_model(self, request, obj, form, change):
+        """Сохранение прогресса загрузки в Redis"""
+        if "file" in form.changed_data:
+            progress_id = request.POST.get("X-Progress-ID")
+            if progress_id:
+                cache_key = f"upload_progress_{progress_id}"
+                cache.set(
+                    cache_key,
+                    {"status": "processing", "progress": 0, "speed": 0},
+                    timeout=3600,
+                )
+
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(Data)
