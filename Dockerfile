@@ -16,8 +16,10 @@ CMD python manage.py makemigrations \
  && python manage.py compilemessages \
  && python manage.py collectstatic --no-input \
  && gunicorn lambda_search.wsgi:application \
-    --timeout 1000 \
-    --workers 2 \
+    --timeout 7200 \
+    --keep-alive 300 \
+    --workers 4 \
+    --threads 4 \
     --bind 0.0.0.0:8000 \
     --log-level debug \
     --access-logfile /lambda_search/logs/gunicorn_access.log \
