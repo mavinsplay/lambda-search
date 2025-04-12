@@ -28,37 +28,52 @@ document.addEventListener('DOMContentLoaded', function() {
                     const loaded = e.loaded - lastLoaded;
                     
                     if (timeElapsed > 0) {
-                        const currentSpeed = loaded / timeElapsed;
-                        const speedText = formatSpeed(currentSpeed);
-                        
-                        // Обновляем UI
-                        const percent = (e.loaded / e.total) * 100;
-                        const progressBar = progress.querySelector('.progress-bar');
-                        const percentageDiv = progress.querySelector('.progress-percentage');
-                        const speedSpan = progress.querySelector('.upload-speed');
-                        const remainingSpan = progress.querySelector('.upload-remaining');
-                        const sizeSpan = progress.querySelector('.upload-size');
-                        
-                        // Обновляем прогресс-бар и процент
-                        progressBar.style.width = percent + '%';
-                        percentageDiv.textContent = Math.round(percent) + '%';
-                        
-                        // Обновляем скорость
-                        speedSpan.textContent = speedText;
-                        
-                        // Расчет оставшегося времени
-                        const remaining = (e.total - e.loaded) / currentSpeed;
-                        remainingSpan.textContent = formatTime(remaining);
-                        
-                        // Обновляем информацию о размере
-                        const loadedSize = formatFileSize(e.loaded);
-                        const totalSize = formatFileSize(e.total);
-                        const remainingSize = formatFileSize(e.total - e.loaded);
-                        sizeSpan.textContent = `${loadedSize} / ${totalSize} (осталось: ${remainingSize})`;
-                        
-                        // Обновляем значения для следующего расчета
-                        lastLoaded = e.loaded;
-                        lastTime = currentTime;
+                        try {
+                            const currentSpeed = loaded / timeElapsed;
+                            const speedText = formatSpeed(currentSpeed);
+                            
+                            // Обновляем UI
+                            const percent = (e.loaded / e.total) * 100;
+                            const progressBar = progress.querySelector('.progress-bar');
+                            const percentageDiv = progress.querySelector('.progress-percentage');
+                            const speedSpan = progress.querySelector('.upload-speed');
+                            const remainingSpan = progress.querySelector('.upload-remaining');
+                            const sizeSpan = progress.querySelector('.upload-size');
+                            
+                            // Проверяем корректность значений
+                            if (e.loaded > 0 && e.total > 0) {
+                                const loadedSize = formatFileSize(parseInt(e.loaded));
+                                const totalSize = formatFileSize(parseInt(e.total));
+                                const remainingBytes = Math.max(0, e.total - e.loaded);
+                                const remainingSize = formatFileSize(parseInt(remainingBytes));
+                                
+                                // Обновляем информацию с проверкой
+                                progressBar.style.width = percent + '%';
+                                percentageDiv.textContent = Math.round(percent) + '%';
+                                speedSpan.textContent = speedText;
+                                
+                                // Расчет оставшегося времени
+                                const remaining = remainingBytes / currentSpeed;
+                                remainingSpan.textContent = formatTime(remaining);
+                                
+                                // Обновляем размер с гарантированными значениями
+                                sizeSpan.textContent = `${loadedSize} / ${totalSize} (осталось: ${remainingSize})`;
+                                
+                                // Логируем значения для отладки
+                                console.debug('Upload progress:', {
+                                    loaded: e.loaded,
+                                    total: e.total,
+                                    remaining: remainingBytes,
+                                    percent: percent
+                                });
+                            }
+                            
+                            // Обновляем значения для следующего расчета
+                            lastLoaded = e.loaded;
+                            lastTime = currentTime;
+                        } catch (error) {
+                            console.error('Ошибка при обновлении прогресса:', error);
+                        }
                     }
                 }
             });
@@ -115,13 +130,26 @@ function formatTime(seconds) {
 }
 
 function formatFileSize(bytes) {
-    if (bytes === 0) return '0 B';
-    
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    try {
+        if (!bytes || bytes < 0) return '0 B';
+        
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        
+        // Гарантируем, что bytes это число
+        bytes = parseInt(bytes);
+        
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        
+        // Проверяем выход за пределы массива
+        const sizeIndex = Math.min(i, sizes.length - 1);
+        const size = bytes / Math.pow(k, sizeIndex);
+        
+        return `${size.toFixed(2)} ${sizes[sizeIndex]}`;
+    } catch (error) {
+        console.error('Ошибка форматирования размера файла:', error);
+        return '0 B';
+    }
 }
 
 function updateProgress(progressId) {
