@@ -42,10 +42,15 @@
     background-color: #f8d7da;
     border: 1px solid #f5c6cb;
     border-radius: 4px;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    word-wrap: break-word;
+    padding: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    white-space: pre-line;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 800px;
+    overflow-wrap: break-word;
 }
 
 .success-message {

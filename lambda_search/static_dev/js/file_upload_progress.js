@@ -119,23 +119,76 @@ document.addEventListener('DOMContentLoaded', function() {
                 form.appendChild(message);
             };
 
-            // Добавляем обработчик ошибок сервера
+            // Добавляем таймаут для XHR
+            xhr.timeout = 3600000; // 1 час в миллисекундах
+
+            // Улучшаем обработку ошибок сервера
             xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status !== 200) {
-                    console.error('Ошибка сервера:', xhr.status, xhr.statusText);
-                    const message = document.createElement('div');
-                    message.className = 'error-message';
-                    message.textContent = `Ошибка сервера: ${xhr.status} ${xhr.statusText}`;
-                    if (xhr.responseText) {
-                        try {
-                            const response = JSON.parse(xhr.responseText);
-                            message.textContent += ` - ${response.message || response.error || 'Неизвестная ошибка'}`;
-                        } catch (e) {
-                            message.textContent += ` - ${xhr.responseText}`;
+                console.debug('XHR состояние:', {
+                    readyState: xhr.readyState,
+                    status: xhr.status,
+                    statusText: xhr.statusText
+                });
+
+                if (xhr.readyState === 4) {
+                    if (xhr.status !== 200) {
+                        let errorMessage = `Ошибка сервера: ${xhr.status} ${xhr.statusText}\n`;
+                        
+                        // Добавляем информацию о размере загруженного файла
+                        const uploadedSize = formatFileSize(lastLoaded);
+                        errorMessage += `Загружено: ${uploadedSize}\n`;
+
+                        // Пытаемся получить детали ошибки
+                        if (xhr.responseText) {
+                            try {
+                                const response = JSON.parse(xhr.responseText);
+                                errorMessage += `Детали: ${response.message || response.error || xhr.responseText}`;
+                            } catch (e) {
+                                errorMessage += `Ответ сервера: ${xhr.responseText}`;
+                            }
                         }
+
+                        // Для ошибки 502 добавляем специфичную информацию
+                        if (xhr.status === 502) {
+                            errorMessage += '\nВозможные причины:\n';
+                            errorMessage += '- Превышен лимит времени загрузки\n';
+                            errorMessage += '- Превышен лимит размера файла\n';
+                            errorMessage += '- Проблемы с подключением к серверу';
+                        }
+
+                        console.error(errorMessage);
+
+                        // Создаем сообщение об ошибке в UI
+                        const message = document.createElement('div');
+                        message.className = 'error-message';
+                        message.textContent = errorMessage;
+                        form.appendChild(message);
+
+                        // Дополнительная отладочная информация
+                        console.debug('Заголовки запроса:', xhr.getAllResponseHeaders());
                     }
-                    form.appendChild(message);
                 }
+            };
+
+            // Добавляем обработчик прогресса загрузки с отладкой
+            xhr.upload.onprogress = function(e) {
+                if (e.lengthComputable) {
+                    console.debug('Прогресс загрузки:', {
+                        loaded: formatFileSize(e.loaded),
+                        total: formatFileSize(e.total),
+                        percent: ((e.loaded / e.total) * 100).toFixed(2) + '%'
+                    });
+                }
+            };
+
+            // Добавляем обработчик начала загрузки
+            xhr.upload.onloadstart = function() {
+                console.debug('Начало загрузки файла');
+            };
+
+            // Добавляем обработчик завершения загрузки
+            xhr.upload.onloadend = function() {
+                console.debug('Завершение загрузки файла');
             };
 
             xhr.open('POST', form.action, true);
