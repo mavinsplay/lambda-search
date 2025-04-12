@@ -124,48 +124,71 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Улучшаем обработку ошибок сервера
             xhr.onreadystatechange = function() {
-                console.debug('XHR состояние:', {
+                // Логируем каждое изменение состояния
+                const state = {
                     readyState: xhr.readyState,
                     status: xhr.status,
-                    statusText: xhr.statusText
-                });
+                    statusText: xhr.statusText,
+                    timeStamp: new Date().toISOString()
+                };
+                console.log('XHR состояние:', state);
 
                 if (xhr.readyState === 4) {
                     if (xhr.status !== 200) {
-                        let errorMessage = `Ошибка сервера: ${xhr.status} ${xhr.statusText}\n`;
-                        
-                        // Добавляем информацию о размере загруженного файла
-                        const uploadedSize = formatFileSize(lastLoaded);
-                        errorMessage += `Загружено: ${uploadedSize}\n`;
+                        // Сохраняем последнее состояние загрузки
+                        const lastState = {
+                            loaded: lastLoaded,
+                            uploadedSize: formatFileSize(lastLoaded),
+                            timeElapsed: ((Date.now() - startTime) / 1000).toFixed(2) + ' сек'
+                        };
+                        console.log('Последнее состояние загрузки:', lastState);
 
-                        // Пытаемся получить детали ошибки
+                        let errorMessage = `Ошибка сервера: ${xhr.status} ${xhr.statusText}\n`;
+                        errorMessage += `Загружено: ${lastState.uploadedSize}\n`;
+                        errorMessage += `Время загрузки: ${lastState.timeElapsed}\n`;
+
+                        // Логируем заголовки ответа
+                        const headers = xhr.getAllResponseHeaders();
+                        console.log('Заголовки ответа:', headers);
+
+                        // Пытаемся получить тело ответа
                         if (xhr.responseText) {
                             try {
                                 const response = JSON.parse(xhr.responseText);
-                                errorMessage += `Детали: ${response.message || response.error || xhr.responseText}`;
+                                console.log('Тело ответа:', response);
+                                errorMessage += `Детали: ${response.message || response.error}\n`;
                             } catch (e) {
-                                errorMessage += `Ответ сервера: ${xhr.responseText}`;
+                                console.log('Тело ответа (текст):', xhr.responseText);
+                                errorMessage += `Ответ сервера: ${xhr.responseText}\n`;
                             }
                         }
 
-                        // Для ошибки 502 добавляем специфичную информацию
+                        // Для ошибки 502 добавляем отладочную информацию
                         if (xhr.status === 502) {
-                            errorMessage += '\nВозможные причины:\n';
-                            errorMessage += '- Превышен лимит времени загрузки\n';
-                            errorMessage += '- Превышен лимит размера файла\n';
-                            errorMessage += '- Проблемы с подключением к серверу';
+                            const debug502 = {
+                                timeoutValue: xhr.timeout,
+                                contentLength: xhr.getResponseHeader('Content-Length'),
+                                contentType: xhr.getResponseHeader('Content-Type'),
+                                server: xhr.getResponseHeader('Server')
+                            };
+                            console.log('Детали ошибки 502:', debug502);
+                            
+                            errorMessage += '\nДиагностика:\n';
+                            errorMessage += `- Таймаут запроса: ${debug502.timeoutValue/1000} сек\n`;
+                            errorMessage += '- Возможные причины:\n';
+                            errorMessage += '  • Превышен лимит времени загрузки\n';
+                            errorMessage += '  • Превышен лимит размера файла\n';
+                            errorMessage += '  • Проблемы с подключением к серверу\n';
+                            errorMessage += '  • Nginx или Django завершили соединение\n';
                         }
 
-                        console.error(errorMessage);
-
-                        // Создаем сообщение об ошибке в UI
+                        // Выводим ошибку в консоль и UI
+                        console.error('Полное описание ошибки:', errorMessage);
+                        
                         const message = document.createElement('div');
                         message.className = 'error-message';
                         message.textContent = errorMessage;
                         form.appendChild(message);
-
-                        // Дополнительная отладочная информация
-                        console.debug('Заголовки запроса:', xhr.getAllResponseHeaders());
                     }
                 }
             };
@@ -190,6 +213,36 @@ document.addEventListener('DOMContentLoaded', function() {
             xhr.upload.onloadend = function() {
                 console.debug('Завершение загрузки файла');
             };
+
+            // Добавляем отладку прогресса загрузки
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    const progress = {
+                        loaded: formatFileSize(e.loaded),
+                        total: formatFileSize(e.total),
+                        percent: ((e.loaded / e.total) * 100).toFixed(2) + '%',
+                        timeElapsed: ((Date.now() - startTime) / 1000).toFixed(2) + ' сек'
+                    };
+                    console.log('Прогресс загрузки:', progress);
+                }
+            });
+
+            // Добавляем отладку начала загрузки
+            xhr.upload.addEventListener('loadstart', function(e) {
+                console.log('Начало загрузки:', {
+                    timeStamp: new Date().toISOString(),
+                    fileSize: formatFileSize(e.total)
+                });
+            });
+
+            // Добавляем отладку окончания загрузки
+            xhr.upload.addEventListener('loadend', function(e) {
+                console.log('Завершение загрузки:', {
+                    timeStamp: new Date().toISOString(),
+                    totalUploaded: formatFileSize(e.loaded),
+                    timeElapsed: ((Date.now() - startTime) / 1000).toFixed(2) + ' сек'
+                });
+            });
 
             xhr.open('POST', form.action, true);
             const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
