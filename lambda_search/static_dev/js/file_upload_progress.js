@@ -29,50 +29,53 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     if (timeElapsed > 0) {
                         try {
+                            // Расчет скорости как в рабочем примере
                             const currentSpeed = loaded / timeElapsed;
                             const speedText = formatSpeed(currentSpeed);
                             
-                            // Обновляем UI
-                            const percent = (e.loaded / e.total) * 100;
+                            // Получаем элементы UI
                             const progressBar = progress.querySelector('.progress-bar');
                             const percentageDiv = progress.querySelector('.progress-percentage');
                             const speedSpan = progress.querySelector('.upload-speed');
                             const remainingSpan = progress.querySelector('.upload-remaining');
                             const sizeSpan = progress.querySelector('.upload-size');
                             
-                            // Проверяем корректность значений
-                            if (e.loaded > 0 && e.total > 0) {
-                                const loadedSize = formatFileSize(parseInt(e.loaded));
-                                const totalSize = formatFileSize(parseInt(e.total));
-                                const remainingBytes = Math.max(0, e.total - e.loaded);
-                                const remainingSize = formatFileSize(parseInt(remainingBytes));
-                                
-                                // Обновляем информацию с проверкой
-                                progressBar.style.width = percent + '%';
-                                percentageDiv.textContent = Math.round(percent) + '%';
-                                speedSpan.textContent = speedText;
-                                
-                                // Расчет оставшегося времени
-                                const remaining = remainingBytes / currentSpeed;
-                                remainingSpan.textContent = formatTime(remaining);
-                                
-                                // Обновляем размер с гарантированными значениями
+                            // Расчет процента загрузки
+                            const percent = (e.loaded / e.total) * 100;
+                            
+                            // Обновляем UI с проверками
+                            if (progressBar) progressBar.style.width = percent + '%';
+                            if (percentageDiv) percentageDiv.textContent = Math.round(percent) + '%';
+                            if (speedSpan) speedSpan.textContent = speedText;
+                            
+                            // Расчет оставшегося времени как в рабочем примере
+                            const remainingBytes = e.total - e.loaded;
+                            const remaining = remainingBytes / currentSpeed;
+                            if (remainingSpan) remainingSpan.textContent = formatTime(remaining);
+                            
+                            // Обновляем информацию о размере аналогично скорости
+                            if (sizeSpan) {
+                                const loadedSize = formatFileSize(e.loaded);
+                                const totalSize = formatFileSize(e.total);
+                                const remainingSize = formatFileSize(remainingBytes);
                                 sizeSpan.textContent = `${loadedSize} / ${totalSize} (осталось: ${remainingSize})`;
-                                
-                                // Логируем значения для отладки
-                                console.debug('Upload progress:', {
-                                    loaded: e.loaded,
-                                    total: e.total,
-                                    remaining: remainingBytes,
-                                    percent: percent
-                                });
                             }
                             
+                            // Детальное логирование для отладки
+                            console.debug('Upload progress details:', {
+                                loaded: e.loaded,
+                                total: e.total,
+                                percent: percent,
+                                speed: currentSpeed,
+                                remaining: remaining,
+                                elapsed: timeElapsed
+                            });
+
                             // Обновляем значения для следующего расчета
                             lastLoaded = e.loaded;
                             lastTime = currentTime;
                         } catch (error) {
-                            console.error('Ошибка при обновлении прогресса:', error);
+                            console.error('Ошибка обновления прогресса:', error);
                         }
                     }
                 }
@@ -91,12 +94,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             };
 
-            // Добавляем обработку ошибок
-            xhr.onerror = function() {
+            // Улучшаем обработку ошибок
+            xhr.onerror = function(error) {
+                console.error('Ошибка загрузки файла:', error);
                 const message = document.createElement('div');
                 message.className = 'error-message';
-                message.textContent = 'Ошибка загрузки файла';
+                message.textContent = `Ошибка загрузки файла: ${error.type}`;
                 form.appendChild(message);
+            };
+
+            xhr.onabort = function() {
+                console.error('Загрузка файла прервана');
+                const message = document.createElement('div');
+                message.className = 'error-message';
+                message.textContent = 'Загрузка файла была прервана';
+                form.appendChild(message);
+            };
+
+            xhr.ontimeout = function() {
+                console.error('Превышено время ожидания загрузки');
+                const message = document.createElement('div');
+                message.className = 'error-message';
+                message.textContent = 'Превышено время ожидания загрузки';
+                form.appendChild(message);
+            };
+
+            // Добавляем обработчик ошибок сервера
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status !== 200) {
+                    console.error('Ошибка сервера:', xhr.status, xhr.statusText);
+                    const message = document.createElement('div');
+                    message.className = 'error-message';
+                    message.textContent = `Ошибка сервера: ${xhr.status} ${xhr.statusText}`;
+                    if (xhr.responseText) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            message.textContent += ` - ${response.message || response.error || 'Неизвестная ошибка'}`;
+                        } catch (e) {
+                            message.textContent += ` - ${xhr.responseText}`;
+                        }
+                    }
+                    form.appendChild(message);
+                }
             };
 
             xhr.open('POST', form.action, true);
