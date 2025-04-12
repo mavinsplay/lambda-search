@@ -81,6 +81,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    // Добавляем более подробное логирование
+                    console.group('Детали прогресса загрузки');
+                    console.log('Raw event data:', {
+                        loaded: e.loaded,
+                        total: e.total,
+                        lengthComputable: e.lengthComputable,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    const progress = {
+                        loaded: formatFileSize(e.loaded),
+                        total: formatFileSize(e.total),
+                        percent: ((e.loaded / e.total) * 100).toFixed(2) + '%',
+                        timeElapsed: ((Date.now() - startTime) / 1000).toFixed(2) + ' сек'
+                    };
+                    console.log('Форматированный прогресс:', progress);
+                    
+                    // Проверяем состояние XHR
+                    console.log('XHR status:', {
+                        readyState: xhr.readyState,
+                        status: xhr.status,
+                        responseHeaders: xhr.getAllResponseHeaders()
+                    });
+                    console.groupEnd();
+                } else {
+                    console.warn('Length not computable:', {
+                        event: e,
+                        xhrState: xhr.readyState
+                    });
+                }
+            });
+
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     const message = document.createElement('div');
@@ -119,8 +153,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 form.appendChild(message);
             };
 
-            // Добавляем таймаут для XHR
-            xhr.timeout = 3600000; // 1 час в миллисекундах
+            // Увеличиваем таймаут для больших файлов
+            xhr.timeout = 7200000; // 2 часа
+
+            // Добавляем обработчик сетевых ошибок
+            xhr.addEventListener('error', function(e) {
+                console.error('Network Error Details:', {
+                    type: e.type,
+                    target: {
+                        readyState: xhr.readyState,
+                        status: xhr.status,
+                        statusText: xhr.statusText
+                    },
+                    timestamp: new Date().toISOString()
+                });
+            });
 
             // Улучшаем обработку ошибок сервера
             xhr.onreadystatechange = function() {
@@ -248,6 +295,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             xhr.setRequestHeader('X-CSRFToken', csrftoken);
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+            // Добавляем отладочные заголовки
+            xhr.setRequestHeader('X-Debug-Client', 'true');
+            xhr.setRequestHeader('X-File-Size', formData.get('file').size);
+
+            // Проверяем поддержку прогресса
+            if (typeof xhr.upload.onprogress !== 'undefined') {
+                console.log('Progress events supported');
+            } else {
+                console.warn('Progress events may not be supported');
+            }
+
             xhr.send(formData);
         });
     });
