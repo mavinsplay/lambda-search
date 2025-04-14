@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.contrib.admin.utils import NestedObjects
 from django.core.cache import cache
 from django.db import router
-from django.db.models import Count
 from django.http import JsonResponse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -37,7 +36,6 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
         ManagedDatabase.file.field.name,
         ManagedDatabase.active.field.name,
         "progress_bar",
-        "related_objects_count",
     )
     list_editable = (ManagedDatabase.active.field.name,)
     search_fields = (ManagedDatabase.name.field.name,)
@@ -115,17 +113,6 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
 
     progress_bar.short_description = _("Прогресс")
     progress_bar.allow_tags = True
-
-    def related_objects_count(self, obj):
-        """Подсчет количества связанных объектов для базы данных"""
-        return obj.data.count()
-
-    related_objects_count.short_description = _("Количество записей")
-    related_objects_count.admin_order_field = "data__count"
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.annotate(data__count=Count("data"))
 
     def get_deleted_objects(self, objs, request):
         collector = NestedObjects(using=router.db_for_write(self.model))

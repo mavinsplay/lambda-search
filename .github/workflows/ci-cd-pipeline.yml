@@ -52,10 +52,62 @@ jobs:
           DJANGO_ALLOW_CAPTCHA: 0
       
 
+  docker-build-test:
+    name: Test Docker Build
+    needs: [django-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          DJANGO_DEBUG=True
+          DJANGO_SECRET_KEY=$(openssl rand -base64 32)
+          DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost
+          DJANGO_SITE_URL=127.0.0.1:8000
+          DJANGO_ENCRYPTION_KEY=$(openssl rand -base64 32 | cut -c1-32)
+
+          LAMBDA_SUPERUSER_NAME=admin
+          LAMBDA_SUPERUSER_EMAIL=lambda.search.helper@gmail.com
+          LAMBDA_SUPERUSER_PASSWORD=admin
+
+          DJANGO_DEFAULT_USER_IS_ACTIVE=False
+          DJANGO_MAX_AUTH_ATTEMPTS=5
+
+          DJANGO_DATABASE_SELECT=postgresql
+
+          DJANGO_POSTGRESQL_NAME=lambda_search
+          DJANGO_POSTGRESQL_USER=postgres
+          DJANGO_POSTGRESQL_PASSWORD=admin
+          DJANGO_POSTGRESQL_HOST=postgres_lambda
+          DJANGO_POSTGRESQL_PORT=5432
+
+          DJANGO_ALLOW_CAPTCHA=0
+          DJANGO_CAPTCHA_SITE_KEY=
+          DJANGO_CAPTCHA_SECRET_KEY=
+
+          EMAIL_HOST=smtp.gmail.com
+          DJANGO_MAIL=testmail@gmail.com
+          DJANGO_EMAIL_HOST_PASSWORD=test
+
+          LAMBDA_CERTBOT_DEBUG=1
+          LAMBDA_CERTBOT_STAGING=1
+          LAMBDA_CERTBOT_EMAIL=testmail@gmail.com
+
+          REDIS_HOST=redis
+          REDIS_PORT=6379
+          REDIS_DB=0
+          EOF
+
+      - name: Test Docker Compose Build
+        run: docker compose --profile dev build
+
   prod-deploy:
     name: Deploy project to server
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: [flake8-check, black-check, django-tests]
+    needs: [flake8-check, black-check, django-tests, docker-build-test]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
