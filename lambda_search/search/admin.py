@@ -138,9 +138,20 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
             [],
         )
 
-    def response_add(self, request, obj, post_url_continue=None):
+    def response_add(self, request, obj, form=None, post_url_continue=None):
         """Переопределяем метод для возврата JSON при AJAX запросе"""
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            if form and form.errors:
+                return JsonResponse(
+                    {
+                        "status": "error",
+                        "errors": {
+                            field: [str(error) for error in errors]
+                            for field, errors in form.errors.items()
+                        },
+                    },
+                )
+
             return JsonResponse(
                 {
                     "status": "success",
@@ -149,11 +160,22 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
                 },
             )
 
-        return super().response_add(request, obj, post_url_continue)
+        return super().response_add(request, obj, form, post_url_continue)
 
-    def response_change(self, request, obj):
+    def response_change(self, request, obj, form=None):
         """Переопределяем метод для возврата JSON при AJAX запросе"""
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            if form and form.errors:
+                return JsonResponse(
+                    {
+                        "status": "error",
+                        "errors": {
+                            field: [str(error) for error in errors]
+                            for field, errors in form.errors.items()
+                        },
+                    },
+                )
+
             return JsonResponse(
                 {
                     "status": "success",
@@ -162,7 +184,7 @@ class ManagedDatabaseAdmin(admin.ModelAdmin):
                 },
             )
 
-        return super().response_change(request, obj)
+        return super().response_change(request, obj, form)
 
     def get_upload_progress(self, request):
         """Метод для получения прогресса загрузки через Redis"""

@@ -116,15 +116,48 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const message = document.createElement('div');
-                    message.className = 'success-message';
-                    message.textContent = 'База данных успешно загружена';
-                    form.appendChild(message);
+                try {
+                    const response = JSON.parse(xhr.responseText);
                     
-                    setTimeout(() => {
-                        window.location.href = '/admin/search/manageddatabase/';
-                    }, 2000);
+                    // Удаляем предыдущие сообщения об ошибках
+                    form.querySelectorAll('.error-message, .success-message').forEach(el => el.remove());
+
+                    if (xhr.status === 200) {
+                        if (response.status === 'success') {
+                            const message = document.createElement('div');
+                            message.className = 'success-message';
+                            message.textContent = response.message || 'База данных успешно загружена';
+                            form.appendChild(message);
+                            
+                            setTimeout(() => {
+                                window.location.href = response.redirect_url || '/admin/search/manageddatabase/';
+                            }, 2000);
+                        } else if (response.errors) {
+                            // Отображаем ошибки валидации Django
+                            Object.entries(response.errors).forEach(([field, errors]) => {
+                                const fieldElement = form.querySelector(`[name="${field}"]`);
+                                const errorDiv = document.createElement('div');
+                                errorDiv.className = 'error-message';
+                                errorDiv.style.color = '#dc3545';
+                                errorDiv.style.marginTop = '5px';
+                                errorDiv.style.fontSize = '0.875em';
+                                errorDiv.textContent = errors.join(', ');
+                                
+                                if (fieldElement) {
+                                    fieldElement.classList.add('error');
+                                    fieldElement.parentNode.insertBefore(errorDiv, fieldElement.nextSibling);
+                                }
+                            });
+                        }
+                    } else {
+                        throw new Error('Server error');
+                    }
+                } catch (error) {
+                    console.error('Error processing response:', error);
+                    const message = document.createElement('div');
+                    message.className = 'error-message';
+                    message.textContent = 'Произошла ошибка при обработке ответа сервера';
+                    form.appendChild(message);
                 }
             };
 

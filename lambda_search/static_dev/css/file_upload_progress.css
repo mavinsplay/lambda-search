@@ -62,3 +62,22 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+.errorlist {
+    color: #ba2121;
+    background: #fff;
+    border: 1px solid #ba2121;
+    margin: 0 0 3px;
+    padding: 4px 5px;
+    border-radius: 4px;
+    list-style-type: none;
+}
+
+.error {
+    border-color: #ba2121;
+}
+
+.error:focus {
+    border-color: #ba2121;
+    box-shadow: 0 0 0 0.2rem rgba(186, 33, 33, 0.25);
+}
