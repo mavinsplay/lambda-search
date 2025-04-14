@@ -102,7 +102,7 @@ jobs:
           EOF
 
       - name: Test Docker Compose Build
-        run: docker compose --profile dev build
+        run: docker compose --profile prod build
 
   prod-deploy:
     name: Deploy project to server
