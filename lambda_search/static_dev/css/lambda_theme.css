@@ -196,34 +196,31 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 }
 
 
-@media (max-width: 576px) {
-  html {
-    font-size: 14px;
-  }
-  
-  h1, .h1 {
-    font-size: 1.75rem;
-  }
-  
-  h2, .h2 {
-    font-size: 1.5rem;
-  }
-  
-  h3, .h3 {
-    font-size: 1.25rem;
-  }
-  .lambda-login {
-    width: 90% !important;
-  }
-  .lambda-feedback-form {
-    width: 90% !important;
-  }
-}
-
 @media (max-width: 992px) {
     .lambda-profile {
         padding-top: 4%;
-        }
+    }
+    html {
+        font-size: 14px;
+    }
+    
+    h1, .h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2, .h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3, .h3 {
+        font-size: 1.25rem;
+    }
+    .lambda-login {
+        width: 90% !important;
+    }
+    .lambda-feedback-form {
+        width: 90% !important;
+    }
 }
 
 @media (min-width: 767px) {
