@@ -38,16 +38,20 @@ services:
       - lambda_net
 
   redis:
-    image: redis:latest
+    image: redis:7-alpine
     container_name: redis_lambda
     restart: always
-    ports:
-      - "6379:6379"
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
     volumes:
       - ./for_docker/redis_data:/data
+      - ./for_docker/redis_conf:/usr/local/etc/redis
     profiles:
       - prod
       - dev
+    env_file:
+      - .env
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     networks:
       - lambda_net
 
