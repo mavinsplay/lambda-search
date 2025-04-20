@@ -58,9 +58,10 @@ services:
   celery:
     build: .
     container_name: celery_lambda
-    command: celery -A lambda_search worker --pool=solo --loglevel=info
+    command: celery -A lambda_search worker --pool=prefork --loglevel=DEBUG --logfile=/lambda_search/logs/celery.log
     env_file:
       - ./.env
+    restart: always
     volumes:
       - ./for_docker/logs:/lambda_search/logs
       - ./for_docker/media:/lambda_search/media
@@ -72,6 +73,11 @@ services:
       - dev
     networks:
       - lambda_net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   nginx-prod:
     image: jonasal/nginx-certbot:latest
