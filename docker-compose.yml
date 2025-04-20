@@ -58,7 +58,7 @@ services:
   celery:
     build: .
     container_name: celery_lambda
-    command: celery -A lambda_search worker --pool=prefork --loglevel=DEBUG --logfile=/lambda_search/logs/celery.log
+    command: celery -A lambda_search worker --pool=solo --loglevel=DEBUG --logfile=/lambda_search/logs/celery.log
     env_file:
       - ./.env
     restart: always
