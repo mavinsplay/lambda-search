@@ -121,7 +121,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd lambda-search/
-          docker compose down
+          docker-compose down
           git reset --hard origin/main  
           git pull origin main
-          docker compose --profile prod up --build -d
+          docker-compose --profile prod up --build -d
