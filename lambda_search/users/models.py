@@ -3,6 +3,7 @@ import re
 
 import django.conf
 import django.contrib.auth.models
+from django.core.validators import FileExtensionValidator
 import django.db
 from django.utils.translation import gettext_lazy as _
 import sorl.thumbnail
@@ -91,7 +92,10 @@ class Profile(django.db.models.Model):
         help_text=_("Upload a profile picture"),
         null=True,
         blank=True,
-        validators=[file_size],
+        validators=[
+            FileExtensionValidator(["png", "jpeg", "jpg"]),
+            file_size,
+        ],
     )
 
     attempts_count = django.db.models.PositiveIntegerField(

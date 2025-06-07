@@ -24,7 +24,7 @@
                       {% csrf_token %}
                       <div class="mb-3">
                       <h5 class="text-center">{% trans "Upload avatar" %}</h5>
-                          <input type="file" id="image" name="image" class="form-control {% if profile_form.image.errors %}is-invalid{% endif %}">
+                          <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png" class="form-control {% if profile_form.image.errors %}is-invalid{% endif %}">
                           {% for error in profile_form.image.errors %}
                               <div class="invalid-feedback">{{ error }}</div>
                           {% endfor %}

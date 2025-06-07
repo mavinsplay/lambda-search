@@ -1,6 +1,8 @@
+from django import forms
 from django.contrib import admin
 
 from feedback.models import Feedback, FeedbackFile, StatusLog, UserInfo
+
 
 __all__ = ()
 
@@ -41,7 +43,20 @@ class StatusLogInline(admin.TabularInline):
         return False
 
 
+class FeedbackAdminForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = "__all__"
+        widgets = {
+            "text": forms.Textarea(
+                attrs={"rows": 6, "cols": 80, "style": "resize: vertical;"},
+            ),
+        }
+
+
 class FeedbackAdmin(admin.ModelAdmin):
+    form = FeedbackAdminForm
+
     list_display = (
         Feedback.text.field.name,
         Feedback.created_on.field.name,

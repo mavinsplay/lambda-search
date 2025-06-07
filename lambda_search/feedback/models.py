@@ -12,7 +12,7 @@ class Feedback(models.Model):
         ("answered", "ответ дан"),
     ]
 
-    text = models.CharField("Текст", max_length=100)
+    text = models.CharField("Текст", max_length=1000)
     created_on = models.DateTimeField(
         _("Создано в"),
         auto_now_add=True,
