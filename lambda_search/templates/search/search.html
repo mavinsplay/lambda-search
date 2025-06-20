@@ -8,7 +8,7 @@
 <div class="container-md">
   <div class="row text-center my-3">
     <h1>{{title}}</h1>
-    <form method="post" class="mt-2">
+    <form method="post" class="mt-2" id="searchForm">
       {% csrf_token %}
       <div class="d-flex align-items-center">
       <div class="form-group col-10 mr-2">
@@ -33,8 +33,26 @@
         </div>
       {% endif %}
     </form>
-    </div>
+  </div>
 
+  <div id="searchLoader" class="loader-wrapper text-center my-5" style="display:none;">
+    <div class="loader">
+      <div class="roller"></div>
+      <div class="roller"></div>
+    </div>
+    
+    <div id="loader2" class="loader">
+      <div class="roller"></div>
+      <div class="roller"></div>
+    </div>
+    
+    <div id="loader3" class="loader">
+      <div class="roller"></div>
+      <div class="roller"></div>
+    </div>
+  </div>
+
+  <div id="searchResults">
     {% if results %}
       
     <table class="mt-5 table table-bordered rounded mt-3 br-2">
@@ -57,9 +75,16 @@
           {% endfor %}
         </tbody>
       </table>
-      {% else %}
-        <h1 class="text-center">{% trans "Данные не найдены" %}</h1>
+    {% elif search_performed %}
+      <h1 class="text-center">{% trans "Данные не найдены" %}</h1>
     {% endif %}
   </div>
 </div>
+
+<script>
+document.getElementById('searchForm').addEventListener('submit', function() {
+    document.getElementById('searchLoader').style.display = 'block';
+    document.getElementById('searchResults').style.display = 'none';
+});
+</script>
 {% endblock %}

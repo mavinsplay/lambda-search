@@ -80,7 +80,11 @@ class SearchView(LoginRequiredMixin, FormView):
         search_query = self.encryptor.decrypt(req) if req else ""
         form = self.form_class(initial={"search_query": search_query})
         return self.render_to_response(
-            self.get_context_data(form=form, results=None),
+            self.get_context_data(
+                form=form,
+                results=None,
+                search_performed=False,
+            ),
         )
 
     def form_valid(self, form):
@@ -94,7 +98,11 @@ class SearchView(LoginRequiredMixin, FormView):
         )
         form = self.form_class()
         return self.render_to_response(
-            self.get_context_data(results=formatted_results, form=form),
+            self.get_context_data(
+                results=formatted_results,
+                form=form,
+                search_performed=True,
+            ),
         )
 
     def form_invalid(self, form):
