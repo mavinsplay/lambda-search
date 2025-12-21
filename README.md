@@ -11,7 +11,7 @@
 [![contributors](https://img.shields.io/github/contributors/mavinsplay/lambda-search)](https://github.com/mavinsplay/lambda-search/graphs/contributors)
 ***
 
-**Проект доступен по адресу <https://lambda-search.ru>**
+~~**Проект доступен по адресу <https://lambda-search.ru>**~~
 
 ***
 
